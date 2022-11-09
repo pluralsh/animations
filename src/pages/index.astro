@@ -1,0 +1,136 @@
+---
+import PluralLogomark from "../components/PluralLogomark.astro";
+import SquareDeep from "../components/SquareDeep.astro";
+import BigSquare from "../components/BigSquare.astro";
+import SquareFlat from "../components/SquareFlat.astro";
+import Layout from "../layouts/Layout.astro";
+const svgWidth = 1080;
+const svgHeight = 1080;
+const originX = 30;
+const originY = 30;
+const squareWidth = 58;
+const squareHeight = 58;
+const gapX = 20;
+const gapY = 20;
+const xSpacing = squareWidth + gapX;
+const ySpacing = squareHeight + gapY;
+const bigSquareSize = 288;
+const centerSquaresWidth = 3 * squareWidth + 2 * gapX;
+const centerSquaresHeight = 3 * squareHeight + 2 * gapY;
+const centerSquaresTop = (bigSquareSize - centerSquaresHeight) / 2;
+const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
+---
+
+<Layout title="Welcome to Astro.">
+  <link rel="stylesheet" href="/index.css" />
+  <script src="../client/anim.ts"></script>
+  <main>
+    <h1>Welcome</h1>
+    <div class="myAnimation">
+      <div
+        class="bigSquareArea"
+        style={{ width: `${bigSquareSize}px`, height: `${bigSquareSize}px` }}
+      >
+        <BigSquare class="bigSquare" />
+        <div
+          class="squares"
+          style={{
+            top: `${centerSquaresTop}px`,
+            left: `${centerSquaresLeft}px`,
+          }}
+        >
+          {
+            Array.from(Array(3)).map((_, j) => {
+              const x = Array.from(Array(3)).map((_, i) => {
+                const isCenter = i === 1 && j === 1;
+                return (
+                  <div
+                    class="middleSquare"
+                    style={{
+                      top: `${j * ySpacing}px`,
+                      left: `${i * xSpacing}px`,
+                      width: `${squareWidth}px`,
+                      height: `${squareHeight}px`,
+                    }}
+                  >
+                    <div class:list={["shape", { squareDeep: !isCenter }]}>
+                      {isCenter ? <PluralLogomark /> : <SquareDeep />}
+                    </div>
+                  </div>
+                );
+              });
+              return <>{x}</>;
+            })
+          }
+        </div>
+      </div>
+    </div>
+  </main>
+</Layout>
+<script>
+  const gradients = document.querySelectorAll(".rotateGradient");
+</script>
+<style lang="scss">
+  .myAnimation {
+    * {
+      transform-style: preserve-3d;
+    }
+
+    background-color: "blue";
+    position: relative;
+    .bigSquareArea {
+      position: absolute;
+      transform: rotateX(55deg) rotateY(0) rotateZ(-45deg);
+      transform-origin: 50% 50%;
+    }
+    .bigSquare {
+      position: absolute;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .squares {
+      position: absolute;
+    }
+    .middleSquare {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      .shape {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        cursor: default;
+        border-radius: 3px;
+      }
+      &:hover {
+        .squareDeep {
+          transform: translateZ(10px);
+          transition: transform 0.1s ease-out;
+          transform-origin: 50% 100%;
+        }
+      }
+    }
+
+    .square {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      .shape {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        cursor: default;
+        border-radius: 3px;
+      }
+      &:hover {
+        .shape {
+          transform: rotateX(0) rotateY(-10deg) rotateZ(0) translateZ(5px);
+          transition: transform 0.1s ease-out;
+          transform-origin: 50% 100%;
+        }
+      }
+    }
+  }
+</style>

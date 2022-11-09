@@ -1,0 +1,14 @@
+{
+    "files.exclude": {
+      "**/node_modules": true,
+      ".next/": true
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/yarn.lock": true,
+      "**/yarn*.log": true,
+      ".yarn/": true,
+      ".next/": true
+    }
+  }
+  
