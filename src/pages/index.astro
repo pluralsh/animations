@@ -6,8 +6,6 @@ import SquareFlat from "../components/SquareFlat.astro";
 import Layout from "../layouts/Layout.astro";
 const svgWidth = 1080;
 const svgHeight = 1080;
-const originX = 30;
-const originY = 30;
 const squareWidth = 58;
 const squareHeight = 58;
 const gapX = 20;
@@ -21,17 +19,37 @@ const centerSquaresTop = (bigSquareSize - centerSquaresHeight) / 2;
 const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
 ---
 
-<Layout title="Welcome to Astro.">
+<Layout title="My animation">
   <link rel="stylesheet" href="/index.css" />
+
   <script src="../client/anim.ts"></script>
   <main>
     <h1>Welcome</h1>
-    <div class="myAnimation">
+    <div class="myAnimation" id="animation1">
       <div
         class="bigSquareArea"
         style={{ width: `${bigSquareSize}px`, height: `${bigSquareSize}px` }}
       >
-        <BigSquare class="bigSquare" />
+        <div class="bigSquareContainer">
+          <BigSquare class="bigSquare" style={{ zIndex: -1 }} />
+          <div
+            class="squares"
+            style={{
+              top: `${centerSquaresTop}px`,
+              left: `${centerSquaresLeft}px`,
+            }}
+          >
+            <div
+              class:list={["middleSquare", "pluralLogo"]}
+              style={{
+                top: `${1 * ySpacing}px`,
+                left: `${1 * xSpacing}px`,
+              }}
+            >
+              <PluralLogomark />
+            </div>
+          </div>
+        </div>
         <div
           class="squares"
           style={{
@@ -45,16 +63,17 @@ const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
                 const isCenter = i === 1 && j === 1;
                 return (
                   <div
-                    class="middleSquare"
+                    class:list={["middleSquare", "appSquare"]}
                     style={{
                       top: `${j * ySpacing}px`,
                       left: `${i * xSpacing}px`,
-                      width: `${squareWidth}px`,
-                      height: `${squareHeight}px`,
+                      ...(isCenter ? { display: "none" } : {}),
                     }}
                   >
-                    <div class:list={["shape", { squareDeep: !isCenter }]}>
-                      {isCenter ? <PluralLogomark /> : <SquareDeep />}
+                    <div class="zTarget">
+                      <div class:list={["shape"]}>
+                        {isCenter ? null : <SquareDeep />}
+                      </div>
                     </div>
                   </div>
                 );
@@ -70,17 +89,24 @@ const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
 <script>
   const gradients = document.querySelectorAll(".rotateGradient");
 </script>
-<style lang="scss">
+<style lang="scss" define:vars={{ squareWidth: `${squareWidth}px` }}>
   .myAnimation {
+    --moderateShadow: drop-shadow(0px 3px 6px rgba(14, 16, 21, 0.2)) drop-shadow(0px 10px 20px rgba(14, 16, 21, 0.3));
     * {
       transform-style: preserve-3d;
+      transform-origin: 50% 50%;
     }
-
+    transform-origin: 50% 50%;
+    background-color: rgba(255, 0, 0, 0);
+    width: 500px;
+    height: 500px;
     background-color: "blue";
     position: relative;
     .bigSquareArea {
       position: absolute;
-      transform: rotateX(55deg) rotateY(0) rotateZ(-45deg);
+      left: 58px;
+      top: -28px;
+      transform: rotateX(57deg) rotateY(0) rotateZ(-45deg);
       transform-origin: 50% 50%;
     }
     .bigSquare {
@@ -93,8 +119,8 @@ const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
     }
     .middleSquare {
       position: absolute;
-      width: 30px;
-      height: 30px;
+      width: var(--squareWidth);
+      height: var(--squareWidth);
       .shape {
         position: absolute;
         width: 100%;
@@ -103,12 +129,19 @@ const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
         cursor: default;
         border-radius: 3px;
       }
-      &:hover {
-        .squareDeep {
+      &.appSquare:hover {
+        .shape {
           transform: translateZ(10px);
           transition: transform 0.1s ease-out;
           transform-origin: 50% 100%;
         }
+      }
+      .shadow {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        right: 0;
       }
     }
 
