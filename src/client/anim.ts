@@ -25,19 +25,34 @@ highlightsTL.call(dimSquare, [".square3"], "+=3");
 const tl = gsap.timeline({ repeat: 0, repeatDelay: 2 });
 tl.addLabel("start", 0);
 
-tl.from(".bigSquareContainer", { opacity: 0, duration: 0.5 }, "start");
-tl
+// tl.from(".bigSquareContainer", { opacity: 0, duration: 0.5 }, "start");
+tl.from(
+  "#bigSquareArea",
+  {
+    // z: '100%',
+    y: "-=30%",
+    rotateY: "+=30",
+    rotateX: "-=5",
+    rotateZ: "-=5",
+    duration: 1,
+    ease: "sine.inOut",
+  },
+  "start"
+)
   .from(
-    ".bigSquareArea",
+    ".bigSquareShadow",
     {
-      translateY: "-30%",
-      rotateY: "+=30",
-      rotateX: "-=5",
-      rotateZ: "-=5",
-      duration: 1,
+      // z: '100%',
+      // y: "-=30%",
+      // rotateY: "+=30",
+      // rotateX: "-=50",
+      // rotateZ: "-=15",
+      // scale: "-=20%",
+      opacity: 0.5,
+      duration: 0.75,
       ease: "sine.inOut",
     },
-    "start"
+    "<"
   )
   .addLabel("stage2");
 

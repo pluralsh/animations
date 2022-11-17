@@ -39,10 +39,10 @@ const centerIconProps = [
   <script src="../client/anim.ts"></script>
   <main>
     <div class="myAnimation" id="animation1">
-      <div
-        class="bigSquareArea"
-        style={{ width: `${bigSquareSize}px`, height: `${bigSquareSize}px` }}
-      >
+      <div class="main3dTransform">
+        <div class="bigSquareShadow"><img src="/drop-shadow.png" /></div>
+      </div>
+      <div id="bigSquareArea" class="all3dObjects main3dTransform">
         <div class="bottomSquaresContainer">
           <SquareFlat
             class="bottomSquare square1"
@@ -124,6 +124,7 @@ const centerIconProps = [
         </div>
       </div>
     </div>
+    <!-- </div> -->
   </main>
 </Layout>
 <script>
@@ -153,6 +154,15 @@ const centerIconProps = [
     width: 500px;
     height: 500px;
     position: relative;
+    .main3dTransform {
+      position: absolute;
+      left: 58px;
+      top: -28px;
+      transform: rotateX(57deg) rotateY(0) rotateZ(-45deg);
+      transform-origin: 50% 50%;
+      width: var(--bigSquareSize);
+      height: var(--bigSquareSize);
+    }
     .bottomSquaresContainer {
       position: absolute;
       top: calc(var(--bigSquareSize) + (var(--flatSquareGap) * 2));
@@ -163,17 +173,23 @@ const centerIconProps = [
         left: 0;
       }
     }
-    .bigSquareArea {
-      position: absolute;
-      left: 58px;
-      top: -28px;
-      transform: rotateX(57deg) rotateY(0) rotateZ(-45deg);
-      transform-origin: 50% 50%;
-    }
     .bigSquare {
       position: absolute;
       pointer-events: none;
       z-index: -1;
+    }
+    .bigSquareShadow {
+      position: absolute;
+      top: -140px;
+      left: -140px;
+      right: -140px;
+      bottom: -140px;
+      /* background-color: blue; */
+      transform: translateZ(-30px);
+      img {
+        display: block;
+        width: 100%;
+      }
     }
     .squares {
       position: absolute;
