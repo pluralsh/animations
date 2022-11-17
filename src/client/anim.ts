@@ -7,7 +7,7 @@ export default (() => {
   });
 })();
 
-const tl = gsap.timeline({ repeat: -1, repeatDelay: 2 });
+const tl = gsap.timeline({ repeat: 0, repeatDelay: 2 });
 tl.addLabel("start", 0);
 
 tl.from(".bigSquareContainer", { opacity: 0, duration: 0.5 }, "start");
@@ -23,17 +23,65 @@ tl.from(
   },
   "start"
 );
+
+const squaresStagger = {
+  grid: [3, 3],
+  from: "edges",
+  amount: 0.5,
+};
 tl.from(
-  ".appSquare .zTarget",
+  ".appSquare .shadow",
   {
-    z: 60,
     opacity: 0,
+    scale: 0.3,
     duration: 1,
-    stagger: {
-      grid: [3, 3],
-      from: "edges",
-      amount: 0.5,
-    },
+    ease: "sine.easeInOut",
+    stagger: squaresStagger as any,
   },
   "<0.2"
 );
+tl.from(
+  ".appSquare .shape",
+  {
+    opacity: 0,
+    duration: 0.5,
+    ease: "none",
+    stagger: squaresStagger as any,
+  },
+  "<0.2"
+);
+tl.from(
+  ".appSquare .shape",
+  {
+    z: 60,
+    duration: 1,
+    ease: "power2.easeOut",
+    stagger: squaresStagger as any,
+  },
+  "<0.2"
+);
+
+const gradientLoop = gsap.timeline({ repeat: -1, repeatDelay: 0 });
+const gradientDuration = 1;
+const gradientSelector = ".strokeGradient";
+gradientLoop
+  .fromTo(
+    gradientSelector,
+    { attr: { cx: "0%", cy: "0%" } },
+    { attr: { cx: "100%", cy: "0%" }, duration: gradientDuration, ease: "none" }
+  )
+  .to(gradientSelector, {
+    attr: { cx: "100%", cy: "100%" },
+    duration: gradientDuration,
+    ease: "none",
+  })
+  .to(gradientSelector, {
+    attr: { cx: "0%", cy: "100%" },
+    duration: gradientDuration,
+    ease: "none",
+  })
+  .to(gradientSelector, {
+    attr: { cx: "0%", cy: "0%" },
+    duration: gradientDuration,
+    ease: "none",
+  })

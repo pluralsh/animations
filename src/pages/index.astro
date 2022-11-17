@@ -8,6 +8,8 @@ const svgWidth = 1080;
 const svgHeight = 1080;
 const squareWidth = 58;
 const squareHeight = 58;
+const flatSquareWidth = 80;
+const flatSquareHeight = 80;
 const gapX = 20;
 const gapY = 20;
 const xSpacing = squareWidth + gapX;
@@ -17,6 +19,8 @@ const centerSquaresWidth = 3 * squareWidth + 2 * gapX;
 const centerSquaresHeight = 3 * squareHeight + 2 * gapY;
 const centerSquaresTop = (bigSquareSize - centerSquaresHeight) / 2;
 const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
+const flatSquareOffset = (bigSquareSize - flatSquareWidth) / 2;
+const flatSquareGap = flatSquareOffset - flatSquareWidth;
 ---
 
 <Layout title="My animation">
@@ -30,6 +34,20 @@ const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
         class="bigSquareArea"
         style={{ width: `${bigSquareSize}px`, height: `${bigSquareSize}px` }}
       >
+        <div class="bottomSquaresContainer">
+          <SquareFlat
+            class="bottomSquare"
+            style={{ left: `${flatSquareOffset * 0}px` }}
+          />
+          <SquareFlat
+            class="bottomSquare"
+            style={{ left: `${flatSquareOffset * 1}px` }}
+          />
+          <SquareFlat
+            class="bottomSquare"
+            style={{ left: `${flatSquareOffset * 2}px` }}
+          />
+        </div>
         <div class="bigSquareContainer">
           <BigSquare class="bigSquare" style={{ zIndex: -1 }} />
           <div
@@ -61,6 +79,10 @@ const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
             Array.from(Array(3)).map((_, j) => {
               const x = Array.from(Array(3)).map((_, i) => {
                 const isCenter = i === 1 && j === 1;
+                const gradientStroke =
+                  (i === 0 && j === 1) ||
+                  (i === 1 && j === 2) ||
+                  (i === 2 && j === 2);
                 return (
                   <div
                     class:list={["middleSquare", "appSquare"]}
@@ -70,10 +92,16 @@ const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
                       ...(isCenter ? { display: "none" } : {}),
                     }}
                   >
-                    <div class="zTarget">
+                    <div class="hoverShape">
                       <div class:list={["shape"]}>
-                        {isCenter ? null : <SquareDeep />}
+                        {isCenter ? null : (
+                          <SquareDeep gradientStroke={gradientStroke} />
+                        )}
                       </div>
+                    </div>
+
+                    <div class="shadow">
+                      <img src="/drop-shadow.png" />
                     </div>
                   </div>
                 );
@@ -89,9 +117,21 @@ const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
 <script>
   const gradients = document.querySelectorAll(".rotateGradient");
 </script>
-<style lang="scss" define:vars={{ squareWidth: `${squareWidth}px` }}>
+<style
+  lang="scss"
+  define:vars={{
+    squareWidth: `${squareWidth}px`,
+    squareHeight: `${squareHeight}px`,
+    centerSquaresWidth: `${centerSquaresWidth}px`,
+    centerSquaresHeight: `${centerSquaresHeight}px`,
+    bigSquareSize: `${bigSquareSize}px`,
+    flatSquareOffset: `${flatSquareOffset}px`,
+    flatSquareGap: `${flatSquareGap}px`,
+  }}
+>
   .myAnimation {
-    --moderateShadow: drop-shadow(0px 3px 6px rgba(14, 16, 21, 0.2)) drop-shadow(0px 10px 20px rgba(14, 16, 21, 0.3));
+    --moderateShadow: drop-shadow(0px 3px 6px rgba(14, 16, 21, 0.2))
+      drop-shadow(0px 10px 20px rgba(14, 16, 21, 0.3));
     * {
       transform-style: preserve-3d;
       transform-origin: 50% 50%;
@@ -100,8 +140,17 @@ const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
     background-color: rgba(255, 0, 0, 0);
     width: 500px;
     height: 500px;
-    background-color: "blue";
     position: relative;
+    .bottomSquaresContainer {
+      position: absolute;
+      top: calc(var(--bigSquareSize) + (var(--flatSquareGap) * 2));
+      left: 0;
+      .bottomSquare {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
     .bigSquareArea {
       position: absolute;
       left: 58px;
@@ -130,18 +179,23 @@ const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
         border-radius: 3px;
       }
       &.appSquare:hover {
-        .shape {
+        .hoverShape {
           transform: translateZ(10px);
           transition: transform 0.1s ease-out;
           transform-origin: 50% 100%;
         }
       }
       .shadow {
+        pointer-events: none;
         position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        right: 0;
+        top: -36px;
+        bottom: -36px;
+        left: -36px;
+        right: -36px;
+        z-index: -1;
+        img {
+          width: 100%;
+        }
       }
     }
 
@@ -158,7 +212,7 @@ const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
         border-radius: 3px;
       }
       &:hover {
-        .shape {
+        .hoverShape {
           transform: rotateX(0) rotateY(-10deg) rotateZ(0) translateZ(5px);
           transition: transform 0.1s ease-out;
           transform-origin: 50% 100%;

@@ -1,25 +1,30 @@
 ---
 const {
-  id = "stroke-gradient",
-  x1 = "10%",
-  x2 = "90%",
-  y1 = "50%",
-  y2 = "50%",
+  id = "strokeGradient1",
+  centerX = "0%",
+  centerY = "0%",
+  radius = "120%",
   class:className
 } = Astro.props;
+
+/*
+cx: This attribute defines the x coordinate of the end circle of the radial gradient. Value type: <length> ; Default value: 50%; Animatable: yes
+cy: This attribute defines the y coordinate of the end circle of the radial gradient. Value type: <length> ; Default value: 50%; Animatable: yes
+fr: This attribute defines the radius of the start circle of the radial gradient. The gradient will be drawn such that the 0% <stop> is mapped to the perimeter of the start circle. Value type: <length> ; Default value: 0%; Animatable: yes
+fx: This attribute defines the x coordinate of the start circle of the radial gradient. Value type: <length> ; Default value: Same as cx; Animatable: yes
+fy: This attribute defines the y coordinate of the start circle of the radial gradient. Value type: <length> ; Default value: Same as cy; Animatable: yes
+*/
 ---
 
-<linearGradient
+<radialGradient
   id={id}
-  class={className}
+  class:list={[className, 'strokeGradient']}
+  cx={centerX}
+  cy={centerY}
+  r={radius}
   gradientUnits="objectBoundingBox"
-  x1={x1}
-  x2={x2}
-  y1={y1}
-  y2={y2}
-  gradientTransform="rotate(-160)"
 >
   <stop offset="0" stop-color="#494ff2" stop-opacity=".8"></stop>
   <stop offset=".5" stop-color="#5c77ff" stop-opacity=".8"></stop>
   <stop offset="1" stop-color="#454954" stop-opacity=".8"></stop>
-</linearGradient>
+</radialGradient>
