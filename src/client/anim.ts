@@ -14,12 +14,12 @@ function highlightSquare(selector) {
 function dimSquare(selector) {
   document.querySelector(selector).classList.remove("highlight");
 }
-const highlightsTL = gsap.timeline({ repeat: -1, repeatDelay: 0.2 });
+const highlightsTL = gsap.timeline({ repeat: -1, repeatDelay: 0.0 });
 highlightsTL.call(highlightSquare, [".square1"], "+=0");
 highlightsTL.call(dimSquare, [".square1"], "+=3");
-highlightsTL.call(highlightSquare, [".square2"], "+=0.2");
+highlightsTL.call(highlightSquare, [".square2"], "+=0.0");
 highlightsTL.call(dimSquare, [".square2"], "+=3");
-highlightsTL.call(highlightSquare, [".square3"], "+=0.2");
+highlightsTL.call(highlightSquare, [".square3"], "+=0.0");
 highlightsTL.call(dimSquare, [".square3"], "+=3");
 
 const tl = gsap.timeline({ repeat: 0, repeatDelay: 2 });
@@ -98,7 +98,7 @@ tl.from(
   },
   "<0"
 );
-tl.add(highlightsTL, "+=0");
+tl.add(highlightsTL, "-=0.4");
 
 const gradientLoop = gsap.timeline({ repeat: -1, repeatDelay: 0 });
 const gradientDuration = 1;

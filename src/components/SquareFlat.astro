@@ -1,4 +1,6 @@
 ---
+import StrokeGradient from "./StrokeGradient.astro";
+
 const {
   class: className,
   size = 80,
@@ -21,6 +23,7 @@ const svgProps = {
   overflow: "visible",
   xmlns: "http://www.w3.org/2000/svg",
 };
+const gradientId = "strokeGradient1";
 ---
 
 <div class:list={[className, "squareFlatRoot"]} {...props}>
@@ -37,13 +40,20 @@ const svgProps = {
       overflow="visible"
       xmlns="http://www.w3.org/2000/svg"
     >
+      <StrokeGradient id={gradientId} />
+
       <g class="squareGroup">
         <path
           d="m2 79.5c-.82715 0-1.5-.67285-1.5-1.5v-76c0-.82715.67285-1.5 1.5-1.5h75.5c1.10254 0 2 .89697 2 2v75.5c0 .82715-.67285 1.5-1.5 1.5z"
           fill="#1c2029"></path>
         <path
+          class="solidStroke"
           d="m77.5 1c.8271 0 1.5.6729 1.5 1.5v75.5c0 .5514-.4486 1-1 1h-76c-.5514 0-1-.4486-1-1v-76c0-.5514.4486-1 1-1zm0-1h-75.5c-1.10456 0-2 .89542-2 2v76c0 1.10456.89544 2 2 2h76c1.10456 0 2-.89544 2-2v-75.5c0-1.38071-1.11929-2.5-2.5-2.5z"
           fill="#2a2e37"></path>
+        <path
+          class="gradientStroke"
+          d="m77.5 1c.8271 0 1.5.6729 1.5 1.5v75.5c0 .5514-.4486 1-1 1h-76c-.5514 0-1-.4486-1-1v-76c0-.5514.4486-1 1-1zm0-1h-75.5c-1.10456 0-2 .89542-2 2v76c0 1.10456.89544 2 2 2h76c1.10456 0 2-.89544 2-2v-75.5c0-1.38071-1.11929-2.5-2.5-2.5z"
+          fill={`url(#${gradientId})`}></path>
       </g>
     </svg>
     {src && <img src={src} />}
@@ -58,6 +68,12 @@ const svgProps = {
     > * {
       pointer-events: none;
     }
+    .gradientStroke, .solideStroke {
+      transition: opacity 0.2s linear;
+    }
+    .gradientStroke {
+      opacity: 0;
+    }
     &.highlight,
     &:hover {
       img {
@@ -68,19 +84,29 @@ const svgProps = {
       .connector {
         clip-path: inset(0 0 70% 0);
       }
+      .squareFlatSVG {
+        transform: translateZ(0);
+      }
+      .gradientStroke {
+        opacity: 100%;
+      }
+      .solidStroke {
+        opacity: 0;
+      }
+    }
+    &:hover {
+      .squareFlatSVG {
+        transform: translateZ(0) scale(1.05);
+      }
     }
     .squareFlatSVG {
       position: relative;
       width: 80px;
       height: 80px;
-      transition: transform 0.3s ease-in-out;
-      transform-origin: 50% 100%;
+      transition: transform 0.4s cubic-bezier(0.5, 1.79, 0.68, 1);
+      transform-origin: 50% 50%;
+      transform:  rotateX(-10deg);
       z-index: 1;
-    }
-    &:hover {
-      .squareFlatSVG {
-        transform: rotateX(-20deg);
-      }
     }
   }
   .connectorWrap {
