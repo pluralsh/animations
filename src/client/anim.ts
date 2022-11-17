@@ -14,7 +14,7 @@ function highlightSquare(selector) {
 function dimSquare(selector) {
   document.querySelector(selector).classList.remove("highlight");
 }
-const highlightsTL = gsap.timeline({ repeat: 0, repeatDelay: 2 });
+const highlightsTL = gsap.timeline({ repeat: -1, repeatDelay: 0.2 });
 highlightsTL.call(highlightSquare, [".square1"], "+=0");
 highlightsTL.call(dimSquare, [".square1"], "+=3");
 highlightsTL.call(highlightSquare, [".square2"], "+=0.2");
@@ -26,18 +26,20 @@ const tl = gsap.timeline({ repeat: 0, repeatDelay: 2 });
 tl.addLabel("start", 0);
 
 tl.from(".bigSquareContainer", { opacity: 0, duration: 0.5 }, "start");
-tl.from(
-  ".bigSquareArea",
-  {
-    translateY: "-30%",
-    rotateY: "+=30",
-    rotateX: "-=5",
-    rotateZ: "-=5",
-    duration: 1,
-    ease: "sine.inOut",
-  },
-  "start"
-).addLabel("stage2");
+tl
+  .from(
+    ".bigSquareArea",
+    {
+      translateY: "-30%",
+      rotateY: "+=30",
+      rotateX: "-=5",
+      rotateZ: "-=5",
+      duration: 1,
+      ease: "sine.inOut",
+    },
+    "start"
+  )
+  .addLabel("stage2");
 
 const squaresStagger = {
   grid: [3, 3],
@@ -96,6 +98,7 @@ tl.from(
   },
   "<0"
 );
+tl.add(highlightsTL, "+=0");
 
 const gradientLoop = gsap.timeline({ repeat: -1, repeatDelay: 0 });
 const gradientDuration = 1;
