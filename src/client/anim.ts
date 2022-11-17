@@ -22,7 +22,7 @@ tl.from(
     ease: "sine.inOut",
   },
   "start"
-);
+).addLabel("stage2");
 
 const squaresStagger = {
   grid: [3, 3],
@@ -60,6 +60,19 @@ tl.from(
   },
   "<0.2"
 );
+tl.from(
+  ".bottomSquare",
+  {
+    z: -20,
+    y: -100,
+
+    opacity: 0,
+    duration: 0.75,
+    ease: "power1.easeOut",
+    stagger: { amount: 0.2 },
+  },
+  "stage2-=0.15"
+);
 
 const gradientLoop = gsap.timeline({ repeat: -1, repeatDelay: 0 });
 const gradientDuration = 1;
@@ -84,4 +97,4 @@ gradientLoop
     attr: { cx: "0%", cy: "0%" },
     duration: gradientDuration,
     ease: "none",
-  })
+  });

@@ -36,15 +36,15 @@ const flatSquareGap = flatSquareOffset - flatSquareWidth;
       >
         <div class="bottomSquaresContainer">
           <SquareFlat
-            class="bottomSquare"
+            class="bottomSquare square1"
             style={{ left: `${flatSquareOffset * 0}px` }}
           />
           <SquareFlat
-            class="bottomSquare"
+            class="bottomSquare square2"
             style={{ left: `${flatSquareOffset * 1}px` }}
           />
           <SquareFlat
-            class="bottomSquare"
+            class="bottomSquare square2"
             style={{ left: `${flatSquareOffset * 2}px` }}
           />
         </div>
@@ -178,11 +178,29 @@ const flatSquareGap = flatSquareOffset - flatSquareWidth;
         cursor: default;
         border-radius: 3px;
       }
-      &.appSquare:hover {
-        .hoverShape {
-          transform: translateZ(10px);
-          transition: transform 0.1s ease-out;
-          transform-origin: 50% 100%;
+      &.appSquare {
+        /* --transitionTime: 10s; */
+        :global(.side1),
+        :global(.side2) {
+          transition: 1s fill;
+        }
+        &:hover {
+          /* --transitionTime: 2s; */
+          .hoverShape {
+            transform: translateZ(10px);
+            transition: transform 0.2s ease-out;
+            transform-origin: 50% 100%;
+          }
+          :global(.side1) {
+            fill: #9FA3F9;
+          }
+          :global(.side2) {
+            fill: #CFD1FC;
+          }
+          :global(.side1),
+          :global(.side2) {
+            transition: 0.05s fill;
+          }
         }
       }
       .shadow {
