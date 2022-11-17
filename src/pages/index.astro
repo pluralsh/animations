@@ -21,6 +21,16 @@ const centerSquaresTop = (bigSquareSize - centerSquaresHeight) / 2;
 const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
 const flatSquareOffset = (bigSquareSize - flatSquareWidth) / 2;
 const flatSquareGap = flatSquareOffset - flatSquareWidth;
+
+const centerIconProps = [
+  [{}, {}, {}],
+  [{ src: "icons/icon-gcp.png", gradientStroke: true }, { hide: true }, {}],
+  [
+    {},
+    { src: "icons/icon-superset.png", gradientStroke: true },
+    { src: "icons/icon-dagster.png", gradientStroke: true },
+  ],
+];
 ---
 
 <Layout title="My animation">
@@ -28,7 +38,6 @@ const flatSquareGap = flatSquareOffset - flatSquareWidth;
 
   <script src="../client/anim.ts"></script>
   <main>
-    <h1>Welcome</h1>
     <div class="myAnimation" id="animation1">
       <div
         class="bigSquareArea"
@@ -37,14 +46,17 @@ const flatSquareGap = flatSquareOffset - flatSquareWidth;
         <div class="bottomSquaresContainer">
           <SquareFlat
             class="bottomSquare square1"
+            src="/icons/icon-azure.png"
             style={{ left: `${flatSquareOffset * 0}px` }}
           />
           <SquareFlat
             class="bottomSquare square2"
+            src="/icons/icon-aws.png"
             style={{ left: `${flatSquareOffset * 1}px` }}
           />
           <SquareFlat
-            class="bottomSquare square2"
+            class="bottomSquare square3"
+            src="/icons/icon-gcp.png"
             style={{ left: `${flatSquareOffset * 2}px` }}
           />
         </div>
@@ -76,26 +88,26 @@ const flatSquareGap = flatSquareOffset - flatSquareWidth;
           }}
         >
           {
-            Array.from(Array(3)).map((_, j) => {
-              const x = Array.from(Array(3)).map((_, i) => {
-                const isCenter = i === 1 && j === 1;
-                const gradientStroke =
-                  (i === 0 && j === 1) ||
-                  (i === 1 && j === 2) ||
-                  (i === 2 && j === 2);
+            centerIconProps.map((row, j) => {
+              const x = row.map(({ src, gradientStroke, hide }, i) => {
                 return (
                   <div
                     class:list={["middleSquare", "appSquare"]}
                     style={{
                       top: `${j * ySpacing}px`,
                       left: `${i * xSpacing}px`,
-                      ...(isCenter ? { display: "none" } : {}),
+                      ...(hide ? { display: "none" } : {}),
                     }}
                   >
                     <div class="hoverShape">
                       <div class:list={["shape"]}>
-                        {isCenter ? null : (
-                          <SquareDeep gradientStroke={gradientStroke} />
+                        {hide ? null : (
+                          <>
+                            <SquareDeep
+                              gradientStroke={gradientStroke}
+                              src={src}
+                            />
+                          </>
                         )}
                       </div>
                     </div>
@@ -192,10 +204,10 @@ const flatSquareGap = flatSquareOffset - flatSquareWidth;
             transform-origin: 50% 100%;
           }
           :global(.side1) {
-            fill: #9FA3F9;
+            fill: #9fa3f9;
           }
           :global(.side2) {
-            fill: #CFD1FC;
+            fill: #cfd1fc;
           }
           :global(.side1),
           :global(.side2) {

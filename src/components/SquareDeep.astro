@@ -1,40 +1,57 @@
 ---
 import StrokeGradient from "./StrokeGradient.astro";
 const gradientId = "strokeGradient1";
-const { gradientStroke = false } = Astro.props;
+const { gradientStroke = false, src } = Astro.props;
 ---
 
-<div
-  style={{
-    position: "absolute",
-    left: "-6px",
-    right: "-6px",
-    bottom: "-6px",
-    top: "-6px",
-  }}
->
-  <svg
-    viewBox="0 0 70 70"
-    xmlns="http://www.w3.org/2000/svg"
-    xmlns:xlink="http://www.w3.org/1999/xlink"
-  >
-    <StrokeGradient id={gradientId} />
+<div class="squareDeepRoot">
+  <div class={"squareDeep"}>
+    <svg
+      viewBox="0 0 70 70"
+      xmlns="http://www.w3.org/2000/svg"
+      xmlns:xlink="http://www.w3.org/1999/xlink"
+    >
+      <StrokeGradient id={gradientId} />
 
-    <clipPath id="squaredeepclip">
+      <clipPath id="squaredeepclip">
+        <path
+          d="m69.4142.58579v55.82842s-6.63806 6.63807-6.99998 7-.86193.58579-1.41422.58579h-53c-1.10457 0-2-.89543-2-2v-53c0-.55228.22386-1.05228.58578-1.41421s7-7 7-7"
+        ></path>
+      </clipPath>
+      <g clip-path="url(#squaredeepclip)">
+        <path d="m6 0h64v64h-64z" fill="#1a1d24" class="side1"></path>
+        <path d="m6 64 64-64h-64z" fill="#292f3d" class="side2"></path>
+      </g>
       <path
-        d="m69.4142.58579v55.82842s-6.63806 6.63807-6.99998 7-.86193.58579-1.41422.58579h-53c-1.10457 0-2-.89543-2-2v-53c0-.55228.22386-1.05228.58578-1.41421s7-7 7-7"
+        d="m15 56.5c-.82715 0-1.5-.67285-1.5-1.5v-53c0-.40088.15625-.77734.43945-1.06006.2832-.28418.65918-.43994 1.06055-.43994h53c.82715 0 1.5.67285 1.5 1.5v53c0 .40088-.15625.77734-.43945 1.06006-.2832.28418-.65918.43994-1.06055.43994z"
+        fill="#21242c"></path>
+      <path
+        fill={gradientStroke ? `url(#${gradientId})` : "#2a2e37"}
+        d="m68 1c.5514 0 1 .4486 1 1v53c0 .26711-.10402.51823-.29289.7071-.18887.18888-.43999.2929-.70711.2929h-53c-.5514 0-1-.4486-1-1v-53c0-.26711.10402-.51823.29289-.7071.18887-.18888.44-.2929.70711-.2929zm0-1h-53c-.55229 0-1.05229.22386-1.41422.58579-.36192.36193-.58578.86193-.58578 1.41421v53c0 1.10457.89543 2 2 2h53c.55228 0 1.05229-.22386 1.41422-.58579s.58578-.86193.58578-1.41421v-53c0-1.10457-.89543-2-2-2z"
       ></path>
-    </clipPath>
-    <g clip-path="url(#squaredeepclip)">
-      <path d="m6 0h64v64h-64z" fill="#1a1d24" class="side1"></path>
-      <path d="m6 64 64-64h-64z" fill="#292f3d" class="side2"></path>
-    </g>
-    <path
-      d="m15 56.5c-.82715 0-1.5-.67285-1.5-1.5v-53c0-.40088.15625-.77734.43945-1.06006.2832-.28418.65918-.43994 1.06055-.43994h53c.82715 0 1.5.67285 1.5 1.5v53c0 .40088-.15625.77734-.43945 1.06006-.2832.28418-.65918.43994-1.06055.43994z"
-      fill="#21242c"></path>
-    <path
-      fill={gradientStroke ? `url(#${gradientId})` : "#2a2e37"}
-      d="m68 1c.5514 0 1 .4486 1 1v53c0 .26711-.10402.51823-.29289.7071-.18887.18888-.43999.2929-.70711.2929h-53c-.5514 0-1-.4486-1-1v-53c0-.26711.10402-.51823.29289-.7071.18887-.18888.44-.2929.70711-.2929zm0-1h-53c-.55229 0-1.05229.22386-1.41422.58579-.36192.36193-.58578.86193-.58578 1.41421v53c0 1.10457.89543 2 2 2h53c.55228 0 1.05229-.22386 1.41422-.58579s.58578-.86193.58578-1.41421v-53c0-1.10457-.89543-2-2-2z"
-    ></path>
-  </svg>
+    </svg>
+  </div>
+  <div class="squareDeepIcon">
+    <img src={src} />
+  </div>
 </div>
+<style lang="scss">
+  .squareDeepRoot {
+    position: absolute;
+    top: -6px;
+    left: -6px;
+    right: -6px;
+    bottom: -6px;
+  }
+  .squareDeepIcon {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 13px;
+    bottom: 13px;
+    img {
+      display: block;
+      width: 100%;
+    }
+  }
+</style>

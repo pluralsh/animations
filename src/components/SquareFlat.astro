@@ -1,20 +1,128 @@
 ---
-const { class: className, size = 80, ...props } = Astro.props;
+const {
+  class: className,
+  size = 80,
+  width = 80,
+  height = 80,
+  src,
+  ...props
+} = Astro.props;
+const connectorProps = {
+  "stroke-width": 1.5,
+  stroke: "#5D63F4",
+  "stroke-dasharray": "2.4",
+};
+const connectorLength = 160;
+const connectorEdgeOffset = 20;
+const svgProps = {
+  viewBox: "0 0 80 80",
+  overflow: "visible",
+  xmlns: "http://www.w3.org/2000/svg",
+};
 ---
 
-<div class:list={[className, "squareFlat"]} {...props}>
-  <svg viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
-    <path
-      d="m2 79.5c-.82715 0-1.5-.67285-1.5-1.5v-76c0-.82715.67285-1.5 1.5-1.5h75.5c1.10254 0 2 .89697 2 2v75.5c0 .82715-.67285 1.5-1.5 1.5z"
-      fill="#1c2029"></path>
-    <path
-      d="m77.5 1c.8271 0 1.5.6729 1.5 1.5v75.5c0 .5514-.4486 1-1 1h-76c-.5514 0-1-.4486-1-1v-76c0-.5514.4486-1 1-1zm0-1h-75.5c-1.10456 0-2 .89542-2 2v76c0 1.10456.89544 2 2 2h76c1.10456 0 2-.89544 2-2v-75.5c0-1.38071-1.11929-2.5-2.5-2.5z"
-      fill="#2a2e37"></path>
-  </svg>
-  <style>
-    .squareFlat {
+<div class:list={[className, "squareFlatRoot"]} {...props}>
+  <div class="connectors">
+    <svg {...svgProps} class:list={["connector connectorTop"]}>
+      <path
+        d={`M ${width / 2},${
+          height - connectorEdgeOffset
+        } l ${0},${-connectorLength}`}
+        {...connectorProps}></path>
+    </svg>
+    <svg {...svgProps} class:list={["connector connectorRight"]}>
+      <path
+        d={`M ${connectorEdgeOffset},${height / 2} l ${connectorLength},${0}`}
+        {...connectorProps}></path>
+    </svg>
+    <svg {...svgProps} class:list={["connector connectorBottom"]}>
+      <path
+        d={`M ${width / 2},${connectorEdgeOffset} l ${0},${connectorLength}`}
+        {...connectorProps}></path>
+    </svg>
+    <svg {...svgProps} class:list={["connector connectorLeft"]}>
+      <path
+        d={`M ${width - connectorEdgeOffset},${
+          height / 2
+        } l ${-connectorLength},${0}`}
+        {...connectorProps}></path>
+    </svg>
+  </div>
+  <div class="squareFlatSVG">
+    <svg
+      viewBox="0 0 80 80"
+      overflow="visible"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <g class="squareGroup">
+        <path
+          d="m2 79.5c-.82715 0-1.5-.67285-1.5-1.5v-76c0-.82715.67285-1.5 1.5-1.5h75.5c1.10254 0 2 .89697 2 2v75.5c0 .82715-.67285 1.5-1.5 1.5z"
+          fill="#1c2029"></path>
+        <path
+          d="m77.5 1c.8271 0 1.5.6729 1.5 1.5v75.5c0 .5514-.4486 1-1 1h-76c-.5514 0-1-.4486-1-1v-76c0-.5514.4486-1 1-1zm0-1h-75.5c-1.10456 0-2 .89542-2 2v76c0 1.10456.89544 2 2 2h76c1.10456 0 2-.89544 2-2v-75.5c0-1.38071-1.11929-2.5-2.5-2.5z"
+          fill="#2a2e37"></path>
+      </g>
+    </svg>
+    {src && <img src={src} />}
+  </div>
+</div>
+
+<style lang="scss">
+  .squareFlatRoot {
+    width: 80px;
+    height: 80px;
+    position: relative;
+    > * {
+      pointer-events: none;
+    }
+    &.highlight,
+    &:hover {
+      img {
+        filter: grayscale(0%);
+        opacity: 100%;
+        mix-blend-mode: normal;
+      }
+      .connectorTop {
+        opacity: 100%;
+      }
+    }
+    .squareFlatSVG {
+      position: relative;
       width: 80px;
       height: 80px;
+      transition: transform 0.3s ease-in-out;
+      transform-origin: 50% 100%;
+      z-index: 1;
     }
-  </style>
-</div>
+    &:hover {
+      .squareFlatSVG {
+        transform: rotateX(-20deg);
+      }
+    }
+  }
+  .connectors {
+    position: relative;
+    z-index: -1;
+    transform: translateZ(-10px);
+    opacity: 100%;
+  }
+  .connector {
+    transition: all 0.3s ease-in-out;
+    opacity: 0;
+  }
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
+    filter: grayscale(100%);
+    opacity: 50%;
+    transition: all 0.2s linear;
+  }
+</style>

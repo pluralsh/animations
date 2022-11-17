@@ -7,6 +7,21 @@ export default (() => {
   });
 })();
 
+function highlightSquare(selector) {
+  console.log("square", selector);
+  document.querySelector(selector).classList.add("highlight");
+}
+function dimSquare(selector) {
+  document.querySelector(selector).classList.remove("highlight");
+}
+const highlightsTL = gsap.timeline({ repeat: 0, repeatDelay: 2 });
+highlightsTL.call(highlightSquare, [".square1"], "+=0");
+highlightsTL.call(dimSquare, [".square1"], "+=3");
+highlightsTL.call(highlightSquare, [".square2"], "+=0.2");
+highlightsTL.call(dimSquare, [".square2"], "+=3");
+highlightsTL.call(highlightSquare, [".square3"], "+=0.2");
+highlightsTL.call(dimSquare, [".square3"], "+=3");
+
 const tl = gsap.timeline({ repeat: 0, repeatDelay: 2 });
 tl.addLabel("start", 0);
 
@@ -65,13 +80,21 @@ tl.from(
   {
     z: -20,
     y: -100,
-
-    opacity: 0,
     duration: 0.75,
     ease: "power1.easeOut",
     stagger: { amount: 0.2 },
   },
   "stage2-=0.15"
+);
+tl.from(
+  ".bottomSquare .squareFlatSVG, .bottomSquare .connectors",
+  {
+    opacity: 0,
+    duration: 0.3,
+    ease: "power1.easeOut",
+    stagger: { amount: 0.2 },
+  },
+  "<0"
 );
 
 const gradientLoop = gsap.timeline({ repeat: -1, repeatDelay: 0 });
