@@ -12,39 +12,22 @@ const connectorProps = {
   stroke: "#5D63F4",
   "stroke-dasharray": "2.4",
 };
-const connectorLength = 160;
+const connectorLength = 180;
 const connectorEdgeOffset = 20;
 const svgProps = {
-  viewBox: "0 0 80 80",
+  viewBox: `0 0 ${connectorLength} ${connectorLength}`,
+  width: connectorLength,
+  height: connectorLength,
   overflow: "visible",
   xmlns: "http://www.w3.org/2000/svg",
 };
 ---
 
 <div class:list={[className, "squareFlatRoot"]} {...props}>
-  <div class="connectors">
-    <svg {...svgProps} class:list={["connector connectorTop"]}>
+  <div class="connectorWrap">
+    <svg {...svgProps} class:list={["connector"]}>
       <path
-        d={`M ${width / 2},${
-          height - connectorEdgeOffset
-        } l ${0},${-connectorLength}`}
-        {...connectorProps}></path>
-    </svg>
-    <svg {...svgProps} class:list={["connector connectorRight"]}>
-      <path
-        d={`M ${connectorEdgeOffset},${height / 2} l ${connectorLength},${0}`}
-        {...connectorProps}></path>
-    </svg>
-    <svg {...svgProps} class:list={["connector connectorBottom"]}>
-      <path
-        d={`M ${width / 2},${connectorEdgeOffset} l ${0},${connectorLength}`}
-        {...connectorProps}></path>
-    </svg>
-    <svg {...svgProps} class:list={["connector connectorLeft"]}>
-      <path
-        d={`M ${width - connectorEdgeOffset},${
-          height / 2
-        } l ${-connectorLength},${0}`}
+        d={`M ${connectorLength / 2},${0} l ${0},${connectorLength}`}
         {...connectorProps}></path>
     </svg>
   </div>
@@ -82,8 +65,8 @@ const svgProps = {
         opacity: 100%;
         mix-blend-mode: normal;
       }
-      .connectorTop {
-        opacity: 100%;
+      .connector {
+        clip-path: inset(0 0 70% 0);
       }
     }
     .squareFlatSVG {
@@ -100,15 +83,21 @@ const svgProps = {
       }
     }
   }
-  .connectors {
-    position: relative;
-    z-index: -1;
-    transform: translateZ(-10px);
-    opacity: 100%;
+  .connectorWrap {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    transform: translateZ(-1px);
   }
   .connector {
     transition: all 0.3s ease-in-out;
-    opacity: 0;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translateX(-50%) translateY(-50%) translateZ(-30px);
+    clip-path: inset(0 0 100% 0);
   }
   svg {
     position: absolute;
