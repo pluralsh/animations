@@ -34,6 +34,7 @@ const gradientId = "strokeGradient1";
         {...connectorProps}></path>
     </svg>
   </div>
+  <div class="shadow"><img src="/drop-shadow.png" /></div>
   <div class="squareFlatSVG">
     <svg
       viewBox="0 0 80 80"
@@ -68,7 +69,8 @@ const gradientId = "strokeGradient1";
     > * {
       pointer-events: none;
     }
-    .gradientStroke, .solideStroke {
+    .gradientStroke,
+    .solidStroke {
       transition: opacity 0.2s linear;
     }
     .gradientStroke {
@@ -105,7 +107,7 @@ const gradientId = "strokeGradient1";
       height: 80px;
       transition: transform 0.4s cubic-bezier(0.5, 1.79, 0.68, 1);
       transform-origin: 50% 50%;
-      transform:  rotateX(-10deg);
+      transform: rotateX(-10deg);
       z-index: 1;
     }
   }
@@ -139,5 +141,17 @@ const gradientId = "strokeGradient1";
     filter: grayscale(100%);
     opacity: 50%;
     transition: all 0.2s linear;
+  }
+  .shadow {
+    position: absolute;
+    top: -40px;
+    right: -40px;
+    bottom: -40px;
+    left: -40px;
+    transform: translateZ(-15px);
+    img {
+      display: block;
+      width: 100%;
+    }
   }
 </style>

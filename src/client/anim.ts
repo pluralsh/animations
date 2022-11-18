@@ -29,7 +29,6 @@ tl.addLabel("start", 0);
 tl.from(
   "#bigSquareArea",
   {
-    // z: '100%',
     y: "-=30%",
     rotateY: "+=30",
     rotateX: "-=5",
@@ -42,12 +41,6 @@ tl.from(
   .from(
     ".bigSquareShadow",
     {
-      // z: '100%',
-      // y: "-=30%",
-      // rotateY: "+=30",
-      // rotateX: "-=50",
-      // rotateZ: "-=15",
-      // scale: "-=20%",
       opacity: 0.5,
       duration: 0.75,
       ease: "sine.inOut",
@@ -104,7 +97,7 @@ tl.from(
   "stage2-=0.15"
 );
 tl.from(
-  ".bottomSquare .squareFlatSVG, .bottomSquare .connectors",
+  ".bottomSquare .squareFlatSVG, .bottomSquare .connectors, .bottomSquare .shadow",
   {
     opacity: 0,
     duration: 0.3,
