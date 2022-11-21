@@ -170,9 +170,10 @@ const centerIconProps = [
   .hhh_heroRoot {
     --moderateShadow: drop-shadow(0px 3px 6px rgba(14, 16, 21, 0.2))
       drop-shadow(0px 10px 20px rgba(14, 16, 21, 0.3));
-    * {
+    :global(*) {
       transform-style: preserve-3d;
       transform-origin: 50% 50%;
+      user-select: none;
     }
     transform-origin: 50% 50%;
     background-color: rgba(255, 0, 0, 0);
@@ -204,12 +205,13 @@ const centerIconProps = [
       z-index: -1;
     }
     .hhh_bigSquareShadow {
+      pointer-events: none;
       position: absolute;
-      top: -140px;
-      left: -140px;
-      right: -140px;
-      bottom: -140px;
-      transform: translate3d(-30px, 20px, -1px);
+      top: -50%;
+      left: -50%;
+      right: -50%;
+      bottom: -50%;
+      transform: translate3d(0, 0, -20px);
       img {
         display: block;
         width: 100%;

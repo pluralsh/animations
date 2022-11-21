@@ -24,7 +24,6 @@ highlightsTL.call(dimSquare, [".hhh_square3"], "+=3");
 const tl = gsap.timeline({ repeat: 0, repeatDelay: 2 });
 tl.addLabel("start", 0);
 
-// tl.from(".bigSquareContainer", { opacity: 0, duration: 0.5 }, "start");
 tl.from(
   "#hhh_bigSquareArea",
   {
@@ -96,7 +95,7 @@ tl.from(
   "stage2-=0.15"
 );
 tl.from(
-  ".hhh_bottomSquare .hhh_squareFlatSVG, .hhh_bottomSquare .hhh_connectors, .hhh_bottomSquare .hhh_shadow",
+  ".hhh_bottomSquare .hhh_square, .hhh_bottomSquare .hhh_connectors, .hhh_bottomSquare .hhh_shadow",
   {
     opacity: 0,
     duration: 0.3,
@@ -105,7 +104,7 @@ tl.from(
   },
   "<0"
 );
-tl.add(highlightsTL, "-=0.4");
+tl.add(highlightsTL, "-=0.0");
 
 const gradientLoop = gsap.timeline({ repeat: -1, repeatDelay: 0 });
 const gradientDuration = 1;

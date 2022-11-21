@@ -6,6 +6,7 @@ const {
   size = 80,
   width = 80,
   height = 80,
+  mode = "provider",
   src,
   ...props
 } = Astro.props;
@@ -14,35 +15,71 @@ const connectorProps = {
   stroke: "#5D63F4",
   "stroke-dasharray": "2.4",
 };
-const connectorLength = 180;
+const connectorLength = 90;
 const connectorEdgeOffset = 20;
 const svgProps = {
-  viewBox: `0 0 ${connectorLength} ${connectorLength}`,
-  width: connectorLength,
-  height: connectorLength,
+  viewBox: `0 0 ${connectorLength * 2} ${connectorLength * 2}`,
+  width: connectorLength * 2,
+  height: connectorLength * 2,
   overflow: "visible",
   xmlns: "http://www.w3.org/2000/svg",
 };
 const gradientId = "strokeGradient1";
 ---
 
-<div class:list={[className, "hhh_squareRoot"]} {...props}>
-  <div class="hhh_connector">
-    <svg {...svgProps} class:list={["hhh_connectorInner"]}>
-      <path
-        d={`M ${connectorLength / 2},${0} l ${0},${connectorLength}`}
-        {...connectorProps}></path>
-    </svg>
+<div
+  class:list={[
+    className,
+    "hhh_squareRoot",
+    { connectTop: mode === "provider" },
+  ]}
+  {...props}
+  data-mode={mode}
+>
+  <div class="hhh_connector hhh_top">
+    <div class:list={["hhh_connectorInner"]}>
+      <svg {...svgProps} class="hhh_connectorSVG">
+        <path
+          d={`M ${connectorLength},${connectorLength} l ${0},${-connectorLength}`}
+          {...connectorProps}></path>
+      </svg>
+    </div>
+  </div>
+  <div class="hhh_connector hhh_right">
+    <div class:list={["hhh_connectorInner"]}>
+      <svg {...svgProps} class:list={["hhh_connectorSVG"]}>
+        <path
+          d={`M ${connectorLength},${connectorLength} l ${connectorLength},${0}`}
+          {...connectorProps}></path>
+      </svg>
+    </div>
+  </div>
+  <div class="hhh_connector hhh_bottom">
+    <div class:list={["hhh_connectorInner"]}>
+      <svg {...svgProps} class:list={["hhh_connectorSVG"]}>
+        <path
+          d={`M ${connectorLength},${connectorLength} l ${0},${connectorLength}`}
+          {...connectorProps}></path>
+      </svg>
+    </div>
+  </div>
+  <div class="hhh_connector hhh_left">
+    <div class:list={["hhh_connectorInner"]}>
+      <svg {...svgProps} class:list={["hhh_connectorSVG"]}>
+        <path
+          d={`M ${connectorLength},${connectorLength} l ${-connectorLength},${0}`}
+          {...connectorProps}></path>
+      </svg>
+    </div>
   </div>
   <div class="hhh_shadow"><img src="/drop-shadow.png" /></div>
-  <div class="hhh_squareFlatSVG">
+  <div class="hhh_square">
     <svg
       viewBox="0 0 80 80"
       overflow="visible"
       xmlns="http://www.w3.org/2000/svg"
     >
       <StrokeGradient id={gradientId} />
-
       <g class="hhh_squareGroup">
         <path
           d="m2 79.5c-.82715 0-1.5-.67285-1.5-1.5v-76c0-.82715.67285-1.5 1.5-1.5h75.5c1.10254 0 2 .89697 2 2v75.5c0 .82715-.67285 1.5-1.5 1.5z"
@@ -57,7 +94,7 @@ const gradientId = "strokeGradient1";
           fill={`url(#${gradientId})`}></path>
       </g>
     </svg>
-    {src && <img src={src} />}
+    {src && <img class="hhh_iconImg" src={src} />}
   </div>
 </div>
 
@@ -68,32 +105,115 @@ const gradientId = "strokeGradient1";
     squareHeight: `${height}px`,
   }}
 >
-  .hhh_squareRoot {
+  @use "sass:color";
+
+  @mixin connectorMasks($amtMasked) {
+    .hhh_connector.hhh_top .hhh_connectorSVG {
+      clip-path: inset(0 0 $amtMasked 0);
+    }
+    .hhh_connector.hhh_right .hhh_connectorSVG {
+      clip-path: inset(0 0 0 $amtMasked);
+    }
+    .hhh_connector.hhh_bottom .hhh_connectorSVG {
+      clip-path: inset($amtMasked 0 0 0);
+    }
+    .hhh_connector.hhh_left .hhh_connectorSVG {
+      clip-path: inset(0 $amtMasked 0 0);
+    }
+  }
+  @mixin connectorHighlightStart {
+    @include connectorMasks($amtMasked: 100%);
+  }
+  @mixin connectorHighlightEnd {
+    @include connectorMasks($amtMasked: 70%);
+  }
+
+  @include connectorHighlightStart();
+
+  .hhh_squareRoot,
+  .hhh_square,
+  .hhh_connectorInner,
+  .hhh_connector {
     width: var(--squareWidth);
     height: var(--squareWidth);
+  }
+  .hhh_squareRoot {
     position: relative;
     > * {
       pointer-events: none;
     }
-    .hhh_gradientStroke,
-    .hhh_solidStroke {
-      transition: opacity 0.2s linear;
+  }
+  .hhh_gradientStroke,
+  .hhh_solidStroke {
+    transition: opacity 0.2s linear;
+  }
+  .hhh_gradientStroke {
+    opacity: 0;
+  }
+  .hhh_square {
+    position: relative;
+    transition: transform 0.4s cubic-bezier(0.5, 1.79, 0.68, 1);
+    transform-origin: 50% 50%;
+    z-index: 1;
+  }
+
+  .hhh_connector {
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    display: none;
+  }
+  .hhh_connectorInner {
+    transform: translateX(31px) translateY(-31px) translateZ(-30px);
+  }
+  .hhh_connectorSVG {
+    transition: all 0.3s ease-in-out;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate3d(-50%, -50%, 0);
+  }
+
+  .connectTop {
+    .hhh_connector.hhh_top {
+      display: block;
     }
-    .hhh_gradientStroke {
-      opacity: 0;
+  }
+  .connectRight {
+    .hhh_connector.hhh_right {
+      display: block;
     }
+  }
+  .connectBottom {
+    .hhh_connector.hhh_bottom {
+      display: block;
+    }
+  }
+  .connectLeft {
+    .hhh_connector.hhh_left {
+      display: block;
+    }
+  }
+
+  .hhh_squareRoot[data-mode="provider"] {
+    /* Base */
+    .hhh_iconImg {
+      filter: grayscale(100%);
+      opacity: 50%;
+      transition: all 0.2s linear;
+    }
+
+    /* Highlights */
+    --highlightBaseTransform: translateY(-15%);
     &.hhh_highlight,
     &:hover {
-      img {
+      @include connectorHighlightEnd();
+
+      .hhh_iconImg {
         filter: grayscale(0%);
         opacity: 100%;
-        mix-blend-mode: normal;
-      }
-      .hhh_connectorInner {
-        clip-path: inset(0 0 70% 0);
-      }
-      .hhh_squareFlatSVG {
-        transform: translateZ(0);
       }
       .hhh_gradientStroke {
         opacity: 100%;
@@ -103,57 +223,45 @@ const gradientId = "strokeGradient1";
       }
     }
     &:hover {
-      .hhh_squareFlatSVG {
-        transform: translateZ(0) scale(1.05);
+      .hhh_square {
+        box-shadow: 0 0 15px 0 color.change(#494ff2, $alpha: 0.5);
       }
     }
-    .hhh_squareFlatSVG {
-      position: relative;
-      width: var(--squareWidth);
-      height:var(--squareWidth);
-      transition: transform 0.4s cubic-bezier(0.5, 1.79, 0.68, 1);
-      transform-origin: 50% 50%;
-      transform: rotateX(-10deg);
-      z-index: 1;
+  }
+
+  /* Cluster mode */
+  .hhh_squareRoot[data-mode="cluster"] {
+    /* Base */
+    .hhh_square {
+      display: none;
+    }
+
+    /* Highlights */
+    &.hhh_highlight,
+    &:hover {
+      @include connectorHighlightEnd();
     }
   }
-  .hhh_connector {
-    position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
-    transform: translateZ(-2px);
-  }
-  .hhh_connectorInner {
-    transition: all 0.3s ease-in-out;
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translateX(-50%) translateY(-50%) translateZ(-30px);
-    clip-path: inset(0 0 100% 0);
-  }
+
   svg {
     position: absolute;
     top: 0;
     left: 0;
   }
-  img {
+  .hhh_iconImg {
     position: absolute;
     top: 0;
     left: 0;
     display: block;
     width: 100%;
-    filter: grayscale(100%);
-    opacity: 50%;
-    transition: all 0.2s linear;
   }
   .hhh_shadow {
+    pointer-events: none;
     position: absolute;
-    top: -40px;
-    right: -40px;
-    bottom: -40px;
-    left: -40px;
+    top: -50%;
+    right: -50%;
+    bottom: -50%;
+    left: -50%;
     transform: translateZ(-15px);
     img {
       display: block;
