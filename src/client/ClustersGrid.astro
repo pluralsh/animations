@@ -1,0 +1,72 @@
+---
+import SquareFlat from "../components/SquareFlat.astro";
+
+const baseIconProps = {
+  src: "icons/icon-k8s.png",
+  gradientStroke: true,
+  hide: false,
+  active: false,
+};
+const iconProps = [
+  [{ ...baseIconProps }, { ...baseIconProps }, { ...baseIconProps }],
+  [{ ...baseIconProps }, { ...baseIconProps }, { ...baseIconProps }],
+  [{ ...baseIconProps }, { ...baseIconProps }, { ...baseIconProps }],
+];
+const { class: className, bigSquareSize } = Astro.props;
+
+const squareWidth = 68;
+const squareHeight = 68;
+const gapX = 20;
+const gapY = 20;
+const xSpacing = squareWidth + gapX;
+const ySpacing = squareHeight + gapY;
+const topOffset = bigSquareSize - (squareHeight * 3 + gapY * 2);
+console.log("topOffset", topOffset);
+---
+
+<div class:list={["hhh_root", className]}>
+  {
+    iconProps.map((row, j) => {
+      const x = row.map(({ src, gradientStroke, hide }, i) => {
+        return (
+          <div
+            class:list={["hhh_square"]}
+            style={{
+              top: `${j * ySpacing}px`,
+              left: `${i * xSpacing}px`,
+              ...(hide ? { display: "none" } : {}),
+            }}
+          >
+            {hide ? null : (
+              <SquareFlat
+                gradientStroke={gradientStroke}
+                src={src}
+                width={squareWidth}
+                height={squareHeight}
+              />
+            )}
+          </div>
+        );
+      });
+      return <>{x}</>;
+    })
+  }
+</div>
+<style
+  lang="scss"
+  define:vars={{
+    squareWidth: `${squareWidth}px`,
+    squareHeight: `${squareHeight}px`,
+    topOffset: `${topOffset}px`,
+  }}
+>
+  .hhh_root {
+    position: absolute;
+    top: var(--topOffset);
+  }
+  .hhh_square {
+    position: absolute;
+    width: var(--squareWidth);
+    height: var(--squareWidth);
+  }
+</style>

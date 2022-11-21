@@ -4,19 +4,20 @@ import SquareDeep from "../components/SquareDeep.astro";
 import BigSquare from "../components/BigSquare.astro";
 import SquareFlat from "../components/SquareFlat.astro";
 import Layout from "../layouts/Layout.astro";
+import ClustersGrid from "../client/ClustersGrid.astro";
 const svgWidth = 1080;
 const svgHeight = 1080;
-const squareWidth = 58;
-const squareHeight = 58;
+const centerSquareWidth = 58;
+const centerSquareHeight = 58;
 const flatSquareWidth = 80;
 const flatSquareHeight = 80;
 const gapX = 20;
 const gapY = 20;
-const xSpacing = squareWidth + gapX;
-const ySpacing = squareHeight + gapY;
+const xSpacing = centerSquareWidth + gapX;
+const ySpacing = centerSquareHeight + gapY;
 const bigSquareSize = 288;
-const centerSquaresWidth = 3 * squareWidth + 2 * gapX;
-const centerSquaresHeight = 3 * squareHeight + 2 * gapY;
+const centerSquaresWidth = 3 * centerSquareWidth + 2 * gapX;
+const centerSquaresHeight = 3 * centerSquareHeight + 2 * gapY;
 const centerSquaresTop = (bigSquareSize - centerSquaresHeight) / 2;
 const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
 const flatSquareOffset = (bigSquareSize - flatSquareWidth) / 2;
@@ -38,39 +39,63 @@ const centerIconProps = [
 
   <script src="../client/anim.ts"></script>
   <main>
-    <div class="myAnimation" id="animation1">
-      <div class="main3dTransform">
-        <div class="bigSquareShadow"><img src="/drop-shadow.png" /></div>
+    <div class="hhh_heroRoot" id="hhh_animation1">
+      <div class="hhh_main3dTransform">
+        <div class="hhh_bigSquareShadow"><img src="/drop-shadow.png" /></div>
       </div>
-      <div id="bigSquareArea" class="all3dObjects main3dTransform">
-        <div class="bottomSquaresContainer">
-          <SquareFlat
-            class="bottomSquare square1"
-            src="/icons/icon-azure.png"
-            style={{ left: `${flatSquareOffset * 0}px` }}
-          />
-          <SquareFlat
-            class="bottomSquare square2"
-            src="/icons/icon-aws.png"
-            style={{ left: `${flatSquareOffset * 1}px` }}
-          />
-          <SquareFlat
-            class="bottomSquare square3"
-            src="/icons/icon-gcp.png"
-            style={{ left: `${flatSquareOffset * 2}px` }}
-          />
+      <div id="hhh_bigSquareArea" class="hhh_all3dObjects hhh_main3dTransform">
+        <div
+          class="hhh_clustersGrid"
+          style={{
+            position: "absolute",
+            top: `${0}px`,
+            left: `${bigSquareSize + gapX * 2}px`,
+            height: `${bigSquareSize}px`,
+            width: `${bigSquareSize}px`,
+            // backgroundColor: "blue",
+          }}
+        >
+          <ClustersGrid bigSquareSize={bigSquareSize} />
         </div>
-        <div class="bigSquareContainer">
-          <BigSquare class="bigSquare" style={{ zIndex: -1 }} />
+        <div class="hhh_bottomSquaresContainer">
           <div
-            class="squares"
+            style={{ position: "absolute", left: `${flatSquareOffset * 0}px` }}
+          >
+            <SquareFlat
+              class="hhh_bottomSquare hhh_square1"
+              src="/icons/icon-azure.png"
+              width={flatSquareWidth}
+              height={flatSquareHeight}
+            />
+          </div>
+          <div
+            style={{ position: "absolute", left: `${flatSquareOffset * 1}px` }}
+          >
+            <SquareFlat
+              class="hhh_bottomSquare hhh_square2"
+              src="/icons/icon-aws.png"
+            />
+          </div>
+          <div
+            style={{ position: "absolute", left: `${flatSquareOffset * 2}px` }}
+          >
+            <SquareFlat
+              class="hhh_bottomSquare hhh_square3"
+              src="/icons/icon-gcp.png"
+            />
+          </div>
+        </div>
+        <div class="hhh_bigSquareContainer">
+          <BigSquare class="hhh_bigSquare" style={{ zIndex: -1 }} />
+          <div
+            class="hhh_squares"
             style={{
               top: `${centerSquaresTop}px`,
               left: `${centerSquaresLeft}px`,
             }}
           >
             <div
-              class:list={["middleSquare", "pluralLogo"]}
+              class:list={["hhh_middleSquare", "hhh_pluralLogo"]}
               style={{
                 top: `${1 * ySpacing}px`,
                 left: `${1 * xSpacing}px`,
@@ -81,7 +106,7 @@ const centerIconProps = [
           </div>
         </div>
         <div
-          class="squares"
+          class="hhh_squares"
           style={{
             top: `${centerSquaresTop}px`,
             left: `${centerSquaresLeft}px`,
@@ -92,27 +117,27 @@ const centerIconProps = [
               const x = row.map(({ src, gradientStroke, hide }, i) => {
                 return (
                   <div
-                    class:list={["middleSquare", "appSquare"]}
+                    class:list={["hhh_middleSquare", "hhh_appSquare"]}
                     style={{
                       top: `${j * ySpacing}px`,
                       left: `${i * xSpacing}px`,
                       ...(hide ? { display: "none" } : {}),
                     }}
                   >
-                    <div class="hoverShape">
-                      <div class:list={["shape"]}>
+                    <div class="hhh_hoverShape">
+                      <div class:list={["hhh_shape"]}>
                         {hide ? null : (
-                          <>
+                          <div>
                             <SquareDeep
                               gradientStroke={gradientStroke}
                               src={src}
                             />
-                          </>
+                          </div>
                         )}
                       </div>
                     </div>
 
-                    <div class="shadow">
+                    <div class="hhh_shadow">
                       <img src="/drop-shadow.png" />
                     </div>
                   </div>
@@ -128,13 +153,13 @@ const centerIconProps = [
   </main>
 </Layout>
 <script>
-  const gradients = document.querySelectorAll(".rotateGradient");
+  const gradients = document.querySelectorAll(".hhh_rotateGradient");
 </script>
 <style
   lang="scss"
   define:vars={{
-    squareWidth: `${squareWidth}px`,
-    squareHeight: `${squareHeight}px`,
+    centerSquareWidth: `${centerSquareWidth}px`,
+    centerSquareHeight: `${centerSquareHeight}px`,
     centerSquaresWidth: `${centerSquaresWidth}px`,
     centerSquaresHeight: `${centerSquaresHeight}px`,
     bigSquareSize: `${bigSquareSize}px`,
@@ -142,7 +167,7 @@ const centerIconProps = [
     flatSquareGap: `${flatSquareGap}px`,
   }}
 >
-  .myAnimation {
+  .hhh_heroRoot {
     --moderateShadow: drop-shadow(0px 3px 6px rgba(14, 16, 21, 0.2))
       drop-shadow(0px 10px 20px rgba(14, 16, 21, 0.3));
     * {
@@ -154,16 +179,16 @@ const centerIconProps = [
     width: 500px;
     height: 500px;
     position: relative;
-    .main3dTransform {
+    .hhh_main3dTransform {
       position: absolute;
       left: 58px;
-      top: -28px;
+      top: 100px;
       transform: rotateX(57deg) rotateY(0) rotateZ(-45deg);
       transform-origin: 50% 50%;
       width: var(--bigSquareSize);
       height: var(--bigSquareSize);
     }
-    .bottomSquaresContainer {
+    .hhh_bottomSquaresContainer {
       position: absolute;
       top: calc(var(--bigSquareSize) + (var(--flatSquareGap) * 2));
       left: 0;
@@ -173,32 +198,31 @@ const centerIconProps = [
         left: 0;
       }
     }
-    .bigSquare {
+    .hhh_bigSquare {
       position: absolute;
       pointer-events: none;
       z-index: -1;
     }
-    .bigSquareShadow {
+    .hhh_bigSquareShadow {
       position: absolute;
       top: -140px;
       left: -140px;
       right: -140px;
       bottom: -140px;
-      /* background-color: blue; */
       transform: translate3d(-30px, 20px, -1px);
       img {
         display: block;
         width: 100%;
       }
     }
-    .squares {
+    .hhh_squares {
       position: absolute;
     }
-    .middleSquare {
+    .hhh_middleSquare {
       position: absolute;
-      width: var(--squareWidth);
-      height: var(--squareWidth);
-      .shape {
+      width: var(--centerSquareWidth);
+      height: var(--centerSquareWidth);
+      .hhh_shape {
         position: absolute;
         width: 100%;
         height: 100%;
@@ -206,13 +230,13 @@ const centerIconProps = [
         cursor: default;
         border-radius: 3px;
       }
-      &.appSquare {
+      &.hhh_appSquare {
         :global(.side1),
         :global(.side2) {
           transition: 1s fill;
         }
         &:hover {
-          .hoverShape {
+          .hhh_hoverShape {
             transform: translateZ(10px);
             transition: transform 0.2s ease-out;
             transform-origin: 50% 100%;
@@ -229,7 +253,7 @@ const centerIconProps = [
           }
         }
       }
-      .shadow {
+      .hhh_shadow {
         pointer-events: none;
         position: absolute;
         top: -36px;
@@ -243,11 +267,11 @@ const centerIconProps = [
       }
     }
 
-    .square {
+    .hhh_square {
       position: absolute;
       width: 30px;
       height: 30px;
-      .shape {
+      .hhh_shape {
         position: absolute;
         width: 100%;
         height: 100%;
@@ -256,7 +280,7 @@ const centerIconProps = [
         border-radius: 3px;
       }
       &:hover {
-        .hoverShape {
+        .hhh_hoverShape {
           transform: rotateX(0) rotateY(-10deg) rotateZ(0) translateZ(5px);
           transition: transform 0.1s ease-out;
           transform-origin: 50% 100%;

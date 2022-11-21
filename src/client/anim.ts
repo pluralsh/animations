@@ -8,26 +8,25 @@ export default (() => {
 })();
 
 function highlightSquare(selector) {
-  console.log("square", selector);
-  document.querySelector(selector).classList.add("highlight");
+  document.querySelector(selector).classList.add("hhh_highlight");
 }
 function dimSquare(selector) {
-  document.querySelector(selector).classList.remove("highlight");
+  document.querySelector(selector).classList.remove("hhh_highlight");
 }
 const highlightsTL = gsap.timeline({ repeat: -1, repeatDelay: 0.0 });
-highlightsTL.call(highlightSquare, [".square1"], "+=0");
-highlightsTL.call(dimSquare, [".square1"], "+=3");
-highlightsTL.call(highlightSquare, [".square2"], "+=0.0");
-highlightsTL.call(dimSquare, [".square2"], "+=3");
-highlightsTL.call(highlightSquare, [".square3"], "+=0.0");
-highlightsTL.call(dimSquare, [".square3"], "+=3");
+highlightsTL.call(highlightSquare, [".hhh_square1"], "+=0");
+highlightsTL.call(dimSquare, [".hhh_square1"], "+=3");
+highlightsTL.call(highlightSquare, [".hhh_square2"], "+=0.0");
+highlightsTL.call(dimSquare, [".hhh_square2"], "+=3");
+highlightsTL.call(highlightSquare, [".hhh_square3"], "+=0.0");
+highlightsTL.call(dimSquare, [".hhh_square3"], "+=3");
 
 const tl = gsap.timeline({ repeat: 0, repeatDelay: 2 });
 tl.addLabel("start", 0);
 
 // tl.from(".bigSquareContainer", { opacity: 0, duration: 0.5 }, "start");
 tl.from(
-  "#bigSquareArea",
+  "#hhh_bigSquareArea",
   {
     y: "-=30%",
     rotateY: "+=30",
@@ -39,7 +38,7 @@ tl.from(
   "start"
 )
   .from(
-    ".bigSquareShadow",
+    ".hhh_bigSquareShadow",
     {
       opacity: 0.5,
       duration: 0.75,
@@ -55,7 +54,7 @@ const squaresStagger = {
   amount: 0.5,
 };
 tl.from(
-  ".appSquare .shadow",
+  ".hhh_appSquare .hhh_shadow",
   {
     opacity: 0,
     scale: 0.3,
@@ -66,7 +65,7 @@ tl.from(
   "<0.2"
 );
 tl.from(
-  ".appSquare .shape",
+  ".hhh_appSquare .hhh_shape",
   {
     opacity: 0,
     duration: 0.5,
@@ -76,7 +75,7 @@ tl.from(
   "<0.2"
 );
 tl.from(
-  ".appSquare .shape",
+  ".hhh_appSquare .hhh_shape",
   {
     z: 60,
     duration: 1,
@@ -86,7 +85,7 @@ tl.from(
   "<0.2"
 );
 tl.from(
-  ".bottomSquare",
+  ".hhh_bottomSquare",
   {
     z: -20,
     y: -100,
@@ -97,7 +96,7 @@ tl.from(
   "stage2-=0.15"
 );
 tl.from(
-  ".bottomSquare .squareFlatSVG, .bottomSquare .connectors, .bottomSquare .shadow",
+  ".hhh_bottomSquare .hhh_squareFlatSVG, .hhh_bottomSquare .hhh_connectors, .hhh_bottomSquare .hhh_shadow",
   {
     opacity: 0,
     duration: 0.3,
@@ -110,7 +109,7 @@ tl.add(highlightsTL, "-=0.4");
 
 const gradientLoop = gsap.timeline({ repeat: -1, repeatDelay: 0 });
 const gradientDuration = 1;
-const gradientSelector = ".strokeGradient";
+const gradientSelector = ".hhh_strokeGradient";
 gradientLoop
   .fromTo(
     gradientSelector,

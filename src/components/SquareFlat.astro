@@ -26,16 +26,16 @@ const svgProps = {
 const gradientId = "strokeGradient1";
 ---
 
-<div class:list={[className, "squareFlatRoot"]} {...props}>
-  <div class="connectorWrap">
-    <svg {...svgProps} class:list={["connector"]}>
+<div class:list={[className, "hhh_squareRoot"]} {...props}>
+  <div class="hhh_connector">
+    <svg {...svgProps} class:list={["hhh_connectorInner"]}>
       <path
         d={`M ${connectorLength / 2},${0} l ${0},${connectorLength}`}
         {...connectorProps}></path>
     </svg>
   </div>
-  <div class="shadow"><img src="/drop-shadow.png" /></div>
-  <div class="squareFlatSVG">
+  <div class="hhh_shadow"><img src="/drop-shadow.png" /></div>
+  <div class="hhh_squareFlatSVG">
     <svg
       viewBox="0 0 80 80"
       overflow="visible"
@@ -43,16 +43,16 @@ const gradientId = "strokeGradient1";
     >
       <StrokeGradient id={gradientId} />
 
-      <g class="squareGroup">
+      <g class="hhh_squareGroup">
         <path
           d="m2 79.5c-.82715 0-1.5-.67285-1.5-1.5v-76c0-.82715.67285-1.5 1.5-1.5h75.5c1.10254 0 2 .89697 2 2v75.5c0 .82715-.67285 1.5-1.5 1.5z"
           fill="#1c2029"></path>
         <path
-          class="solidStroke"
+          class="hhh_solidStroke"
           d="m77.5 1c.8271 0 1.5.6729 1.5 1.5v75.5c0 .5514-.4486 1-1 1h-76c-.5514 0-1-.4486-1-1v-76c0-.5514.4486-1 1-1zm0-1h-75.5c-1.10456 0-2 .89542-2 2v76c0 1.10456.89544 2 2 2h76c1.10456 0 2-.89544 2-2v-75.5c0-1.38071-1.11929-2.5-2.5-2.5z"
           fill="#2a2e37"></path>
         <path
-          class="gradientStroke"
+          class="hhh_gradientStroke"
           d="m77.5 1c.8271 0 1.5.6729 1.5 1.5v75.5c0 .5514-.4486 1-1 1h-76c-.5514 0-1-.4486-1-1v-76c0-.5514.4486-1 1-1zm0-1h-75.5c-1.10456 0-2 .89542-2 2v76c0 1.10456.89544 2 2 2h76c1.10456 0 2-.89544 2-2v-75.5c0-1.38071-1.11929-2.5-2.5-2.5z"
           fill={`url(#${gradientId})`}></path>
       </g>
@@ -61,57 +61,63 @@ const gradientId = "strokeGradient1";
   </div>
 </div>
 
-<style lang="scss">
-  .squareFlatRoot {
-    width: 80px;
-    height: 80px;
+<style
+  lang="scss"
+  define:vars={{
+    squareWidth: `${width}px`,
+    squareHeight: `${height}px`,
+  }}
+>
+  .hhh_squareRoot {
+    width: var(--squareWidth);
+    height: var(--squareWidth);
     position: relative;
     > * {
       pointer-events: none;
     }
-    .gradientStroke,
-    .solidStroke {
+    .hhh_gradientStroke,
+    .hhh_solidStroke {
       transition: opacity 0.2s linear;
     }
-    .gradientStroke {
+    .hhh_gradientStroke {
       opacity: 0;
     }
-    &.highlight,
+    &.hhh_highlight,
     &:hover {
       img {
         filter: grayscale(0%);
         opacity: 100%;
         mix-blend-mode: normal;
       }
-      .connector {
+      .hhh_connectorInner {
         clip-path: inset(0 0 70% 0);
       }
-      .squareFlatSVG {
+      .hhh_squareFlatSVG {
         transform: translateZ(0);
       }
-      .gradientStroke {
+      .hhh_gradientStroke {
         opacity: 100%;
       }
-      .solidStroke {
+      .hhh_solidStroke {
         opacity: 0;
       }
     }
     &:hover {
-      .squareFlatSVG {
+      .hhh_squareFlatSVG {
         transform: translateZ(0) scale(1.05);
       }
     }
-    .squareFlatSVG {
+    .hhh_squareFlatSVG {
       position: relative;
-      width: 80px;
-      height: 80px;
+      width: var(--squareWidth);
+      height:var(--squareWidth);
       transition: transform 0.4s cubic-bezier(0.5, 1.79, 0.68, 1);
       transform-origin: 50% 50%;
       transform: rotateX(-10deg);
       z-index: 1;
     }
   }
-  .connectorWrap {
+  .hhh_connector {
     position: absolute;
     top: 0;
     right: 0;
@@ -119,7 +125,7 @@ const gradientId = "strokeGradient1";
     bottom: 0;
     transform: translateZ(-2px);
   }
-  .connector {
+  .hhh_connectorInner {
     transition: all 0.3s ease-in-out;
     position: absolute;
     top: 50%;
@@ -142,7 +148,7 @@ const gradientId = "strokeGradient1";
     opacity: 50%;
     transition: all 0.2s linear;
   }
-  .shadow {
+  .hhh_shadow {
     position: absolute;
     top: -40px;
     right: -40px;
