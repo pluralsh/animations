@@ -29,9 +29,7 @@ function getAttrs(elt: Element) {
 
 function incrementMoves() {
   movesCount++;
-  console.log("movesCount", movesCount);
   if (state === "LAST_WALK" && movesCount >= LAST_WALK_MOVES) {
-    console.log("state === stopped");
     state = "STOPPED";
   }
 }
@@ -42,7 +40,6 @@ export function resetMoves() {
   movesCount = 0;
   if (walksCount >= MAX_AUTO_WALKS && state === "AUTO_WALK") {
     state = "LAST_WALK";
-    console.log("state === LAST_WALK");
   }
   getAllSquareElts().forEach((elt) => {
     const { x, y } = getAttrs(elt);

@@ -7,11 +7,19 @@ body {
   min-height: 100vh;
   min-width: 100vw;
 
-  background: radial-gradient(circle at top right, #46525d, #25294f, #171a21,  #171a21);
+  background: radial-gradient(
+    circle at top right,
+    #46525d,
+    #25294f,
+    #171a21,
+    #171a21
+  );
 }
 
-.hhh_heroRoot {
-    margin-left: auto;
-    margin-right: auto;
-    margin-top: 50px;
+#hhh_hero1 {
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  transform-origin: 0 0;
+  transform: scale(calc(10vw * 1));
 }

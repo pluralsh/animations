@@ -12,22 +12,21 @@ const HL_STEP_DELAY = 3;
 const HL_REPEAT = 0;
 const highlightsTLInner = gsap
   .timeline({ repeat: HL_REPEAT, repeatDelay: 0.0, smoothChildTiming: true })
-  .call(highlightSquare, [".hhh_square1"], "+=0")
-  .call(dimSquare, [".hhh_square1"], `+=${HL_STEP_DELAY}`)
-  .call(highlightSquare, [".hhh_square2"], "+=0.0")
-  .call(dimSquare, [".hhh_square2"], `+=${HL_STEP_DELAY}`)
-  .call(highlightSquare, [".hhh_square3"], "+=0.0")
-  .call(dimSquare, [".hhh_square3"], `+=${HL_STEP_DELAY}`)
-  .addLabel("someLabel");
+  .call(highlightSquare, ["#hhh_hero1 .hhh_square1"], "+=0")
+  .call(dimSquare, ["#hhh_hero1 .hhh_square1"], `+=${HL_STEP_DELAY}`)
+  .call(highlightSquare, ["#hhh_hero1 .hhh_square2"], "+=0.0")
+  .call(dimSquare, ["#hhh_hero1 .hhh_square2"], `+=${HL_STEP_DELAY}`)
+  .call(highlightSquare, ["#hhh_hero1 .hhh_square3"], "+=0.0")
+  .call(dimSquare, ["#hhh_hero1 .hhh_square3"], `+=${HL_STEP_DELAY}`);
 const highlightsTL = gsap
   .timeline({ smoothChildTiming: true })
   .add(highlightsTLInner)
-  .call(highlightSquare, [".hhh_square2"], `+=0`);
+  .call(highlightSquare, ["#hhh_hero1 .hhh_square2"], `+=0`);
 
 const tl = gsap.timeline({ repeat: 0, repeatDelay: 2 });
 
 tl.from(
-  "#hhh_bigSquareArea",
+  "#hhh_hero1 #hhh_bigSquareArea",
   {
     y: "-=30%",
     rotateY: "+=30",
@@ -39,7 +38,7 @@ tl.from(
   0
 )
   .from(
-    ".hhh_bigSquareShadow",
+    "#hhh_hero1 .hhh_bigSquareShadow",
     {
       opacity: 0.5,
       duration: 0.75,
@@ -55,7 +54,7 @@ const squaresStagger = {
   amount: 0.5,
 };
 tl.from(
-  ".hhh_appSquare .hhh_shadow",
+  "#hhh_hero1 .hhh_appSquare .hhh_shadow",
   {
     opacity: 0,
     scale: 0.3,
@@ -66,7 +65,7 @@ tl.from(
   "<0.2"
 );
 tl.from(
-  ".hhh_appSquare .hhh_shape",
+  "#hhh_hero1 .hhh_appSquare .hhh_shape",
   {
     opacity: 0,
     duration: 0.5,
@@ -76,7 +75,7 @@ tl.from(
   "<0.2"
 );
 tl.from(
-  ".hhh_appSquare .hhh_shape",
+  "#hhh_hero1 .hhh_appSquare .hhh_shape",
   {
     z: 60,
     duration: 1,
@@ -86,7 +85,7 @@ tl.from(
   "<0.2"
 );
 tl.from(
-  ".hhh_bottomSquare",
+  "#hhh_hero1 .hhh_bottomSquare",
   {
     z: -20,
     y: -100,
@@ -97,7 +96,11 @@ tl.from(
   "stage2-=0.15"
 );
 tl.from(
-  ".hhh_bottomSquare .hhh_squareShape, .hhh_bottomSquare .hhh_connectors, .hhh_bottomSquare .hhh_shadow",
+  [
+    "#hhh_hero1 .hhh_bottomSquare .hhh_squareShape",
+    "#hhh_hero1 .hhh_bottomSquare .hhh_connectors",
+    "#hhh_hero1 .hhh_bottomSquare .hhh_shadow",
+  ].join(', '),
   {
     opacity: 0,
     duration: 0.3,
@@ -109,7 +112,7 @@ tl.from(
 tl.add(highlightsTL, "-=0.0");
 tl.call(clusterGame, [], "<0.4");
 tl.from(
-  ".hhh_clustersGrid .hhh_squareShapeIn",
+  "#hhh_hero1 .hhh_clustersGrid .hhh_squareShapeIn",
   {
     opacity: 0,
     duration: 0.3,
