@@ -21,7 +21,6 @@ const gapY = 20;
 const xSpacing = squareWidth + gapX;
 const ySpacing = squareHeight + gapY;
 const topOffset = bigSquareSize - (squareHeight * 3 + gapY * 2);
-console.log("topOffset", topOffset);
 ---
 
 <div class:list={["hhh_root", className]}>
@@ -30,7 +29,7 @@ console.log("topOffset", topOffset);
       const x = row.map(({ src, gradientStroke, hide }, i) => {
         return (
           <div
-            class:list={["hhh_square"]}
+            class:list={["hhh_clustersSquare"]}
             style={{
               top: `${j * ySpacing}px`,
               left: `${i * xSpacing}px`,
@@ -39,12 +38,13 @@ console.log("topOffset", topOffset);
           >
             {hide ? null : (
               <SquareFlat
-              class="connectTop connectRight connectBottom connectLeft"
                 mode="cluster"
                 gradientStroke={gradientStroke}
                 src={src}
                 width={squareWidth}
                 height={squareHeight}
+                data-index-x={i}
+                data-index-y={iconProps.length - j - 1}
               />
             )}
           </div>
@@ -66,7 +66,7 @@ console.log("topOffset", topOffset);
     position: absolute;
     top: var(--topOffset);
   }
-  .hhh_square {
+  .hhh_clustersSquare {
     position: absolute;
     width: var(--squareWidth);
     height: var(--squareWidth);

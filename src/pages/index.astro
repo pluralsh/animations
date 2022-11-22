@@ -49,10 +49,9 @@ const centerIconProps = [
           style={{
             position: "absolute",
             top: `${0}px`,
-            left: `${bigSquareSize + gapX * 2}px`,
+            left: `${bigSquareSize + gapX * 3}px`,
             height: `${bigSquareSize}px`,
             width: `${bigSquareSize}px`,
-            // backgroundColor: "blue",
           }}
         >
           <ClustersGrid bigSquareSize={bigSquareSize} />
@@ -168,6 +167,7 @@ const centerIconProps = [
   }}
 >
   .hhh_heroRoot {
+
     --moderateShadow: drop-shadow(0px 3px 6px rgba(14, 16, 21, 0.2))
       drop-shadow(0px 10px 20px rgba(14, 16, 21, 0.3));
     :global(*) {
@@ -176,14 +176,13 @@ const centerIconProps = [
       user-select: none;
     }
     transform-origin: 50% 50%;
-    background-color: rgba(255, 0, 0, 0);
-    width: 500px;
-    height: 500px;
+    width: 606px;
+    height: 364px;
     position: relative;
     .hhh_main3dTransform {
       position: absolute;
       left: 58px;
-      top: 100px;
+      top: 60px;
       transform: rotateX(57deg) rotateY(0) rotateZ(-45deg);
       transform-origin: 50% 50%;
       width: var(--bigSquareSize);

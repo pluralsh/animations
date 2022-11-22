@@ -15,8 +15,7 @@ const connectorProps = {
   stroke: "#5D63F4",
   "stroke-dasharray": "2.4",
 };
-const connectorLength = 90;
-const connectorEdgeOffset = 20;
+const connectorLength = 110;
 const svgProps = {
   viewBox: `0 0 ${connectorLength * 2} ${connectorLength * 2}`,
   width: connectorLength * 2,
@@ -73,28 +72,31 @@ const gradientId = "strokeGradient1";
     </div>
   </div>
   <div class="hhh_shadow"><img src="/drop-shadow.png" /></div>
-  <div class="hhh_square">
-    <svg
-      viewBox="0 0 80 80"
-      overflow="visible"
-      xmlns="http://www.w3.org/2000/svg"
-    >
-      <StrokeGradient id={gradientId} />
-      <g class="hhh_squareGroup">
-        <path
-          d="m2 79.5c-.82715 0-1.5-.67285-1.5-1.5v-76c0-.82715.67285-1.5 1.5-1.5h75.5c1.10254 0 2 .89697 2 2v75.5c0 .82715-.67285 1.5-1.5 1.5z"
-          fill="#1c2029"></path>
-        <path
-          class="hhh_solidStroke"
-          d="m77.5 1c.8271 0 1.5.6729 1.5 1.5v75.5c0 .5514-.4486 1-1 1h-76c-.5514 0-1-.4486-1-1v-76c0-.5514.4486-1 1-1zm0-1h-75.5c-1.10456 0-2 .89542-2 2v76c0 1.10456.89544 2 2 2h76c1.10456 0 2-.89544 2-2v-75.5c0-1.38071-1.11929-2.5-2.5-2.5z"
-          fill="#2a2e37"></path>
-        <path
-          class="hhh_gradientStroke"
-          d="m77.5 1c.8271 0 1.5.6729 1.5 1.5v75.5c0 .5514-.4486 1-1 1h-76c-.5514 0-1-.4486-1-1v-76c0-.5514.4486-1 1-1zm0-1h-75.5c-1.10456 0-2 .89542-2 2v76c0 1.10456.89544 2 2 2h76c1.10456 0 2-.89544 2-2v-75.5c0-1.38071-1.11929-2.5-2.5-2.5z"
-          fill={`url(#${gradientId})`}></path>
-      </g>
-    </svg>
-    {src && <img class="hhh_iconImg" src={src} />}
+  <div class="hhh_squareShapeIn">
+    <div class="hhh_squareShape">
+      <svg
+        class="hhh_squareShapeSVG"
+        viewBox="0 0 80 80"
+        overflow="visible"
+        xmlns="http://www.w3.org/2000/svg"
+      >
+        <StrokeGradient id={gradientId} />
+        <g class="hhh_squareGroup">
+          <path
+            d="m2 79.5c-.82715 0-1.5-.67285-1.5-1.5v-76c0-.82715.67285-1.5 1.5-1.5h75.5c1.10254 0 2 .89697 2 2v75.5c0 .82715-.67285 1.5-1.5 1.5z"
+            fill="#1c2029"></path>
+          <path
+            class="hhh_solidStroke"
+            d="m77.5 1c.8271 0 1.5.6729 1.5 1.5v75.5c0 .5514-.4486 1-1 1h-76c-.5514 0-1-.4486-1-1v-76c0-.5514.4486-1 1-1zm0-1h-75.5c-1.10456 0-2 .89542-2 2v76c0 1.10456.89544 2 2 2h76c1.10456 0 2-.89544 2-2v-75.5c0-1.38071-1.11929-2.5-2.5-2.5z"
+            fill="#2a2e37"></path>
+          <path
+            class="hhh_gradientStroke"
+            d="m77.5 1c.8271 0 1.5.6729 1.5 1.5v75.5c0 .5514-.4486 1-1 1h-76c-.5514 0-1-.4486-1-1v-76c0-.5514.4486-1 1-1zm0-1h-75.5c-1.10456 0-2 .89542-2 2v76c0 1.10456.89544 2 2 2h76c1.10456 0 2-.89544 2-2v-75.5c0-1.38071-1.11929-2.5-2.5-2.5z"
+            fill={`url(#${gradientId})`}></path>
+        </g>
+      </svg>
+      {src && <img class="hhh_iconImg" src={src} />}
+    </div>
   </div>
 </div>
 
@@ -107,31 +109,32 @@ const gradientId = "strokeGradient1";
 >
   @use "sass:color";
 
-  @mixin connectorMasks($amtMasked) {
+  @mixin connectorMasks($innerAmt, $outerAmt: 0%) {
     .hhh_connector.hhh_top .hhh_connectorSVG {
-      clip-path: inset(0 0 $amtMasked 0);
+      clip-path: inset($outerAmt 0 ($innerAmt) 0);
     }
     .hhh_connector.hhh_right .hhh_connectorSVG {
-      clip-path: inset(0 0 0 $amtMasked);
+      clip-path: inset(0 $outerAmt 0 ($innerAmt));
     }
     .hhh_connector.hhh_bottom .hhh_connectorSVG {
-      clip-path: inset($amtMasked 0 0 0);
+      clip-path: inset(($innerAmt) 0 $outerAmt 0);
     }
     .hhh_connector.hhh_left .hhh_connectorSVG {
-      clip-path: inset(0 $amtMasked 0 0);
+      clip-path: inset(0 ($innerAmt) 0 $outerAmt);
     }
   }
   @mixin connectorHighlightStart {
-    @include connectorMasks($amtMasked: 100%);
+    @include connectorMasks($innerAmt: 100%);
   }
   @mixin connectorHighlightEnd {
-    @include connectorMasks($amtMasked: 70%);
+    @include connectorMasks($innerAmt: 70%);
   }
 
   @include connectorHighlightStart();
 
   .hhh_squareRoot,
-  .hhh_square,
+  .hhh_squareShape,
+  .hhh_squareShapeIn,
   .hhh_connectorInner,
   .hhh_connector {
     width: var(--squareWidth);
@@ -150,9 +153,8 @@ const gradientId = "strokeGradient1";
   .hhh_gradientStroke {
     opacity: 0;
   }
-  .hhh_square {
+  .hhh_squareShape {
     position: relative;
-    transition: transform 0.4s cubic-bezier(0.5, 1.79, 0.68, 1);
     transform-origin: 50% 50%;
     z-index: 1;
   }
@@ -201,29 +203,38 @@ const gradientId = "strokeGradient1";
     /* Base */
     .hhh_iconImg {
       filter: grayscale(100%);
-      opacity: 50%;
+      opacity: 0.5;
       transition: all 0.2s linear;
     }
 
+    .hhh_squareShape,
+    .hhh_shadow {
+      transition: transform 0.4s cubic-bezier(0.5, 1.79, 0.68, 1);
+      transition-delay: 0;
+    }
+
     /* Highlights */
-    --highlightBaseTransform: translateY(-15%);
     &.hhh_highlight,
     &:hover {
       @include connectorHighlightEnd();
 
+      .hhh_squareShape,
+      .hhh_shadow img {
+        transform: translateY(-15px);
+      }
       .hhh_iconImg {
         filter: grayscale(0%);
-        opacity: 100%;
+        opacity: 1;
       }
       .hhh_gradientStroke {
-        opacity: 100%;
+        opacity: 1;
       }
       .hhh_solidStroke {
         opacity: 0;
       }
     }
     &:hover {
-      .hhh_square {
+      .hhh_squareShape {
         box-shadow: 0 0 15px 0 color.change(#494ff2, $alpha: 0.5);
       }
     }
@@ -231,15 +242,62 @@ const gradientId = "strokeGradient1";
 
   /* Cluster mode */
   .hhh_squareRoot[data-mode="cluster"] {
+    @include connectorMasks($innerAmt: 100%, $outerAmt: 00%);
+
     /* Base */
-    .hhh_square {
-      display: none;
+    .hhh_squareShape {
+      opacity: 0.2;
+    }
+    .hhh_squareShape,
+    .hhh_shadow img {
+      transition: 0.2s ease-in-out;
+    }
+
+    .hhh_iconImg {
+      opacity: 0;
+      transition: 0.1s linear;
+    }
+    .hhh_shadow {
+      opacity: 0;
+      transition: 0.2s linear;
+    }
+    .hhh_connectorInner {
+      transform: translateX(45px) translateY(-45px) translateZ(-30px);
     }
 
     /* Highlights */
-    &.hhh_highlight,
-    &:hover {
-      @include connectorHighlightEnd();
+    &[data-active] {
+      @include connectorMasks($innerAmt: 55%, $outerAmt: 00%);
+      .hhh_squareShape {
+        opacity: 1;
+        transition: 0.3s ease-in-out;
+      }
+      .hhh_gradientStroke {
+        opacity: 100%;
+      }
+      .hhh_solidStroke {
+        opacity: 0;
+      }
+      .hhh_iconImg {
+        opacity: 1;
+        transition-delay: 0.2s;
+      }
+      .hhh_shadow {
+        opacity: 1;
+        transition-delay: 0.1s;
+      }
+      &.connectTop .hhh_squareShape {
+        transform: rotateX(180deg);
+      }
+      &.connectRight .hhh_squareShape {
+        transform: rotateY(180deg);
+      }
+      &.connectBottom .hhh_squareShape {
+        transform: rotateX(-180deg);
+      }
+      &.connectLeft .hhh_squareShape {
+        transform: rotateY(-180deg);
+      }
     }
   }
 
