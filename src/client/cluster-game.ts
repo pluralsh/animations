@@ -27,12 +27,22 @@ function getAttrs(elt: Element) {
   };
 }
 
+function incrementMoves() {
+  movesCount++;
+  console.log("movesCount", movesCount);
+  if (state === "LAST_WALK" && movesCount >= LAST_WALK_MOVES) {
+    console.log("state === stopped");
+    state = "STOPPED";
+  }
+}
+
 export function resetMoves() {
   lastMove = null;
   walksCount += 1;
   movesCount = 0;
   if (walksCount >= MAX_AUTO_WALKS && state === "AUTO_WALK") {
     state = "LAST_WALK";
+    console.log("state === LAST_WALK");
   }
   getAllSquareElts().forEach((elt) => {
     const { x, y } = getAttrs(elt);
@@ -41,21 +51,14 @@ export function resetMoves() {
 
       return;
     }
-    console.log("elt.classlist before", elt.classList);
     elt.removeAttribute("data-active");
     elt.classList.remove("hhh_connectTop");
     elt.classList.remove("hhh_connectBottom");
     elt.classList.remove("hhh_connectRight");
     elt.classList.remove("hhh_connectLeft");
-    console.log("elt.classlist after", elt.classList);
   });
+  highlightMoves(findAllValidMovesFrom(lastMove));
   resetTimeout();
-}
-
-export function stopAutoWalk() {
-  if (state === "AUTO_WALK") {
-    state = "LAST_WALK";
-  }
 }
 
 const sorter = (eltA: Element, eltB: Element) => {
@@ -76,7 +79,6 @@ function findAllValidMovesFrom(lastMove: Move): Move[] {
   return Array.from(squareElts)
     .filter((squareElt) => {
       let { x, y, active } = getAttrs(squareElt);
-      console.log("active", active);
       if (
         !active &&
         ((x === lastMove.x + 1 && y === lastMove.y) ||
@@ -136,7 +138,8 @@ function squareEltsToGrid(squareElts: NodeListOf<Element>) {
 }
 
 function flipSquare(x?: number, y?: number) {
-  const squaresGrid = squareEltsToGrid(getAllSquareElts());
+  const allSquares = getAllSquareElts();
+  const squaresGrid = squareEltsToGrid(allSquares);
 
   if (x === undefined || x === null) {
     const randomMove = findRandomMoveFrom(lastMove);
@@ -175,9 +178,11 @@ function flipSquare(x?: number, y?: number) {
       y: y,
       elt: squaresGrid[x][y],
     };
-    movesCount++;
+    incrementMoves();
     resetTimeout();
-    if (findAllValidMovesFrom(lastMove).length === 0) {
+    const validMoves = findAllValidMovesFrom(lastMove);
+    highlightMoves(validMoves);
+    if (validMoves.length === 0) {
       const resetDelay = MOVE_DELAY;
       setTimeout(resetMoves, resetDelay);
       clearTimeout(timeout);
@@ -196,12 +201,20 @@ const timeoutFunction = (x?: number, y?: number) => {
   resetTimeout();
 };
 
+function highlightMoves(moves: Move[]) {
+  const allSquares = getAllSquareElts();
+
+  allSquares.forEach((square) => {
+    square.removeAttribute("data-valid-move");
+  });
+  moves.forEach((move) => {
+    move.elt.setAttribute("data-valid-move", "1");
+  });
+}
+
 function resetTimeout(time: number = MOVE_DELAY) {
   clearTimeout(timeout);
-  if (
-    state === "AUTO_WALK" ||
-    (state === "LAST_WALK" && movesCount < LAST_WALK_MOVES)
-  ) {
+  if (state === "AUTO_WALK" || state === "LAST_WALK") {
     timeout = setTimeout(timeoutFunction, time);
   }
 }

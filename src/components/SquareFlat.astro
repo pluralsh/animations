@@ -300,6 +300,24 @@ const gradientId = "strokeGradient1";
       transform: translateX(45px) translateY(-45px) translateZ(-30px);
     }
 
+    .hhh_squareShape {
+      /* border-radius: 2px; */
+      outline: 1px solid color.change(#494ff2, $alpha: 0);
+      transition: all 0.5s ease-in-out;
+    }
+    &[data-valid-move]:not([data-active]) {
+      .hhh_squareShape {
+        opacity: 0.4;
+        /* outline: 1px solid color.change(#494ff2, $alpha: 1); */
+        /* transition: all 0.5s ease-in-out; */
+        .hhh_gradientStroke {
+          opacity: 1;
+        }
+        .hhh_solidStroke {
+          opacity: 0;
+        }
+      }
+    }
     /* Highlights */
     &[data-active] {
       @include connectorMasks($innerAmt: 55%, $outerAmt: 00%);
@@ -308,7 +326,7 @@ const gradientId = "strokeGradient1";
         transition: 0.3s ease-in-out;
       }
       .hhh_gradientStroke {
-        opacity: 100%;
+        opacity: 1;
       }
       .hhh_solidStroke {
         opacity: 0;
