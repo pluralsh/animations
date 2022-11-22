@@ -1,9 +1,16 @@
+const MAX_AUTO_WALKS = 3;
+const MOVE_DELAY = 500;
+const LAST_WALK_STEPS = 4;
+
 type Move = {
   elt: Element;
   x: number;
   y: number;
 } | null;
 let lastMove: Move = null;
+let walksCount: number = 0;
+let movesCount: number = 0;
+let state: "AUTO_WALK" | "LAST_WALK" | "AUTO_ONE" | "STOPPED";
 
 const clamp = (num: number, min: number, max: number) =>
   Math.min(Math.max(num, min), max);
@@ -11,9 +18,24 @@ const clamp = (num: number, min: number, max: number) =>
 const getAllSquareElts = () =>
   document.querySelectorAll(".hhh_clustersGrid .hhh_squareRoot");
 
+function getAttrs(elt: Element) {
+  return {
+    x: Math.floor(Number(elt.getAttribute("data-index-x"))),
+    y: Math.floor(Number(elt.getAttribute("data-index-y"))),
+    active: !!elt.getAttribute("data-active"),
+  };
+}
+
 export function resetMoves() {
   lastMove = null;
+  walksCount += 1;
   getAllSquareElts().forEach((elt) => {
+    const { x, y } = getAttrs(elt);
+    if (x === 0 && y === 0) {
+      lastMove = { x: x, y: y, elt: elt };
+
+      return;
+    }
     elt.removeAttribute("data-active");
     elt.classList.remove("connectTop");
     elt.classList.remove("connectBottom");
@@ -22,11 +44,16 @@ export function resetMoves() {
   });
 }
 
+export function stopAutoWalk() {
+  if (state === "AUTO_WALK") {
+    state = "LAST_WALK";
+  }
+}
+
 const sorter = (eltA: Element, eltB: Element) => {
-  return (
-    Number(eltA.getAttribute("data-index-y")) -
-    Number(eltB.getAttribute("data-index-y"))
-  );
+  const { y: aY } = getAttrs(eltA);
+  const { y: bY } = getAttrs(eltB);
+  return aY - bY;
 };
 
 const getSquareAt = (x, y) => {
@@ -40,11 +67,7 @@ function findAllValidMovesFrom(lastMove: Move): Move[] {
 
   return Array.from(squareElts)
     .filter((squareElt) => {
-      let x = Number(squareElt.getAttribute("data-index-x"));
-      let y = Number(squareElt.getAttribute("data-index-y"));
-      let active = !!squareElt.getAttribute("data-active");
-      console.log("data-active", squareElt.getAttribute("data-active"));
-      console.log("active", active);
+      let { x, y, active } = getAttrs(squareElt);
       if (
         !active &&
         ((x === lastMove.x + 1 && y === lastMove.y) ||
@@ -57,10 +80,11 @@ function findAllValidMovesFrom(lastMove: Move): Move[] {
       return false;
     })
     .map((elt) => {
+      const { x, y } = getAttrs(elt);
       return {
         elt: elt,
-        x: Number(elt.getAttribute("data-index-x")),
-        y: Number(elt.getAttribute("data-index-y")),
+        x: x,
+        y: y,
       };
     });
 }
@@ -86,17 +110,17 @@ function squareEltsToGrid(squareElts: NodeListOf<Element>) {
   return [
     Array.from(squareElts)
       .filter((elt) => {
-        return elt.getAttribute("data-index-x") === "0";
+        return getAttrs(elt).x === 0;
       })
       .sort(sorter),
     Array.from(squareElts)
       .filter((elt) => {
-        return elt.getAttribute("data-index-x") === "1";
+        return getAttrs(elt).x === 1;
       })
       .sort(sorter),
     Array.from(squareElts)
       .filter((elt) => {
-        return elt.getAttribute("data-index-x") === "2";
+        return getAttrs(elt).x === 2;
       })
       .sort(sorter),
   ];
@@ -105,15 +129,12 @@ function squareEltsToGrid(squareElts: NodeListOf<Element>) {
 function flipSquare(x?: number, y?: number) {
   const squaresGrid = squareEltsToGrid(getAllSquareElts());
 
-  console.log("lastMove x,y", lastMove?.x, lastMove?.y);
-  console.log(" x,y", x, y);
   if (x === undefined || x === null) {
     const randomMove = findRandomMoveFrom(lastMove);
     if (!randomMove) {
       resetMoves();
       return false;
     }
-    console.log("randomMove", randomMove);
     x = randomMove.x;
     y = randomMove.y;
   }
@@ -122,7 +143,7 @@ function flipSquare(x?: number, y?: number) {
   const diffY = lastMove?.y - y;
   if (
     (!lastMove && x === 0 && y === 0) ||
-    (squaresGrid[x][y].getAttribute("data-active") === null &&
+    (!getAttrs(squaresGrid[x][y]).active &&
       lastMove &&
       ((Math.abs(diffX) === 1 && Math.abs(diffY) === 0) ||
         (Math.abs(diffX) === 0 && Math.abs(diffY) === 1)))
@@ -156,10 +177,8 @@ export default function () {
 
   squareElts.forEach((elt) => {
     elt.addEventListener("mouseenter", () => {
-      flipSquare(
-        Math.floor(Number(elt.getAttribute("data-index-x"))),
-        Math.floor(Number(elt.getAttribute("data-index-y")))
-      );
+      const { x, y } = getAttrs(elt);
+      const success = !!flipSquare(x, y);
     });
   });
 
@@ -167,7 +186,7 @@ export default function () {
     if (!flipSquare()) {
       resetMoves();
     }
-    setTimeout(timeoutFunction, 500);
+    setTimeout(timeoutFunction, MOVE_DELAY);
   };
   timeoutFunction(0, 0);
 
