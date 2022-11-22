@@ -30,7 +30,7 @@ const gradientId = "strokeGradient1";
   class:list={[
     className,
     "hhh_squareRoot",
-    { connectTop: mode === "provider" },
+    { hhh_connectTop: mode === "provider" },
   ]}
   {...props}
   data-mode={mode}
@@ -132,6 +132,11 @@ const gradientId = "strokeGradient1";
 
   @include connectorHighlightStart();
 
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
   .hhh_squareRoot,
   .hhh_squareShape,
   .hhh_squareShapeIn,
@@ -157,6 +162,28 @@ const gradientId = "strokeGradient1";
     position: relative;
     transform-origin: 50% 50%;
     z-index: 1;
+    --zTransform: translateZ(0);
+  }
+  .hhh_shadow {
+    --zTransform: translateZ(-15px);
+    pointer-events: none;
+    position: absolute;
+    top: -50%;
+    right: -50%;
+    bottom: -50%;
+    left: -50%;
+    transform: var(--zTransform);
+    img {
+      display: block;
+      width: 100%;
+    }
+  }
+  .hhh_iconImg {
+    position: absolute;
+    top: 0;
+    left: 0;
+    display: block;
+    width: 100%;
   }
 
   .hhh_connector {
@@ -178,29 +205,34 @@ const gradientId = "strokeGradient1";
     transform: translate3d(-50%, -50%, 0);
   }
 
-  .connectTop {
+  .hhh_connectTop {
     .hhh_connector.hhh_top {
       display: block;
     }
   }
-  .connectRight {
+  .hhh_connectRight {
     .hhh_connector.hhh_right {
       display: block;
     }
   }
-  .connectBottom {
+  .hhh_connectBottom {
     .hhh_connector.hhh_bottom {
       display: block;
     }
   }
-  .connectLeft {
+  .hhh_connectLeft {
     .hhh_connector.hhh_left {
       display: block;
     }
   }
 
+  /* 
+     Provider mode 
+  */
   .hhh_squareRoot[data-mode="provider"] {
     /* Base */
+    .hhh_icon {
+    }
     .hhh_iconImg {
       filter: grayscale(100%);
       opacity: 0.5;
@@ -219,9 +251,10 @@ const gradientId = "strokeGradient1";
       @include connectorHighlightEnd();
 
       .hhh_squareShape,
-      .hhh_shadow img {
-        transform: translateY(-15px);
+      .hhh_shadow {
+        transform: var(--zTransform) translateY(-15px);
       }
+
       .hhh_iconImg {
         filter: grayscale(0%);
         opacity: 1;
@@ -240,7 +273,9 @@ const gradientId = "strokeGradient1";
     }
   }
 
-  /* Cluster mode */
+  /* 
+     Cluster mode 
+  */
   .hhh_squareRoot[data-mode="cluster"] {
     @include connectorMasks($innerAmt: 100%, $outerAmt: 00%);
 
@@ -249,15 +284,15 @@ const gradientId = "strokeGradient1";
       opacity: 0.2;
     }
     .hhh_squareShape,
-    .hhh_shadow img {
+    .hhh_shadow {
       transition: 0.2s ease-in-out;
     }
 
     .hhh_iconImg {
       opacity: 0;
-      transition: 0.1s linear;
+      transition: opacity 0.1s linear;
     }
-    .hhh_shadow {
+    .hhh_shadow img {
       opacity: 0;
       transition: 0.2s linear;
     }
@@ -282,48 +317,22 @@ const gradientId = "strokeGradient1";
         opacity: 1;
         transition-delay: 0.2s;
       }
-      .hhh_shadow {
+      .hhh_shadow img {
         opacity: 1;
         transition-delay: 0.1s;
       }
-      &.connectTop .hhh_squareShape {
+      &.hhh_connectTop .hhh_squareShape {
         transform: rotateX(180deg);
       }
-      &.connectRight .hhh_squareShape {
+      &.hhh_connectRight .hhh_squareShape {
         transform: rotateY(180deg);
       }
-      &.connectBottom .hhh_squareShape {
+      &.hhh_connectBottom .hhh_squareShape {
         transform: rotateX(-180deg);
       }
-      &.connectLeft .hhh_squareShape {
+      &.hhh_connectLeft .hhh_squareShape {
         transform: rotateY(-180deg);
       }
-    }
-  }
-
-  svg {
-    position: absolute;
-    top: 0;
-    left: 0;
-  }
-  .hhh_iconImg {
-    position: absolute;
-    top: 0;
-    left: 0;
-    display: block;
-    width: 100%;
-  }
-  .hhh_shadow {
-    pointer-events: none;
-    position: absolute;
-    top: -50%;
-    right: -50%;
-    bottom: -50%;
-    left: -50%;
-    transform: translateZ(-15px);
-    img {
-      display: block;
-      width: 100%;
     }
   }
 </style>

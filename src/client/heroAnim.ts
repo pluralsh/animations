@@ -8,16 +8,23 @@ function highlightSquare(selector) {
 function dimSquare(selector) {
   document.querySelector(selector).classList.remove("hhh_highlight");
 }
-const highlightsTL = gsap.timeline({ repeat: -1, repeatDelay: 0.0 });
-highlightsTL.call(highlightSquare, [".hhh_square1"], "+=0");
-highlightsTL.call(dimSquare, [".hhh_square1"], "+=3");
-highlightsTL.call(highlightSquare, [".hhh_square2"], "+=0.0");
-highlightsTL.call(dimSquare, [".hhh_square2"], "+=3");
-highlightsTL.call(highlightSquare, [".hhh_square3"], "+=0.0");
-highlightsTL.call(dimSquare, [".hhh_square3"], "+=3");
+const HL_STEP_DELAY = 3;
+const HL_REPEAT = 0;
+const highlightsTLInner = gsap
+  .timeline({ repeat: HL_REPEAT, repeatDelay: 0.0, smoothChildTiming: true })
+  .call(highlightSquare, [".hhh_square1"], "+=0")
+  .call(dimSquare, [".hhh_square1"], `+=${HL_STEP_DELAY}`)
+  .call(highlightSquare, [".hhh_square2"], "+=0.0")
+  .call(dimSquare, [".hhh_square2"], `+=${HL_STEP_DELAY}`)
+  .call(highlightSquare, [".hhh_square3"], "+=0.0")
+  .call(dimSquare, [".hhh_square3"], `+=${HL_STEP_DELAY}`)
+  .addLabel("someLabel");
+const highlightsTL = gsap
+  .timeline({ smoothChildTiming: true })
+  .add(highlightsTLInner)
+  .call(highlightSquare, [".hhh_square2"], `+=0`);
 
 const tl = gsap.timeline({ repeat: 0, repeatDelay: 2 });
-tl.addLabel("start", 0);
 
 tl.from(
   "#hhh_bigSquareArea",
@@ -29,7 +36,7 @@ tl.from(
     duration: 1,
     ease: "sine.inOut",
   },
-  "start"
+  0
 )
   .from(
     ".hhh_bigSquareShadow",
@@ -100,6 +107,7 @@ tl.from(
   "<0"
 );
 tl.add(highlightsTL, "-=0.0");
+tl.call(clusterGame, [], "<0.4");
 tl.from(
   ".hhh_clustersGrid .hhh_squareShapeIn",
   {
@@ -111,4 +119,3 @@ tl.from(
   },
   "stage2-=0"
 );
-tl.call(clusterGame, [], "+=1.3");

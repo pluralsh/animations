@@ -1,6 +1,7 @@
-const MAX_AUTO_WALKS = 3;
-const MOVE_DELAY = 500;
-const LAST_WALK_STEPS = 4;
+const MAX_AUTO_WALKS = 1;
+const MOVE_DELAY = 2000;
+// const MOVE_DELAY = 500;
+const LAST_WALK_MOVES = 3;
 
 type Move = {
   elt: Element;
@@ -10,7 +11,7 @@ type Move = {
 let lastMove: Move = null;
 let walksCount: number = 0;
 let movesCount: number = 0;
-let state: "AUTO_WALK" | "LAST_WALK" | "AUTO_ONE" | "STOPPED";
+let state: "AUTO_WALK" | "LAST_WALK" | "STOPPED" = "AUTO_WALK";
 
 const clamp = (num: number, min: number, max: number) =>
   Math.min(Math.max(num, min), max);
@@ -29,6 +30,10 @@ function getAttrs(elt: Element) {
 export function resetMoves() {
   lastMove = null;
   walksCount += 1;
+  movesCount = 0;
+  if (walksCount >= MAX_AUTO_WALKS && state === "AUTO_WALK") {
+    state = "LAST_WALK";
+  }
   getAllSquareElts().forEach((elt) => {
     const { x, y } = getAttrs(elt);
     if (x === 0 && y === 0) {
@@ -36,12 +41,15 @@ export function resetMoves() {
 
       return;
     }
+    console.log("elt.classlist before", elt.classList);
     elt.removeAttribute("data-active");
-    elt.classList.remove("connectTop");
-    elt.classList.remove("connectBottom");
-    elt.classList.remove("connectRight");
-    elt.classList.remove("connectLeft");
+    elt.classList.remove("hhh_connectTop");
+    elt.classList.remove("hhh_connectBottom");
+    elt.classList.remove("hhh_connectRight");
+    elt.classList.remove("hhh_connectLeft");
+    console.log("elt.classlist after", elt.classList);
   });
+  resetTimeout();
 }
 
 export function stopAutoWalk() {
@@ -68,6 +76,7 @@ function findAllValidMovesFrom(lastMove: Move): Move[] {
   return Array.from(squareElts)
     .filter((squareElt) => {
       let { x, y, active } = getAttrs(squareElt);
+      console.log("active", active);
       if (
         !active &&
         ((x === lastMove.x + 1 && y === lastMove.y) ||
@@ -149,13 +158,13 @@ function flipSquare(x?: number, y?: number) {
         (Math.abs(diffX) === 0 && Math.abs(diffY) === 1)))
   ) {
     if (diffX < 0 || (x === 0 && y === 0)) {
-      squaresGrid[x][y].classList.add("connectLeft");
+      squaresGrid[x][y].classList.add("hhh_connectLeft");
     } else if (diffX > 0) {
-      squaresGrid[x][y].classList.add("connectRight");
+      squaresGrid[x][y].classList.add("hhh_connectRight");
     } else if (diffY > 0) {
-      squaresGrid[x][y].classList.add("connectTop");
+      squaresGrid[x][y].classList.add("hhh_connectTop");
     } else if (diffY < 0) {
-      squaresGrid[x][y].classList.add("connectBottom");
+      squaresGrid[x][y].classList.add("hhh_connectBottom");
     }
     window.setTimeout(() => {
       squaresGrid[x][y].setAttribute("data-active", "1");
@@ -166,9 +175,35 @@ function flipSquare(x?: number, y?: number) {
       y: y,
       elt: squaresGrid[x][y],
     };
+    movesCount++;
+    resetTimeout();
+    if (findAllValidMovesFrom(lastMove).length === 0) {
+      const resetDelay = MOVE_DELAY;
+      setTimeout(resetMoves, resetDelay);
+      clearTimeout(timeout);
+    }
   }
 
   return true;
+}
+
+let timeout: number;
+
+const timeoutFunction = (x?: number, y?: number) => {
+  if (!flipSquare()) {
+    resetMoves();
+  }
+  resetTimeout();
+};
+
+function resetTimeout(time: number = MOVE_DELAY) {
+  clearTimeout(timeout);
+  if (
+    state === "AUTO_WALK" ||
+    (state === "LAST_WALK" && movesCount < LAST_WALK_MOVES)
+  ) {
+    timeout = setTimeout(timeoutFunction, time);
+  }
 }
 
 export default function () {
@@ -182,12 +217,6 @@ export default function () {
     });
   });
 
-  const timeoutFunction = (x?: number, y?: number) => {
-    if (!flipSquare()) {
-      resetMoves();
-    }
-    setTimeout(timeoutFunction, MOVE_DELAY);
-  };
   timeoutFunction(0, 0);
 
   function resetTimer() {}
