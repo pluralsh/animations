@@ -1,6 +1,7 @@
 ---
+import uuid from "uuid";
 import StrokeGradient from "./StrokeGradient.astro";
-const gradientId = "strokeGradient1";
+const gradientId = `gradientSquareDeep_${uuid.v1()}`;
 const { gradientStroke = false, src } = Astro.props;
 ---
 

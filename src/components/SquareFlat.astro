@@ -1,5 +1,6 @@
 ---
 import StrokeGradient from "./StrokeGradient.astro";
+import uuid from "uuid";
 
 const {
   class: className,
@@ -23,7 +24,7 @@ const svgProps = {
   overflow: "visible",
   xmlns: "http://www.w3.org/2000/svg",
 };
-const gradientId = "strokeGradient1";
+const gradientId = `gradientSquareFlat_${uuid.v1()}`;
 ---
 
 <div

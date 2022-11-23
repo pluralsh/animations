@@ -1,9 +1,10 @@
 ---
 import StrokeGradient from "./StrokeGradient.astro";
+import uuid from 'uuid';
 
 const { class: className } = Astro.props;
 const size = 288;
-const gradientId = "strokeGradient1";
+const gradientId = `gradientBigSquare_${uuid.v1()}`;
 ---
 
 <svg
