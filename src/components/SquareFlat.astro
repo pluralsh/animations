@@ -37,39 +37,23 @@ const gradientId = `gradientSquareFlat_${uuid.v1()}`;
   data-mode={mode}
 >
   <div class="hhh_connector hhh_top">
-    <div class:list={["hhh_connectorInner"]}>
-      <svg {...svgProps} class="hhh_connectorSVG">
-        <path
-          d={`M ${connectorLength},${connectorLength} l ${0},${-connectorLength}`}
-          {...connectorProps}></path>
-      </svg>
+    <div class="hhh_connectorInner">
+      <img class="hhh_connectorImg" src="/dotted-line@4x.png" />
     </div>
   </div>
   <div class="hhh_connector hhh_right">
-    <div class:list={["hhh_connectorInner"]}>
-      <svg {...svgProps} class:list={["hhh_connectorSVG"]}>
-        <path
-          d={`M ${connectorLength},${connectorLength} l ${connectorLength},${0}`}
-          {...connectorProps}></path>
-      </svg>
+    <div class="hhh_connectorInner">
+      <img class="hhh_connectorImg" src="/dotted-line@4x.png" />
     </div>
   </div>
   <div class="hhh_connector hhh_bottom">
-    <div class:list={["hhh_connectorInner"]}>
-      <svg {...svgProps} class:list={["hhh_connectorSVG"]}>
-        <path
-          d={`M ${connectorLength},${connectorLength} l ${0},${connectorLength}`}
-          {...connectorProps}></path>
-      </svg>
+    <div class="hhh_connectorInner">
+      <img class="hhh_connectorImg" src="/dotted-line@4x.png" />
     </div>
   </div>
   <div class="hhh_connector hhh_left">
-    <div class:list={["hhh_connectorInner"]}>
-      <svg {...svgProps} class:list={["hhh_connectorSVG"]}>
-        <path
-          d={`M ${connectorLength},${connectorLength} l ${-connectorLength},${0}`}
-          {...connectorProps}></path>
-      </svg>
+    <div class="hhh_connectorInner">
+      <img class="hhh_connectorImg" src="/dotted-line@4x.png" />
     </div>
   </div>
   <div class="hhh_shadow"><img src="/drop-shadow.png" /></div>
@@ -106,26 +90,42 @@ const gradientId = `gradientSquareFlat_${uuid.v1()}`;
   }}
 >
   @use "sass:color";
+  @use "sass:math";
 
-  @mixin connectorMasks($innerAmt, $outerAmt: 0%) {
-    .hhh_connector.hhh_top .hhh_connectorSVG {
-      clip-path: inset($outerAmt 0 ($innerAmt) 0);
+  @mixin connectorMasks($progress: 100%, $outset: 65%, $inset: 0%) {
+    $range: $outset + $inset;
+    $prog: 1 * (1 - math.div($progress, 100%));
+    $outerAmt: 0 - $outset;
+    $innerAmt: ($range * $prog) + (100% - $inset);
+
+    .hhh_connector.hhh_top .hhh_connectorInner {
+      clip-path: inset($outerAmt 0 $innerAmt 0);
     }
-    .hhh_connector.hhh_right .hhh_connectorSVG {
-      clip-path: inset(0 $outerAmt 0 ($innerAmt));
+    .hhh_connector.hhh_right .hhh_connectorInner {
+      clip-path: inset(0 $outerAmt 0 $innerAmt);
     }
-    .hhh_connector.hhh_bottom .hhh_connectorSVG {
-      clip-path: inset(($innerAmt) 0 $outerAmt 0);
+    .hhh_connector.hhh_bottom .hhh_connectorInner {
+      clip-path: inset($innerAmt 0 $outerAmt 0);
     }
-    .hhh_connector.hhh_left .hhh_connectorSVG {
-      clip-path: inset(0 ($innerAmt) 0 $outerAmt);
+    .hhh_connector.hhh_left .hhh_connectorInner {
+      clip-path: inset(0 $innerAmt 0 $outerAmt);
     }
   }
+  $providerConnectorInset: -20%;
+  $providerConnectorOutset: 65%;
   @mixin connectorHighlightStart {
-    @include connectorMasks($innerAmt: 100%);
+    @include connectorMasks(
+      $progress: 0%,
+      $inset: $providerConnectorInset,
+      $outset: $providerConnectorOutset
+    );
   }
   @mixin connectorHighlightEnd {
-    @include connectorMasks($innerAmt: 70%);
+    @include connectorMasks(
+      $progress: 100%,
+      $inset: $providerConnectorInset,
+      $outset: $providerConnectorOutset
+    );
   }
 
   @include connectorHighlightStart();
@@ -186,18 +186,22 @@ const gradientId = `gradientSquareFlat_${uuid.v1()}`;
 
   .hhh_connector {
     position: absolute;
-    top: 0;
-    right: 0;
-    left: 0;
-    bottom: 0;
     display: none;
   }
   .hhh_connectorInner {
     transform: translateX(31px) translateY(-31px) translateZ(-30px);
+    transition: all 0.2s ease-in-out;
   }
-  .hhh_connectorSVG {
-    transition: all 0.3s ease-in-out;
+  .hhh_connector.hhh_top,
+  .hhh_connector.hhh_bottom {
+    .hhh_connectorImg {
+      transform: translate3d(-50%, -50%, 0) rotateZ(90deg);
+    }
+  }
+  .hhh_connectorImg {
     position: absolute;
+    width: 500px;
+    height: 1px;
     top: 50%;
     left: 50%;
     transform: translate3d(-50%, -50%, 0);
@@ -275,7 +279,13 @@ const gradientId = `gradientSquareFlat_${uuid.v1()}`;
      Cluster mode 
   */
   .hhh_squareRoot[data-mode="cluster"] {
-    @include connectorMasks($innerAmt: 100%, $outerAmt: 00%);
+    $clusterConnectorInset: 20%;
+    $clusterConnectorOutset: 110%;
+    @include connectorMasks(
+      $progress: 0%,
+      $inset: $clusterConnectorInset,
+      $outset: $clusterConnectorOutset
+    );
 
     /* Base */
     .hhh_squareShape {
@@ -296,8 +306,8 @@ const gradientId = `gradientSquareFlat_${uuid.v1()}`;
     }
     .hhh_connectorInner {
       transform: translateX(45px) translateY(-45px) translateZ(-30px);
+      transition: clip-path 0.3s ease-in-out;
     }
-
     .hhh_squareShape {
       outline: 1px solid color.change(#494ff2, $alpha: 0);
       transition: all 0.5s ease-in-out;
@@ -315,7 +325,11 @@ const gradientId = `gradientSquareFlat_${uuid.v1()}`;
     }
     /* Highlights */
     &[data-active] {
-      @include connectorMasks($innerAmt: 55%, $outerAmt: 00%);
+      @include connectorMasks(
+        $progress: 100%,
+        $inset: $clusterConnectorInset,
+        $outset: $clusterConnectorOutset
+      );
       .hhh_squareShape {
         opacity: 1;
         transition: 0.3s ease-in-out;
