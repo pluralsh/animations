@@ -12,6 +12,7 @@
   },
   "dependencies": {
     "astro": "^1.6.0",
+    "astro-compress": "^1.1.15",
     "autoprefixer": "^10.4.13",
     "cssnano": "^5.1.14",
     "gsap": "^3.11.3",
