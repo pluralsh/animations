@@ -189,7 +189,7 @@ function flipSquare(x?: number, y?: number) {
   return true;
 }
 
-let timeout: number;
+let timeout: ReturnType<typeof window.setTimeout>;
 
 const timeoutFunction = (x?: number, y?: number) => {
   if (!flipSquare()) {

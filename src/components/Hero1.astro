@@ -4,6 +4,7 @@ import SquareDeep from "../components/SquareDeep.astro";
 import BigSquare from "../components/BigSquare.astro";
 import SquareFlat from "../components/SquareFlat.astro";
 import ClustersGrid from "../client/ClustersGrid.astro";
+import config from "../siteConfig";
 const centerSquareWidth = 58;
 const centerSquareHeight = 58;
 const flatSquareWidth = 80;
@@ -19,6 +20,8 @@ const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
 const flatSquareOffset = (bigSquareSize - flatSquareWidth) / 2;
 const flatSquareGap = flatSquareOffset - flatSquareWidth;
 
+console.log("Astro", Astro);
+
 const centerIconProps = [
   [{}, {}, {}],
   [{ src: "icons/icon-airflow.png", gradientStroke: true }, { hide: true }, {}],
@@ -32,7 +35,7 @@ const centerIconProps = [
 
 <div class="hhh_heroRoot" id="hhh_hero1">
   <div class="hhh_main3dTransform">
-    <div class="hhh_bigSquareShadow"><img src="/drop-shadow.png" /></div>
+    <div class="hhh_bigSquareShadow"><img src={`${config.base}/drop-shadow.png`} /></div>
   </div>
   <div id="hhh_bigSquareArea" class="hhh_all3dObjects hhh_main3dTransform">
     <div
@@ -51,19 +54,19 @@ const centerIconProps = [
       <div style={{ position: "absolute", left: `${flatSquareOffset * 0}px` }}>
         <SquareFlat
           class="hhh_bottomSquare hhh_square1"
-          src="/icons/icon-microsoft.png"
+          src={`${config.base}/icons/icon-microsoft.png`}
         />
       </div>
       <div style={{ position: "absolute", left: `${flatSquareOffset * 1}px` }}>
         <SquareFlat
           class="hhh_bottomSquare hhh_square2"
-          src="/icons/icon-aws.png"
+          src={`${config.base}/icons/icon-aws.png`}
         />
       </div>
       <div style={{ position: "absolute", left: `${flatSquareOffset * 2}px` }}>
         <SquareFlat
           class="hhh_bottomSquare hhh_square3"
-          src="/icons/icon-gcp.png"
+          src={`${config.base}/icons/icon-gcp.png`}
         />
       </div>
     </div>
@@ -117,7 +120,7 @@ const centerIconProps = [
                 </div>
 
                 <div class="hhh_shadow">
-                  <img src="/drop-shadow.png" />
+                  <img src={config.base + "/drop-shadow.png"} />
                 </div>
               </div>
             );
@@ -139,7 +142,6 @@ const centerIconProps = [
     bigSquareSize: `${bigSquareSize}px`,
     flatSquareOffset: `${flatSquareOffset}px`,
     flatSquareGap: `${flatSquareGap}px`,
-
   }}
 >
   .hhh_heroRoot {

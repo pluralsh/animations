@@ -1,7 +1,7 @@
 ---
 import StrokeGradient from "./StrokeGradient.astro";
-import {v1 as uuid} from "uuid";
-
+import { v1 as uuid } from "uuid";
+import config from "../siteConfig";
 const {
   class: className,
   size = 80,
@@ -25,6 +25,8 @@ const svgProps = {
   xmlns: "http://www.w3.org/2000/svg",
 };
 const gradientId = `gradientSquareFlat_${uuid()}`;
+const dottedLineSrc = `${config.base}/dotted-line@4x.png`;
+const dropShadowSrc = `${config.base}/drop-shadow.png`;
 ---
 
 <div
@@ -38,25 +40,25 @@ const gradientId = `gradientSquareFlat_${uuid()}`;
 >
   <div class="hhh_connector hhh_top">
     <div class="hhh_connectorInner">
-      <img class="hhh_connectorImg" src="/dotted-line@4x.png" />
+      <img class="hhh_connectorImg" src="" />
     </div>
   </div>
   <div class="hhh_connector hhh_right">
     <div class="hhh_connectorInner">
-      <img class="hhh_connectorImg" src="/dotted-line@4x.png" />
+      <img class="hhh_connectorImg" src={dottedLineSrc} />
     </div>
   </div>
   <div class="hhh_connector hhh_bottom">
     <div class="hhh_connectorInner">
-      <img class="hhh_connectorImg" src="/dotted-line@4x.png" />
+      <img class="hhh_connectorImg" src={dottedLineSrc} />
     </div>
   </div>
   <div class="hhh_connector hhh_left">
     <div class="hhh_connectorInner">
-      <img class="hhh_connectorImg" src="/dotted-line@4x.png" />
+      <img class="hhh_connectorImg" src={dottedLineSrc} />
     </div>
   </div>
-  <div class="hhh_shadow"><img src="/drop-shadow.png" /></div>
+  <div class="hhh_shadow"><img src={dropShadowSrc} /></div>
   <div class="hhh_squareShapeIn">
     <div class="hhh_squareShape">
       <svg
