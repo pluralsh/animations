@@ -1,0 +1,24 @@
+---
+import IframeLayout from "../layouts/IframeLayout.astro";
+import HeroAnim1 from "../components/Hero1.astro";
+---
+
+<IframeLayout title="My animation">
+  <link rel="stylesheet" href="/index.css" />
+  <script src="../client/heroAnim.ts"></script>
+  <main>
+    <HeroAnim1 />
+  </main>
+  <script>
+    (function () {
+      const HERO_BASE_WIDTH = 620;
+
+      window.addEventListener("resize", function (e) {
+        const wWidth = window.innerWidth;
+        const resize = wWidth / HERO_BASE_WIDTH;
+        console.log("e", { e });
+        const hero = document.querySelector("#hhh_hero1");
+      });
+    })();
+  </script>
+</IframeLayout>
