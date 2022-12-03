@@ -1,0 +1,266 @@
+---
+import PluralLogomark from "../components/PluralLogomark.astro";
+import SquareDeep from "../components/SquareDeep.astro";
+import BigSquare from "../components/BigSquare.astro";
+import SquareFlat from "../components/SquareFlat.astro";
+import ClustersGrid from "../client/ClustersGrid.astro";
+const centerSquareWidth = 58;
+const centerSquareHeight = 58;
+const flatSquareWidth = 80;
+const gapX = 20;
+const gapY = 20;
+const xSpacing = centerSquareWidth + gapX;
+const ySpacing = centerSquareHeight + gapY;
+const bigSquareSize = 288;
+const centerSquaresWidth = 3 * centerSquareWidth + 2 * gapX;
+const centerSquaresHeight = 3 * centerSquareHeight + 2 * gapY;
+const centerSquaresTop = (bigSquareSize - centerSquaresHeight) / 2;
+const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
+const flatSquareOffset = (bigSquareSize - flatSquareWidth) / 2;
+const flatSquareGap = flatSquareOffset - flatSquareWidth;
+
+const centerIconProps = [
+  [{}, {}, {}],
+  [{ src: "icons/icon-airflow.png", gradientStroke: true }, { hide: true }, {}],
+  [
+    {},
+    { src: "icons/icon-superset.png", gradientStroke: true },
+    { src: "icons/icon-dagster.png", gradientStroke: true },
+  ],
+];
+---
+
+<div class="hhh_heroRoot" id="hhh_hero1">
+  <div class="hhh_main3dTransform">
+    <div class="hhh_bigSquareShadow"><img src="/drop-shadow.png" /></div>
+  </div>
+  <div id="hhh_bigSquareArea" class="hhh_all3dObjects hhh_main3dTransform">
+    <div
+      class="hhh_clustersGrid"
+      style={{
+        position: "absolute",
+        top: `${0}px`,
+        left: `${bigSquareSize + gapX * 3}px`,
+        height: `${bigSquareSize}px`,
+        width: `${bigSquareSize}px`,
+      }}
+    >
+      <ClustersGrid bigSquareSize={bigSquareSize} />
+    </div>
+    <div class="hhh_bottomSquaresContainer">
+      <div style={{ position: "absolute", left: `${flatSquareOffset * 0}px` }}>
+        <SquareFlat
+          class="hhh_bottomSquare hhh_square1"
+          src="/icons/icon-microsoft.png"
+        />
+      </div>
+      <div style={{ position: "absolute", left: `${flatSquareOffset * 1}px` }}>
+        <SquareFlat
+          class="hhh_bottomSquare hhh_square2"
+          src="/icons/icon-aws.png"
+        />
+      </div>
+      <div style={{ position: "absolute", left: `${flatSquareOffset * 2}px` }}>
+        <SquareFlat
+          class="hhh_bottomSquare hhh_square3"
+          src="/icons/icon-gcp.png"
+        />
+      </div>
+    </div>
+    <div class="hhh_bigSquareContainer">
+      <BigSquare class="hhh_bigSquare" style={{ zIndex: -1 }} />
+      <div
+        class="hhh_squares"
+        style={{
+          top: `${centerSquaresTop}px`,
+          left: `${centerSquaresLeft}px`,
+        }}
+      >
+        <div
+          class:list={["hhh_middleSquare", "hhh_pluralLogo"]}
+          style={{
+            top: `${1 * ySpacing}px`,
+            left: `${1 * xSpacing}px`,
+          }}
+        >
+          <PluralLogomark />
+        </div>
+      </div>
+    </div>
+    <div
+      class="hhh_squares"
+      style={{
+        top: `${centerSquaresTop}px`,
+        left: `${centerSquaresLeft}px`,
+      }}
+    >
+      {
+        centerIconProps.map((row, j) => {
+          const x = row.map(({ src, gradientStroke, hide }, i) => {
+            return (
+              <div
+                class:list={["hhh_middleSquare", "hhh_appSquare"]}
+                style={{
+                  top: `${j * ySpacing}px`,
+                  left: `${i * xSpacing}px`,
+                  ...(hide ? { display: "none" } : {}),
+                }}
+              >
+                <div class="hhh_hoverShape">
+                  <div class:list={["hhh_shape"]}>
+                    {hide ? null : (
+                      <div>
+                        <SquareDeep gradientStroke={gradientStroke} src={src} />
+                      </div>
+                    )}
+                  </div>
+                </div>
+
+                <div class="hhh_shadow">
+                  <img src="/drop-shadow.png" />
+                </div>
+              </div>
+            );
+          });
+          return <>{x}</>;
+        })
+      }
+    </div>
+  </div>
+</div>
+
+<style
+  lang="scss"
+  define:vars={{
+    centerSquareWidth: `${centerSquareWidth}px`,
+    centerSquareHeight: `${centerSquareHeight}px`,
+    centerSquaresWidth: `${centerSquaresWidth}px`,
+    centerSquaresHeight: `${centerSquaresHeight}px`,
+    bigSquareSize: `${bigSquareSize}px`,
+    flatSquareOffset: `${flatSquareOffset}px`,
+    flatSquareGap: `${flatSquareGap}px`,
+  }}
+>
+  .hhh_heroRoot {
+    --moderateShadow: drop-shadow(0px 3px 6px rgba(14, 16, 21, 0.2))
+      drop-shadow(0px 10px 20px rgba(14, 16, 21, 0.3));
+    :global(*) {
+      transform-style: preserve-3d;
+      transform-origin: 50% 50%;
+      user-select: none;
+    }
+    transform-origin: 50% 50%;
+    width: 620px;
+    height: 374px;
+    position: relative;
+    .hhh_main3dTransform {
+      position: absolute;
+      left: 58px;
+      top: 68px;
+      transform: rotateX(57deg) rotateY(0) rotateZ(-45deg);
+      transform-origin: 50% 50%;
+      width: var(--bigSquareSize);
+      height: var(--bigSquareSize);
+    }
+    .hhh_bottomSquaresContainer {
+      position: absolute;
+      top: calc(var(--bigSquareSize) + (var(--flatSquareGap) * 2));
+      left: 0;
+      .bottomSquare {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+    .hhh_bigSquare {
+      position: absolute;
+      pointer-events: none;
+      z-index: -1;
+    }
+    .hhh_bigSquareShadow {
+      pointer-events: none;
+      position: absolute;
+      top: -50%;
+      left: -50%;
+      right: -50%;
+      bottom: -50%;
+      transform: translate3d(0, 0, -20px);
+      img {
+        display: block;
+        width: 100%;
+      }
+    }
+    .hhh_squares {
+      position: absolute;
+    }
+    .hhh_middleSquare {
+      position: absolute;
+      width: var(--centerSquareWidth);
+      height: var(--centerSquareWidth);
+      .hhh_shape {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        cursor: default;
+        border-radius: 3px;
+      }
+      &.hhh_appSquare {
+        :global(.side1),
+        :global(.side2) {
+          transition: 1s fill;
+        }
+        &:hover {
+          .hhh_hoverShape {
+            transform: translateZ(10px);
+            transition: transform 0.2s ease-out;
+            transform-origin: 50% 100%;
+          }
+          :global(.side1) {
+            fill: #9fa3f9;
+          }
+          :global(.side2) {
+            fill: #cfd1fc;
+          }
+          :global(.side1),
+          :global(.side2) {
+            transition: 0.05s fill;
+          }
+        }
+      }
+      .hhh_shadow {
+        pointer-events: none;
+        position: absolute;
+        top: -36px;
+        bottom: -36px;
+        left: -36px;
+        right: -36px;
+        z-index: -1;
+        img {
+          width: 100%;
+        }
+      }
+    }
+
+    .hhh_square {
+      position: absolute;
+      width: 30px;
+      height: 30px;
+      .hhh_shape {
+        position: absolute;
+        width: 100%;
+        height: 100%;
+        pointer-events: none;
+        cursor: default;
+        border-radius: 3px;
+      }
+      &:hover {
+        .hhh_hoverShape {
+          transform: rotateX(0) rotateY(-10deg) rotateZ(0) translateZ(5px);
+          transition: transform 0.1s ease-out;
+          transform-origin: 50% 100%;
+        }
+      }
+    }
+  }
+</style>
