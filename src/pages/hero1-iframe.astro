@@ -13,12 +13,17 @@ import HeroAnim1 from "../components/Hero1.astro";
     (function () {
       const HERO_BASE_WIDTH = 620;
 
-      window.addEventListener("resize", function (e) {
+      function setSize() {
         const wWidth = window.innerWidth;
-        const resize = wWidth / HERO_BASE_WIDTH;
-        console.log("e", { e });
+        const resize = `${(wWidth / HERO_BASE_WIDTH) * 100}%`;
         const hero = document.querySelector("#hhh_hero1");
+        (hero as HTMLElement).style.transform = `scale(${resize})`;
+      }
+
+      window.addEventListener("resize", function (e) {
+        setSize();
       });
+      setSize();
     })();
   </script>
 </IframeLayout>
