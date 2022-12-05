@@ -5,6 +5,14 @@ import BigSquare from "../components/BigSquare.astro";
 import SquareFlat from "../components/SquareFlat.astro";
 import ClustersGrid from "../client/ClustersGrid.astro";
 
+export const width = 620;
+export const height = 375;
+
+const { padding = 0 } = Astro.props;
+
+const paddedWidth = height + padding * 2;
+const paddedHeight = height + padding * 2;
+
 const centerSquareWidth = 58;
 const centerSquareHeight = 58;
 const flatSquareWidth = 80;
@@ -149,6 +157,11 @@ const centerIconProps = [
     bigSquareSize: `${bigSquareSize}px`,
     flatSquareOffset: `${flatSquareOffset}px`,
     flatSquareGap: `${flatSquareGap}px`,
+    padding: `${padding}px`,
+    heroHeight: `${height}px`,
+    heroWidth: `${width}px`,
+    paddedWidth: `${paddedWidth}px`,
+    paddedHeight: `${paddedHeight}px`,
   }}
 >
   .hhh_heroRoot {
@@ -160,13 +173,13 @@ const centerIconProps = [
       user-select: none;
     }
     transform-origin: 0 0;
-    width: 620px;
-    height: 374px;
+    width: var(--paddedWidth);
+    height: var(--paddedHeight);
     position: relative;
     .hhh_main3dTransform {
       position: absolute;
-      left: 58px;
-      top: 68px;
+      left: calc(58px + var(--padding));
+      top: calc(68px + var(--padding));
       transform: rotateX(57deg) rotateY(0) rotateZ(-45deg);
       transform-origin: 50% 50%;
       width: var(--bigSquareSize);

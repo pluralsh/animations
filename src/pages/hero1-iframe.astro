@@ -1,20 +1,34 @@
 ---
 import IframeLayout from "../layouts/IframeLayout.astro";
 import HeroAnim1 from "../components/Hero1.astro";
+
+import { height, width } from "../components/Hero1.astro";
+
+const PADDING = 40;
+const HERO_BASE_WIDTH = width;
+const HERO_BASE_HEIGHT = height;
+
+console.log("FULL WIDTH:", HERO_BASE_WIDTH + 2 * PADDING);
+console.log("FULL HEIGHT:", HERO_BASE_HEIGHT + 2 * PADDING);
 ---
 
 <IframeLayout title="My animation">
   <script src="../client/heroAnim.ts"></script>
-  <main>
-    <HeroAnim1 />
+  <main
+    id="main"
+    data-width={HERO_BASE_WIDTH + 2 * PADDING}
+    data-height={HERO_BASE_HEIGHT + 2 * PADDING}
+    style={{ width: "100%" }}
+  >
+    <HeroAnim1 padding={PADDING} />
   </main>
   <script>
     (function () {
-      const HERO_BASE_WIDTH = 620;
-
+      const dataset = document.getElementById("main").dataset;
+      const HERO_WIDTH = Number(dataset.width);
       function setSize() {
-        const wWidth = window.innerWidth;
-        const resize = `${(wWidth / HERO_BASE_WIDTH) * 100}%`;
+        const frameWidth = window.innerWidth;
+        const resize = `${(frameWidth / HERO_WIDTH) * 100}%`;
         const hero = document.querySelector("#hhh_hero1");
         (hero as HTMLElement).style.transform = `scale(${resize})`;
       }
