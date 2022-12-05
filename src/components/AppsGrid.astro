@@ -1,0 +1,168 @@
+---
+import PluralLogomark from "../components/PluralLogomark.astro";
+import SquareDeep from "../components/SquareDeep.astro";
+import BigSquare from "../components/BigSquare.astro";
+
+import { size as bigSquareSize } from "./BigSquare.astro";
+
+const centerSquareWidth = 58;
+const centerSquareHeight = 58;
+
+const { gapX = 20, gapY = 20 } = Astro.props;
+
+const xSpacing = centerSquareWidth + gapX;
+const ySpacing = centerSquareHeight + gapY;
+const centerSquaresWidth = 3 * centerSquareWidth + 2 * gapX;
+const centerSquaresHeight = 3 * centerSquareHeight + 2 * gapY;
+const centerSquaresTop = (bigSquareSize - centerSquaresHeight) / 2;
+const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
+
+import iconAirflow from "../assets/icons/icon-airflow.png";
+import iconSuperset from "../assets/icons/icon-superset.png";
+import iconDagster from "../assets/icons/icon-dagster.png";
+
+import dropShadow from "../assets/drop-shadow.png";
+
+const centerIconProps = [
+  [{}, {}, {}],
+  [{ image: iconAirflow, gradientStroke: true }, { hide: true }, {}],
+  [
+    {},
+    { image: iconSuperset, gradientStroke: true },
+    { image: iconDagster, gradientStroke: true },
+  ],
+];
+---
+
+<div>
+  <div class="hhh_bigSquareContainer">
+    <BigSquare class="hhh_bigSquare" style={{ zIndex: -1 }} />
+    <div
+      class="hhh_squares"
+      style={{
+        top: `${centerSquaresTop}px`,
+        left: `${centerSquaresLeft}px`,
+      }}
+    >
+      <div
+        class:list={["hhh_middleSquare", "hhh_pluralLogo"]}
+        style={{
+          top: `${1 * ySpacing}px`,
+          left: `${1 * xSpacing}px`,
+        }}
+      >
+        <PluralLogomark />
+      </div>
+    </div>
+  </div>
+  <div
+    class="hhh_squares"
+    style={{
+      top: `${centerSquaresTop}px`,
+      left: `${centerSquaresLeft}px`,
+    }}
+  >
+    {
+      centerIconProps.map((row, j) => {
+        const x = row.map(({ image, gradientStroke, hide }, i) => {
+          return (
+            <div
+              class:list={["hhh_middleSquare", "hhh_appSquare"]}
+              style={{
+                top: `${j * ySpacing}px`,
+                left: `${i * xSpacing}px`,
+                ...(hide ? { display: "none" } : {}),
+              }}
+            >
+              <div class="hhh_hoverShape">
+                <div class:list={["hhh_shape"]}>
+                  {hide ? null : (
+                    <div>
+                      <SquareDeep
+                        gradientStroke={gradientStroke}
+                        image={image}
+                      />
+                    </div>
+                  )}
+                </div>
+              </div>
+
+              <div class="hhh_shadow">
+                <img src={(dropShadow as any).src} />
+              </div>
+            </div>
+          );
+        });
+        return <>{x}</>;
+      })
+    }
+  </div>
+</div>
+
+<style
+  lang="scss"
+  define:vars={{
+    centerSquareWidth: `${centerSquareWidth}px`,
+    centerSquareHeight: `${centerSquareHeight}px`,
+    centerSquaresWidth: `${centerSquaresWidth}px`,
+    centerSquaresHeight: `${centerSquaresHeight}px`,
+    bigSquareSize: `${bigSquareSize}px`,
+  }}
+>
+  .hhh_bigSquare {
+    position: absolute;
+    pointer-events: none;
+    z-index: -1;
+  }
+  .hhh_squares {
+    position: absolute;
+  }
+  .hhh_middleSquare {
+    position: absolute;
+    width: var(--centerSquareWidth);
+    height: var(--centerSquareWidth);
+    .hhh_shape {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      cursor: default;
+      border-radius: 3px;
+    }
+    &.hhh_appSquare {
+      :global(.side1),
+      :global(.side2) {
+        transition: 1s fill;
+      }
+      &:hover {
+        .hhh_hoverShape {
+          transform: translateZ(10px);
+          transition: transform 0.2s ease-out;
+          transform-origin: 50% 100%;
+        }
+        :global(.side1) {
+          fill: #9fa3f9;
+        }
+        :global(.side2) {
+          fill: #cfd1fc;
+        }
+        :global(.side1),
+        :global(.side2) {
+          transition: 0.05s fill;
+        }
+      }
+    }
+    .hhh_shadow {
+      pointer-events: none;
+      position: absolute;
+      top: -36px;
+      bottom: -36px;
+      left: -36px;
+      right: -36px;
+      z-index: -1;
+      img {
+        width: 100%;
+      }
+    }
+  }
+</style>

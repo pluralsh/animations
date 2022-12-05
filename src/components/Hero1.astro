@@ -1,9 +1,8 @@
 ---
-import PluralLogomark from "../components/PluralLogomark.astro";
-import SquareDeep from "../components/SquareDeep.astro";
-import BigSquare from "../components/BigSquare.astro";
-import SquareFlat from "../components/SquareFlat.astro";
+import AppsGrid from "./AppsGrid.astro";
 import ClustersGrid from "../client/ClustersGrid.astro";
+import SquareFlat from "./SquareFlat.astro";
+import { size as bigSquareSize } from "./BigSquare.astro";
 
 export const width = 620;
 export const height = 375;
@@ -13,40 +12,19 @@ const { padding = 0 } = Astro.props;
 const paddedWidth = height + padding * 2;
 const paddedHeight = height + padding * 2;
 
-const centerSquareWidth = 58;
-const centerSquareHeight = 58;
-const flatSquareWidth = 80;
 const gapX = 20;
 const gapY = 20;
-const xSpacing = centerSquareWidth + gapX;
-const ySpacing = centerSquareHeight + gapY;
-const bigSquareSize = 288;
-const centerSquaresWidth = 3 * centerSquareWidth + 2 * gapX;
-const centerSquaresHeight = 3 * centerSquareHeight + 2 * gapY;
-const centerSquaresTop = (bigSquareSize - centerSquaresHeight) / 2;
-const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
+const flatSquareWidth = gapX * 4;
+
 const flatSquareOffset = (bigSquareSize - flatSquareWidth) / 2;
 const flatSquareGap = flatSquareOffset - flatSquareWidth;
 
-import iconAirflow from "../assets/icons/icon-airflow.png";
-import iconSuperset from "../assets/icons/icon-superset.png";
-import iconDagster from "../assets/icons/icon-dagster.png";
 
 import iconMicrosoft from "../assets/icons/icon-microsoft.png";
 import iconAws from "../assets/icons/icon-aws.png";
 import iconGcp from "../assets/icons/icon-gcp.png";
 
 import dropShadow from "../assets/drop-shadow.png";
-
-const centerIconProps = [
-  [{}, {}, {}],
-  [{ image: iconAirflow, gradientStroke: true }, { hide: true }, {}],
-  [
-    {},
-    { image: iconSuperset, gradientStroke: true },
-    { image: iconDagster, gradientStroke: true },
-  ],
-];
 ---
 
 <div class="hhh_heroRoot" id="hhh_hero1">
@@ -82,78 +60,13 @@ const centerIconProps = [
         <SquareFlat class="hhh_bottomSquare hhh_square3" image={iconGcp} />
       </div>
     </div>
-    <div class="hhh_bigSquareContainer">
-      <BigSquare class="hhh_bigSquare" style={{ zIndex: -1 }} />
-      <div
-        class="hhh_squares"
-        style={{
-          top: `${centerSquaresTop}px`,
-          left: `${centerSquaresLeft}px`,
-        }}
-      >
-        <div
-          class:list={["hhh_middleSquare", "hhh_pluralLogo"]}
-          style={{
-            top: `${1 * ySpacing}px`,
-            left: `${1 * xSpacing}px`,
-          }}
-        >
-          <PluralLogomark />
-        </div>
-      </div>
-    </div>
-    <div
-      class="hhh_squares"
-      style={{
-        top: `${centerSquaresTop}px`,
-        left: `${centerSquaresLeft}px`,
-      }}
-    >
-      {
-        centerIconProps.map((row, j) => {
-          const x = row.map(({ image, gradientStroke, hide }, i) => {
-            return (
-              <div
-                class:list={["hhh_middleSquare", "hhh_appSquare"]}
-                style={{
-                  top: `${j * ySpacing}px`,
-                  left: `${i * xSpacing}px`,
-                  ...(hide ? { display: "none" } : {}),
-                }}
-              >
-                <div class="hhh_hoverShape">
-                  <div class:list={["hhh_shape"]}>
-                    {hide ? null : (
-                      <div>
-                        <SquareDeep
-                          gradientStroke={gradientStroke}
-                          image={image}
-                        />
-                      </div>
-                    )}
-                  </div>
-                </div>
-
-                <div class="hhh_shadow">
-                  <img src={(dropShadow as any).src} />
-                </div>
-              </div>
-            );
-          });
-          return <>{x}</>;
-        })
-      }
-    </div>
+    <AppsGrid gapX={gapX} gapY={gapY} />
   </div>
 </div>
 
 <style
   lang="scss"
   define:vars={{
-    centerSquareWidth: `${centerSquareWidth}px`,
-    centerSquareHeight: `${centerSquareHeight}px`,
-    centerSquaresWidth: `${centerSquaresWidth}px`,
-    centerSquaresHeight: `${centerSquaresHeight}px`,
     bigSquareSize: `${bigSquareSize}px`,
     flatSquareOffset: `${flatSquareOffset}px`,
     flatSquareGap: `${flatSquareGap}px`,
@@ -199,11 +112,6 @@ const centerIconProps = [
         left: 0;
       }
     }
-    .hhh_bigSquare {
-      position: absolute;
-      pointer-events: none;
-      z-index: -1;
-    }
     .hhh_bigSquareShadow {
       pointer-events: none;
       position: absolute;
@@ -215,78 +123,6 @@ const centerIconProps = [
       img {
         display: block;
         width: 100%;
-      }
-    }
-    .hhh_squares {
-      position: absolute;
-    }
-    .hhh_middleSquare {
-      position: absolute;
-      width: var(--centerSquareWidth);
-      height: var(--centerSquareWidth);
-      .hhh_shape {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        cursor: default;
-        border-radius: 3px;
-      }
-      &.hhh_appSquare {
-        :global(.side1),
-        :global(.side2) {
-          transition: 1s fill;
-        }
-        &:hover {
-          .hhh_hoverShape {
-            transform: translateZ(10px);
-            transition: transform 0.2s ease-out;
-            transform-origin: 50% 100%;
-          }
-          :global(.side1) {
-            fill: #9fa3f9;
-          }
-          :global(.side2) {
-            fill: #cfd1fc;
-          }
-          :global(.side1),
-          :global(.side2) {
-            transition: 0.05s fill;
-          }
-        }
-      }
-      .hhh_shadow {
-        pointer-events: none;
-        position: absolute;
-        top: -36px;
-        bottom: -36px;
-        left: -36px;
-        right: -36px;
-        z-index: -1;
-        img {
-          width: 100%;
-        }
-      }
-    }
-
-    .hhh_square {
-      position: absolute;
-      width: 30px;
-      height: 30px;
-      .hhh_shape {
-        position: absolute;
-        width: 100%;
-        height: 100%;
-        pointer-events: none;
-        cursor: default;
-        border-radius: 3px;
-      }
-      &:hover {
-        .hhh_hoverShape {
-          transform: rotateX(0) rotateY(-10deg) rotateZ(0) translateZ(5px);
-          transition: transform 0.1s ease-out;
-          transform-origin: 50% 100%;
-        }
       }
     }
   }
