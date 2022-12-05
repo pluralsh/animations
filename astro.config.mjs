@@ -5,7 +5,10 @@ import myConfig from './src/siteConfig';
 import compress from "astro-compress";
 
 // https://astro.build/config
+import image from "@astrojs/image";
+
+// https://astro.build/config
 export default defineConfig({
-  integrations: [compress()],
-  ...myConfig,
+  integrations: [compress(), image()],
+  ...myConfig
 });

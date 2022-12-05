@@ -5,6 +5,8 @@ import BigSquare from "../components/BigSquare.astro";
 import SquareFlat from "../components/SquareFlat.astro";
 import ClustersGrid from "../client/ClustersGrid.astro";
 import config from "../siteConfig";
+import { Image } from "@astrojs/image/components";
+
 const centerSquareWidth = 58;
 const centerSquareHeight = 58;
 const flatSquareWidth = 80;
@@ -20,19 +22,25 @@ const centerSquaresLeft = (bigSquareSize - centerSquaresWidth) / 2;
 const flatSquareOffset = (bigSquareSize - flatSquareWidth) / 2;
 const flatSquareGap = flatSquareOffset - flatSquareWidth;
 
-console.log("Astro", Astro);
+import iconAirflow from "../assets/icons/icon-airflow.png";
+import iconSuperset from "../assets/icons/icon-superset.png";
+import iconDagster from "../assets/icons/icon-dagster.png";
+
+import iconMicrosoft from "../assets/icons/icon-microsoft.png";
+import iconAws from "../assets/icons/icon-aws.png";
+import iconGcp from "../assets/icons/icon-gcp.png";
+
+import dropShadow from "../assets/drop-shadow.png";
+
+console.log('dropshadow', dropShadow)
 
 const centerIconProps = [
   [{}, {}, {}],
-  [
-    { src: `${config.base}/icons/icon-airflow.png`, gradientStroke: true },
-    { hide: true },
-    {},
-  ],
+  [{ image: iconAirflow, gradientStroke: true }, { hide: true }, {}],
   [
     {},
-    { src: `${config.base}/icons/icon-superset.png`, gradientStroke: true },
-    { src: `${config.base}/icons/icon-dagster.png`, gradientStroke: true },
+    { image: iconSuperset, gradientStroke: true },
+    { image: iconDagster, gradientStroke: true },
   ],
 ];
 ---
@@ -40,7 +48,7 @@ const centerIconProps = [
 <div class="hhh_heroRoot" id="hhh_hero1">
   <div class="hhh_main3dTransform">
     <div class="hhh_bigSquareShadow">
-      <img src={`${config.base}/drop-shadow.png`} />
+      <img src={(dropShadow as any).src} loading="eager" />
     </div>
   </div>
   <div id="hhh_bigSquareArea" class="hhh_all3dObjects hhh_main3dTransform">
@@ -60,20 +68,14 @@ const centerIconProps = [
       <div style={{ position: "absolute", left: `${flatSquareOffset * 0}px` }}>
         <SquareFlat
           class="hhh_bottomSquare hhh_square1"
-          src={`${config.base}/icons/icon-microsoft.png`}
+          image={iconMicrosoft}
         />
       </div>
       <div style={{ position: "absolute", left: `${flatSquareOffset * 1}px` }}>
-        <SquareFlat
-          class="hhh_bottomSquare hhh_square2"
-          src={`${config.base}/icons/icon-aws.png`}
-        />
+        <SquareFlat class="hhh_bottomSquare hhh_square2" image={iconAws} />
       </div>
       <div style={{ position: "absolute", left: `${flatSquareOffset * 2}px` }}>
-        <SquareFlat
-          class="hhh_bottomSquare hhh_square3"
-          src={`${config.base}/icons/icon-gcp.png`}
-        />
+        <SquareFlat class="hhh_bottomSquare hhh_square3" image={iconGcp} />
       </div>
     </div>
     <div class="hhh_bigSquareContainer">
@@ -105,7 +107,7 @@ const centerIconProps = [
     >
       {
         centerIconProps.map((row, j) => {
-          const x = row.map(({ src, gradientStroke, hide }, i) => {
+          const x = row.map(({ image, gradientStroke, hide }, i) => {
             return (
               <div
                 class:list={["hhh_middleSquare", "hhh_appSquare"]}
@@ -119,14 +121,17 @@ const centerIconProps = [
                   <div class:list={["hhh_shape"]}>
                     {hide ? null : (
                       <div>
-                        <SquareDeep gradientStroke={gradientStroke} src={src} />
+                        <SquareDeep
+                          gradientStroke={gradientStroke}
+                          image={image}
+                        />
                       </div>
                     )}
                   </div>
                 </div>
 
                 <div class="hhh_shadow">
-                  <img src={config.base + "/drop-shadow.png"} />
+                  <img src={(dropShadow as any).src} />
                 </div>
               </div>
             );

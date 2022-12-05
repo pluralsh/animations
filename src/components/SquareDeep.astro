@@ -1,8 +1,9 @@
 ---
-import {v1 as uuid} from "uuid";
+import { v1 as uuid } from "uuid";
+import { Image } from "@astrojs/image/components";
 import StrokeGradient from "./StrokeGradient.astro";
 const gradientId = `gradientSquareDeep_${uuid()}`;
-const { gradientStroke = false, src } = Astro.props;
+const { gradientStroke = false, image } = Astro.props;
 ---
 
 <div class="hhh_squareDeepRoot">
@@ -33,7 +34,7 @@ const { gradientStroke = false, src } = Astro.props;
     </svg>
   </div>
   <div class="hhh_squareDeepIcon">
-    <img src={src} />
+    {image && <img src={(image as any).src} loading="eager" />}
   </div>
 </div>
 <style lang="scss">

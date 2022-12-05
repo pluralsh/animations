@@ -1,14 +1,14 @@
 ---
 import StrokeGradient from "./StrokeGradient.astro";
 import { v1 as uuid } from "uuid";
-import config from "../siteConfig";
+
 const {
   class: className,
   size = 80,
   width = 80,
   height = 80,
   mode = "provider",
-  src,
+  image,
   ...props
 } = Astro.props;
 const connectorProps = {
@@ -25,8 +25,8 @@ const svgProps = {
   xmlns: "http://www.w3.org/2000/svg",
 };
 const gradientId = `gradientSquareFlat_${uuid()}`;
-const dottedLineSrc = `${config.base}/dotted-line@4x.png`;
-const dropShadowSrc = `${config.base}/drop-shadow.png`;
+import dottedLine from "../assets/dotted-line@4x.png";
+import dropShadow from "../assets/drop-shadow.png";
 ---
 
 <div
@@ -40,25 +40,25 @@ const dropShadowSrc = `${config.base}/drop-shadow.png`;
 >
   <div class="hhh_connector hhh_top">
     <div class="hhh_connectorInner">
-      <img class="hhh_connectorImg" src="" />
+      <img class="hhh_connectorImg" src={(dottedLine as any).src} loading="eager" />
     </div>
   </div>
   <div class="hhh_connector hhh_right">
     <div class="hhh_connectorInner">
-      <img class="hhh_connectorImg" src={dottedLineSrc} />
+      <img class="hhh_connectorImg" src={(dottedLine as any).src} loading="eager" />
     </div>
   </div>
   <div class="hhh_connector hhh_bottom">
     <div class="hhh_connectorInner">
-      <img class="hhh_connectorImg" src={dottedLineSrc} />
+      <img class="hhh_connectorImg" src={(dottedLine as any).src} loading="eager" />
     </div>
   </div>
   <div class="hhh_connector hhh_left">
     <div class="hhh_connectorInner">
-      <img class="hhh_connectorImg" src={dottedLineSrc} />
+      <img class="hhh_connectorImg" {...dottedLine as any} loading="eager" />
     </div>
   </div>
-  <div class="hhh_shadow"><img src={dropShadowSrc} /></div>
+  <div class="hhh_shadow"><img src={(dropShadow as any).src} loading="eager" /></div>
   <div class="hhh_squareShapeIn">
     <div class="hhh_squareShape">
       <svg
@@ -79,7 +79,7 @@ const dropShadowSrc = `${config.base}/drop-shadow.png`;
           d="m77.5 1c.8271 0 1.5.6729 1.5 1.5v75.5c0 .5514-.4486 1-1 1h-76c-.5514 0-1-.4486-1-1v-76c0-.5514.4486-1 1-1zm0-1h-75.5c-1.10456 0-2 .89542-2 2v76c0 1.10456.89544 2 2 2h76c1.10456 0 2-.89544 2-2v-75.5c0-1.38071-1.11929-2.5-2.5-2.5z"
           fill={`url(#${gradientId})`}></path>
       </svg>
-      {src && <img class="hhh_iconImg" src={src} />}
+      {image && <img class="hhh_iconImg" src={(image as any).src} loading="eager" />}
     </div>
   </div>
 </div>
