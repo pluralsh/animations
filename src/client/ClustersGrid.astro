@@ -3,7 +3,7 @@ import SquareFlat from "../components/SquareFlat.astro";
 import iconKubernetes from "../assets/icons/icon-k8s.png";
 
 const baseIconProps = {
-  src: (iconKubernetes as any).src,
+  image: (iconKubernetes as any),
   gradientStroke: true,
   hide: false,
   active: false,
@@ -27,7 +27,7 @@ const topOffset = bigSquareSize - (squareHeight * 3 + gapY * 2);
 <div class:list={["hhh_root", className]}>
   {
     iconProps.map((row, j) => {
-      const x = row.map(({ src, gradientStroke, hide }, i) => {
+      const x = row.map(({ image, gradientStroke, hide }, i) => {
         return (
           <div
             class:list={["hhh_clustersSquare"]}
@@ -41,7 +41,7 @@ const topOffset = bigSquareSize - (squareHeight * 3 + gapY * 2);
               <SquareFlat
                 mode="cluster"
                 gradientStroke={gradientStroke}
-                src={src}
+                image={image}
                 width={squareWidth}
                 height={squareHeight}
                 data-index-x={i}
