@@ -165,6 +165,10 @@ const centerIconProps = [
   }}
 >
   .hhh_heroRoot {
+    display: none;
+    &.hhh_start {
+      display: block;
+    }
     --moderateShadow: drop-shadow(0px 3px 6px rgba(14, 16, 21, 0.2))
       drop-shadow(0px 10px 20px rgba(14, 16, 21, 0.3));
     :global(*) {

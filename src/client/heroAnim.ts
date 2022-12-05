@@ -25,6 +25,9 @@ const highlightsTL = gsap
 
 const tl = gsap.timeline({ repeat: 0, repeatDelay: 2 });
 
+tl.call(() => {
+  document.querySelector('#hhh_hero1').classList.add("hhh_start");
+})
 tl.from(
   "#hhh_hero1 #hhh_bigSquareArea",
   {
