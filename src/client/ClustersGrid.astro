@@ -1,8 +1,9 @@
 ---
+import config from "../siteConfig";
 import SquareFlat from "../components/SquareFlat.astro";
 
 const baseIconProps = {
-  src: "icons/icon-k8s.png",
+  src: `${config.base}/icons/icon-k8s.png`,
   gradientStroke: true,
   hide: false,
   active: false,

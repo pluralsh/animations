@@ -24,18 +24,24 @@ console.log("Astro", Astro);
 
 const centerIconProps = [
   [{}, {}, {}],
-  [{ src: "icons/icon-airflow.png", gradientStroke: true }, { hide: true }, {}],
+  [
+    { src: `${config.base}/icons/icon-airflow.png`, gradientStroke: true },
+    { hide: true },
+    {},
+  ],
   [
     {},
-    { src: "icons/icon-superset.png", gradientStroke: true },
-    { src: "icons/icon-dagster.png", gradientStroke: true },
+    { src: `${config.base}/icons/icon-superset.png`, gradientStroke: true },
+    { src: `${config.base}/icons/icon-dagster.png`, gradientStroke: true },
   ],
 ];
 ---
 
 <div class="hhh_heroRoot" id="hhh_hero1">
   <div class="hhh_main3dTransform">
-    <div class="hhh_bigSquareShadow"><img src={`${config.base}/drop-shadow.png`} /></div>
+    <div class="hhh_bigSquareShadow">
+      <img src={`${config.base}/drop-shadow.png`} />
+    </div>
   </div>
   <div id="hhh_bigSquareArea" class="hhh_all3dObjects hhh_main3dTransform">
     <div
