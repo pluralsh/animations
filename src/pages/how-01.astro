@@ -1,8 +1,10 @@
 ---
 import IframeLayout from "../layouts/IframeLayout.astro";
-import HeroAnim1, { rootId, height, width } from "../components/Hero1.astro";
+import How01 from "../components/How01.astro";
 
-const PADDING = 40;
+import { height, width, rootId } from "../components/How01.astro";
+
+const PADDING = 30;
 const BASE_WIDTH = width;
 const BASE_HEIGHT = height;
 
@@ -19,7 +21,7 @@ console.log(`${Astro?.url?.pathname} height:`, BASE_HEIGHT + 2 * PADDING);
     data-root-id={rootId}
     style={{ width: "100%" }}
   >
-    <HeroAnim1 padding={PADDING} />
+    <How01 padding={PADDING} />
   </main>
   <script>
     (function () {

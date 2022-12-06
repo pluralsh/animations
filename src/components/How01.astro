@@ -1,12 +1,10 @@
 ---
 import AppsGrid from "./AppsGrid.astro";
-import ClustersGrid from "../client/ClustersGrid.astro";
-import SquareFlat from "./SquareFlat.astro";
 import { size as bigSquareSize } from "./BigSquare.astro";
 
-export const rootId = "hhh_hero1";
-export const width = 620;
-export const height = 375;
+export const width = 404;
+export const height = 222;
+export const rootId = "hhh_how1"
 
 const { padding = 0 } = Astro.props;
 
@@ -15,15 +13,6 @@ const paddedHeight = height + padding * 2;
 
 const gapX = 20;
 const gapY = 20;
-const flatSquareWidth = gapX * 4;
-
-const flatSquareOffset = (bigSquareSize - flatSquareWidth) / 2;
-const flatSquareGap = flatSquareOffset - flatSquareWidth;
-
-
-import iconMicrosoft from "../assets/icons/icon-microsoft.png";
-import iconAws from "../assets/icons/icon-aws.png";
-import iconGcp from "../assets/icons/icon-gcp.png";
 
 import dropShadow from "../assets/drop-shadow.png";
 ---
@@ -35,32 +24,6 @@ import dropShadow from "../assets/drop-shadow.png";
     </div>
   </div>
   <div id="hhh_bigSquareArea" class="hhh_all3dObjects hhh_main3dTransform">
-    <div
-      class="hhh_clustersGrid"
-      style={{
-        position: "absolute",
-        top: `${0}px`,
-        left: `${bigSquareSize + gapX * 3}px`,
-        height: `${bigSquareSize}px`,
-        width: `${bigSquareSize}px`,
-      }}
-    >
-      <ClustersGrid bigSquareSize={bigSquareSize} />
-    </div>
-    <div class="hhh_bottomSquaresContainer">
-      <div style={{ position: "absolute", left: `${flatSquareOffset * 0}px` }}>
-        <SquareFlat
-          class="hhh_bottomSquare hhh_square1"
-          image={iconMicrosoft}
-        />
-      </div>
-      <div style={{ position: "absolute", left: `${flatSquareOffset * 1}px` }}>
-        <SquareFlat class="hhh_bottomSquare hhh_square2" image={iconAws} />
-      </div>
-      <div style={{ position: "absolute", left: `${flatSquareOffset * 2}px` }}>
-        <SquareFlat class="hhh_bottomSquare hhh_square3" image={iconGcp} />
-      </div>
-    </div>
     <AppsGrid gapX={gapX} gapY={gapY} />
   </div>
 </div>
@@ -69,8 +32,6 @@ import dropShadow from "../assets/drop-shadow.png";
   lang="scss"
   define:vars={{
     bigSquareSize: `${bigSquareSize}px`,
-    flatSquareOffset: `${flatSquareOffset}px`,
-    flatSquareGap: `${flatSquareGap}px`,
     padding: `${padding}px`,
     heroHeight: `${height}px`,
     heroWidth: `${width}px`,
@@ -79,10 +40,6 @@ import dropShadow from "../assets/drop-shadow.png";
   }}
 >
   .hhh_heroRoot {
-    display: none;
-    &.hhh_start {
-      display: block;
-    }
     --moderateShadow: drop-shadow(0px 3px 6px rgba(14, 16, 21, 0.2))
       drop-shadow(0px 10px 20px rgba(14, 16, 21, 0.3));
     :global(*) {
@@ -97,7 +54,7 @@ import dropShadow from "../assets/drop-shadow.png";
     .hhh_main3dTransform {
       position: absolute;
       left: calc(58px + var(--padding));
-      top: calc(68px + var(--padding));
+      top: calc(-33px + var(--padding));
       transform: rotateX(57deg) rotateY(0) rotateZ(-45deg);
       transform-origin: 50% 50%;
       width: var(--bigSquareSize);
