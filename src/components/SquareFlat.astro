@@ -1,4 +1,5 @@
 ---
+import { size as bigSquareSize } from "./BigSquare.astro";
 import StrokeGradient from "./StrokeGradient.astro";
 import { v1 as uuid } from "uuid";
 
@@ -27,6 +28,9 @@ const svgProps = {
 const gradientId = `gradientSquareFlat_${uuid()}`;
 import dottedLine from "../assets/dotted-line@4x.png";
 import dropShadow from "../assets/drop-shadow.png";
+
+const squareOffset = (bigSquareSize - width) / 2;
+const squareGap = squareOffset - width;
 ---
 
 <div
@@ -40,17 +44,29 @@ import dropShadow from "../assets/drop-shadow.png";
 >
   <div class="hhh_connector hhh_top">
     <div class="hhh_connectorInner">
-      <img class="hhh_connectorImg" src={(dottedLine as any).src} loading="eager" />
+      <img
+        class="hhh_connectorImg"
+        src={(dottedLine as any).src}
+        loading="eager"
+      />
     </div>
   </div>
   <div class="hhh_connector hhh_right">
     <div class="hhh_connectorInner">
-      <img class="hhh_connectorImg" src={(dottedLine as any).src} loading="eager" />
+      <img
+        class="hhh_connectorImg"
+        src={(dottedLine as any).src}
+        loading="eager"
+      />
     </div>
   </div>
   <div class="hhh_connector hhh_bottom">
     <div class="hhh_connectorInner">
-      <img class="hhh_connectorImg" src={(dottedLine as any).src} loading="eager" />
+      <img
+        class="hhh_connectorImg"
+        src={(dottedLine as any).src}
+        loading="eager"
+      />
     </div>
   </div>
   <div class="hhh_connector hhh_left">
@@ -58,7 +74,9 @@ import dropShadow from "../assets/drop-shadow.png";
       <img class="hhh_connectorImg" {...dottedLine as any} loading="eager" />
     </div>
   </div>
-  <div class="hhh_shadow"><img src={(dropShadow as any).src} loading="eager" /></div>
+  <div class="hhh_shadow">
+    <img src={(dropShadow as any).src} loading="eager" />
+  </div>
   <div class="hhh_squareShapeIn">
     <div class="hhh_squareShape">
       <svg
@@ -79,7 +97,11 @@ import dropShadow from "../assets/drop-shadow.png";
           d="m77.5 1c.8271 0 1.5.6729 1.5 1.5v75.5c0 .5514-.4486 1-1 1h-76c-.5514 0-1-.4486-1-1v-76c0-.5514.4486-1 1-1zm0-1h-75.5c-1.10456 0-2 .89542-2 2v76c0 1.10456.89544 2 2 2h76c1.10456 0 2-.89544 2-2v-75.5c0-1.38071-1.11929-2.5-2.5-2.5z"
           fill={`url(#${gradientId})`}></path>
       </svg>
-      {image && <img class="hhh_iconImg" src={(image as any).src} loading="eager" />}
+      {
+        image && (
+          <img class="hhh_iconImg" src={(image as any).src} loading="eager" />
+        )
+      }
     </div>
   </div>
 </div>
@@ -89,6 +111,8 @@ import dropShadow from "../assets/drop-shadow.png";
   define:vars={{
     squareWidth: `${width}px`,
     squareHeight: `${height}px`,
+    squareGap: `${squareGap}px`,
+    squareOffset: `${squareOffset}px`,
   }}
 >
   @use "sass:color";
@@ -113,24 +137,6 @@ import dropShadow from "../assets/drop-shadow.png";
       clip-path: inset(0 $innerAmt 0 $outerAmt);
     }
   }
-  $providerConnectorInset: -20%;
-  $providerConnectorOutset: 65%;
-  @mixin connectorHighlightStart {
-    @include connectorMasks(
-      $progress: 0%,
-      $inset: $providerConnectorInset,
-      $outset: $providerConnectorOutset
-    );
-  }
-  @mixin connectorHighlightEnd {
-    @include connectorMasks(
-      $progress: 100%,
-      $inset: $providerConnectorInset,
-      $outset: $providerConnectorOutset
-    );
-  }
-
-  @include connectorHighlightStart();
 
   svg {
     position: absolute;
@@ -234,6 +240,14 @@ import dropShadow from "../assets/drop-shadow.png";
      Provider mode 
   */
   .hhh_squareRoot[data-mode="provider"] {
+    $providerConnectorInset: -20%;
+    $providerConnectorOutset: 65%;
+    @include connectorMasks(
+      $progress: 0%,
+      $inset: $providerConnectorInset,
+      $outset: $providerConnectorOutset
+    );
+
     /* Base */
     .hhh_icon {
     }
@@ -252,7 +266,11 @@ import dropShadow from "../assets/drop-shadow.png";
     /* Highlights */
     &.hhh_highlight,
     &:hover {
-      @include connectorHighlightEnd();
+      @include connectorMasks(
+        $progress: 100%,
+        $inset: $providerConnectorInset,
+        $outset: $providerConnectorOutset
+      );
 
       .hhh_squareShape,
       .hhh_shadow {
@@ -361,6 +379,80 @@ import dropShadow from "../assets/drop-shadow.png";
       }
       &.hhh_connectLeft .hhh_squareShape {
         transform: rotateY(-180deg);
+      }
+    }
+  }
+
+  /* 
+     Cloud-SCM mode 
+  */
+  .hhh_squareRoot[data-mode="cloud-scm"] {
+    $cloudScmConnectorInset: 20%;
+    $cloudScmConnectorOutset: 110%;
+    @include connectorMasks(
+      $progress: 100%,
+      $inset: $cloudScmConnectorInset,
+      $outset: $cloudScmConnectorOutset
+    );
+    /* Base */
+    .hhh_icon {
+    }
+    .hhh_iconImg {
+      filter: grayscale(100%);
+      opacity: 0.5;
+      transition: all 0.2s linear;
+    }
+
+    .hhh_squareShape,
+    .hhh_shadow {
+      transition: transform 0.2s ease-out;
+      transition-delay: 0;
+    }
+
+    &.hhh_rowSquareTop {
+      .hhh_shadow {
+        display: none;
+      }
+    }
+
+    &.hhh_middleSide.hhh_shiftRight,
+    &.hhh_middleSide.hhh_shiftLeft,
+    &.hhh_rightSide:not(.hhh_shiftLeft),
+    &.hhh_leftSide:not(.hhh_shiftRight) {
+      .hhh_squareShape,
+      .hhh_shadow {
+        transition-delay: 0.02s;
+        transition-timing-function: ease-in-out;
+      }
+    }
+    &.hhh_shiftRight {
+      .hhh_squareShape,
+      .hhh_shadow {
+        transform: var(--zTransform) translateX(var(--squareOffset));
+      }
+    }
+    &.hhh_shiftLeft {
+      .hhh_squareShape,
+      .hhh_shadow {
+        transform: var(--zTransform) translateX(calc(-1 * var(--squareOffset)));
+      }
+    }
+    &:hover {
+      .hhh_iconImg {
+        filter: grayscale(0%);
+        opacity: 1;
+      }
+      .hhh_gradientStroke {
+        opacity: 1;
+      }
+      .hhh_solidStroke {
+        opacity: 0;
+      }
+    }
+    &:hover {
+      .hhh_squareShape {
+        z-index: 100;
+        box-shadow: 0 0 15px 0 color.change(#494ff2, $alpha: 0.5);
       }
     }
   }

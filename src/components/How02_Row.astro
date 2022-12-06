@@ -1,0 +1,117 @@
+---
+interface Props {
+  connectSide?: "Bottom" | "Top" | "Right" | "Left";
+  icons: [string, string, string];
+  class?: string;
+}
+import { size as bigSquareSize } from "./BigSquare.astro";
+import SquareFlat from "./SquareFlat.astro";
+
+export const width = 404;
+export const height = 222;
+export const rootId = "hhh_how1";
+
+const { connectSide, icons = ["", "", ""], class: className } = Astro.props;
+
+const flatSquareWidth = 80;
+const flatSquareOffset = (bigSquareSize - flatSquareWidth) / 2;
+
+const connectClass = connectSide ? `hhh_connect${connectSide}` : "";
+---
+
+<div class:list={[className, "hhh_squaresRow"]}>
+  <div id="hhh_bigSquareArea" class="hhh_all3dObjects hhh_main3dTransform">
+    <div class="hhh_bottomSquaresContainer">
+      <div
+        class="hhh_rowSquareContainer"
+        style={{ left: `${flatSquareOffset * 1}px` }}
+      >
+        <SquareFlat
+          mode="cloud-scm"
+          class={"hhh_rowSquare hhh_middleSide hhh_square2 " + connectClass}
+          image={icons[1]}
+        />
+      </div>
+      <div
+        class="hhh_rowSquareContainer"
+        style={{ left: `${flatSquareOffset * 0}px` }}
+      >
+        <SquareFlat
+          mode="cloud-scm"
+          class="hhh_rowSquare hhh_leftSide hhh_square1"
+          image={icons[0]}
+        />
+      </div>
+      <div
+        class="hhh_rowSquareContainer"
+        style={{ left: `${flatSquareOffset * 2}px` }}
+      >
+        <SquareFlat
+          mode="cloud-scm"
+          class="hhh_rowSquare hhh_rightSide hhh_square3"
+          image={icons[2]}
+        />
+      </div>
+    </div>
+  </div>
+  <script>
+    const rows = document.querySelectorAll(`.hhh_squaresRow`);
+    rows.forEach((row) => {
+      const sqrL = row.querySelector(`.hhh_square1`);
+      const sqrR = row.querySelector(`.hhh_square3`);
+      const sqrM = row.querySelector(`.hhh_square2`);
+
+      sqrL.addEventListener("mouseenter", () => {
+        sqrL.classList.add("hhh_shiftRight");
+        sqrM.classList.add("hhh_shiftLeft");
+      });
+      sqrL.addEventListener("mouseleave", () => {
+        sqrL.classList.remove("hhh_shiftRight");
+        sqrM.classList.remove("hhh_shiftLeft");
+      });
+
+      sqrR.addEventListener("mouseenter", () => {
+        sqrR.classList.add("hhh_shiftLeft");
+        sqrM.classList.add("hhh_shiftRight");
+      });
+      sqrR.addEventListener("mouseleave", () => {
+        sqrR.classList.remove("hhh_shiftLeft");
+        sqrM.classList.remove("hhh_shiftRight");
+      });
+    });
+  </script>
+</div>
+
+<style
+  lang="scss"
+  define:vars={{
+    bigSquareSize: `${bigSquareSize}px`,
+    heroHeight: `${height}px`,
+    heroWidth: `${width}px`,
+  }}
+>
+  .hhh_squaresRow {
+    position: absolute;
+  }
+  .hhh_square2 {
+    --zTransform: translateZ(-10px) !important;
+  }
+  .hhh_rowSquareContainer {
+    position: absolute;
+  }
+  .hhh_rowSquare {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .hhh_bottomSquaresContainer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    .bottomSquare {
+      position: absolute;
+      top: 0;
+      left: 0;
+    }
+  }
+</style>

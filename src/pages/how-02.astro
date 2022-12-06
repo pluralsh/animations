@@ -1,6 +1,8 @@
 ---
 import IframeLayout from "../layouts/IframeLayout.astro";
-import How01, { height, width, rootId } from "../components/How01.astro";
+import How02, { height, width, rootId } from "../components/How02.astro";
+
+
 
 const padding = 30;
 ---
@@ -13,5 +15,9 @@ const padding = 30;
   rootId={rootId}
 >
   <script src="../client/how01.ts"></script>
-  <How01 padding={padding} />
+  <How02
+    padding={padding}
+    connectSide="Bottom"
+    icons="/"
+  />
 </IframeLayout>

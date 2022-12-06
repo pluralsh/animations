@@ -1,0 +1,85 @@
+---
+import { size as bigSquareSize } from "./BigSquare.astro";
+import How02Row from "./How02_Row.astro";
+import SquareFlat from "./SquareFlat.astro";
+
+import iconMicrosoft from "../assets/icons/icon-microsoft.png";
+import iconAws from "../assets/icons/icon-aws.png";
+import iconGcp from "../assets/icons/icon-gcp.png";
+
+import iconGithub from "../assets/icons/icon-github.png";
+import iconBitbucket from "../assets/icons/icon-bitbucket.png";
+import iconGitlab from "../assets/icons/icon-gitlab.png";
+
+export const width = 404;
+export const height = 222;
+export const rootId = "hhh_how1";
+
+const { padding = 0 } = Astro.props;
+
+const paddedWidth = width + padding * 2;
+
+const gapX = 20;
+
+const flatSquareWidth = 80;
+const squareGap = (bigSquareSize - flatSquareWidth * 3) / 2;
+---
+
+<div class="hhh_heroRoot" id={rootId}>
+  <div id="hhh_bigSquareArea" class="hhh_all3dObjects hhh_main3dTransform">
+    <How02Row
+      class="top"
+      connectSide={"Bottom"}
+      icons={[iconMicrosoft, iconAws, iconGcp]}
+    />
+    <How02Row class="bottom" icons={[iconGitlab, iconGithub, iconBitbucket]} />
+  </div>
+</div>
+
+<style
+  lang="scss"
+  define:vars={{
+    bigSquareSize: `${bigSquareSize}px`,
+    padding: `${padding}px`,
+    heroHeight: `${height}px`,
+    flatSquareWidth: `${flatSquareWidth}px`,
+    paddedWidth: `${paddedWidth}px`,
+    squareGap: `${squareGap}px`,
+  }}
+>
+  .hhh_heroRoot {
+    --moderateShadow: drop-shadow(0px 3px 6px rgba(14, 16, 21, 0.2))
+      drop-shadow(0px 10px 20px rgba(14, 16, 21, 0.3));
+    :global(*) {
+      transform-style: preserve-3d;
+      transform-origin: 50% 50%;
+      user-select: none;
+    }
+    transform-origin: 0 0;
+    width: var(--paddedWidth);
+    height: var(--paddedHeight);
+    position: relative;
+    .hhh_main3dTransform {
+      position: absolute;
+      left: calc(58px + var(--padding));
+      top: calc(-33px + var(--padding));
+      transform: rotateX(57deg) rotateY(0) rotateZ(-45deg);
+      transform-origin: 50% 50%;
+      width: var(--bigSquareSize);
+      height: var(--bigSquareSize);
+    }
+    .hhh_bottomSquaresContainer {
+      position: absolute;
+      top: 0;
+      left: 0;
+      .bottomSquare {
+        position: absolute;
+        top: 0;
+        left: 0;
+      }
+    }
+    .bottom {
+      top: calc(var(--flatSquareWidth) + (var(--squareGap) * 1.5));
+    }
+  }
+</style>
