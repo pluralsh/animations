@@ -4,41 +4,16 @@ import How01 from "../components/How01.astro";
 
 import { height, width, rootId } from "../components/How01.astro";
 
-const PADDING = 30;
-const BASE_WIDTH = width;
-const BASE_HEIGHT = height;
-
-console.log(`${Astro?.url?.pathname} width:`, BASE_WIDTH + 2 * PADDING);
-console.log(`${Astro?.url?.pathname} height:`, BASE_HEIGHT + 2 * PADDING);
+const padding = 30;
 ---
 
-<IframeLayout title="My animation">
-  <script src="../client/heroAnim.ts"></script>
-  <main
-    id="main"
-    data-width={BASE_WIDTH + 2 * PADDING}
-    data-height={BASE_HEIGHT + 2 * PADDING}
-    data-root-id={rootId}
-    style={{ width: "100%" }}
-  >
-    <How01 padding={PADDING} />
-  </main>
-  <script>
-    (function () {
-      const dataset = document.getElementById("main").dataset;
-      const HERO_WIDTH = Number(dataset.width);
-      const rootId = dataset.rootId;
-      function setSize() {
-        const frameWidth = window.innerWidth;
-        const resize = `${(frameWidth / HERO_WIDTH) * 100}%`;
-        const hero = document.querySelector(`#${rootId}`);
-        (hero as HTMLElement).style.transform = `scale(${resize})`;
-      }
-
-      window.addEventListener("resize", function (e) {
-        setSize();
-      });
-      setSize();
-    })();
-  </script>
+<IframeLayout
+  title="01 - Select your applications"
+  padding={padding}
+  baseWidth={width}
+  baseHeight={height}
+  rootId={rootId}
+>
+  <script src="../client/how01.ts"></script>
+  <How01 padding={padding} />
 </IframeLayout>
