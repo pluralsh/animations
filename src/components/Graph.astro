@@ -13,6 +13,9 @@ const { color, ceiling, floor } = data[colorIdx];
 
 export const size = 288;
 const gradientId = `gradientGraph_${uuid()}`;
+const glowId = `gradientGraphGlow_${uuid()}`;
+
+const xPadding = 20;
 
 const gridCount = 6;
 const nodeCount = gridCount + 1;
@@ -23,25 +26,48 @@ const nodes = generateLineNodes({
   floor,
   ceiling,
   spacing: gridGap,
+  xPadding: xPadding,
 });
 const pathString = constructPath(nodes);
 ---
 
 <div class:list={["hhh_graph", className]}>
   <svg
-    viewBox={`0 0 ${size} ${size}`}
+    viewBox={`0 0 ${size + (xPadding * 2)} ${size}`}
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink"
     data-graph=""
-    data-color={color}
+    data-color={color}‰
     data-ceiling={ceiling}
     data-floor={floor}
     data-node-count={nodeCount}
   >
+    <defs>
+      <filter id={glowId} height="300%" width="300%" x="-75%" y="-75%">
+        <!-- Use a gaussian blur to create the soft blurriness of the glow -->
+        <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blurred"
+        ></feGaussianBlur>
+
+        <!-- Change the colour -->
+        <feFlood flood-color={color} result="glowColor" flood-opacity="0.5"
+        ></feFlood>
+
+        <!-- Color in the glows -->
+        <feComposite
+          in="glowColor"
+          in2="blurred"
+          operator="in"
+          result="softGlow_colored"></feComposite>
+
+        <!--	Layer the effects together -->
+        <feBlend in="softGlow_colored" in2="SourceGraphic" mode="add"></feBlend>
+      </filter>
+    </defs>
     <GraphGradient id={gradientId} color={color} />
     {
       (
         <path
+          filter={`url(#${glowId})`}
           fill={`url(#${gradientId})`}
           stroke={color}
           stroke-width="1"
@@ -52,7 +78,14 @@ const pathString = constructPath(nodes);
   </svg>
 </div>
 
-<style lang="scss" define:vars={{ gridGap: `${gridGap}px` }}>
+<style
+  lang="scss"
+  define:vars={{
+    gridGap: `${gridGap}px`,
+    shadowColor: `${color}`,
+    svgOffset: `${xPadding}px`,
+  }}
+>
   svg {
     position: absolute;
     top: 0;
@@ -61,8 +94,8 @@ const pathString = constructPath(nodes);
   .hhh_graph {
     position: absolute;
     top: 0;
-    left: 1px;
-    width: 286px;
+    left: calc(1px - var(--svgOffset));
+    width: calc(286px + (var(--svgOffset) * 2));
     overflow: visible;
     transform-origin: 0% 0%;
     transform: rotateX(90deg);
@@ -87,7 +120,7 @@ const pathString = constructPath(nodes);
       nodeCount: Number(nodeCount),
       floor: Number(floor),
       ceiling: Number(ceiling),
-      spacing: Number(spacing)
+      spacing: Number(spacing),
     });
     const pathString = constructPath(line);
     console.log({ line, pathString });

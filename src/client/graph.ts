@@ -2,11 +2,11 @@ export const data = [
   {
     color: "#4A51F2",
     ceiling: 100,
-    floor: 10,
+    floor: 20,
   },
   {
     color: "#3CECAF",
-    ceiling: 100,
+    ceiling: 65,
     floor: 10,
   },
   {
@@ -21,15 +21,22 @@ export function generateLineNodes({
   spacing,
   floor,
   ceiling,
+  xPadding,
 }: {
   nodeCount: number;
   floor: number;
   ceiling: number;
   spacing: number;
+  xPadding: number;
 }) {
   const nodes: [number, number][] = new Array(nodeCount);
-  for (let i = 0; i < nodeCount ; ++i) {
-    nodes[i] = [spacing * i, i === 0 || i === nodeCount - 1 ? 0 : Math.random() * (ceiling - floor) + floor];
+  for (let i = 0; i < nodeCount; ++i) {
+    nodes[i] = [
+      xPadding + (spacing * i),
+      i === 0 || i === nodeCount - 1
+        ? 0
+        : Math.random() * (ceiling - floor) + floor,
+    ];
   }
   return nodes;
 }
