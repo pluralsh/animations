@@ -92,6 +92,7 @@ const pathString = constructPath(nodes);
     GraphNodeList,
     nodesToVals,
     valsToNodes,
+    valsToGsapOptions,
   } from "../client/graph";
   import gsap from "gsap";
   const SPEED = 0.5; // steps per sec
@@ -125,26 +126,21 @@ const pathString = constructPath(nodes);
       let currentVals = nodesToVals(currentNodes);
       let toVals = nodesToVals(updateLineNodes(currentNodes, opts));
       const options = {
-        ...toVals,
+        ...valsToGsapOptions(toVals),
         duration: STEP_DELAY,
         delay: delay,
         ease: "sine.inOut",
-        onStart: () => {
-          console.log("start", graphPath.getAttribute("d"));
-        },
         onUpdate: (x) => {
-          //   console.log("nextVal[1]", currentVals[1]);
           currentNodes = valsToNodes(currentVals, opts);
           const nextPath = constructPath(currentNodes);
           graphPath.setAttribute("d", nextPath);
         },
         onComplete: () => {
-          console.log("done", graphPath.getAttribute("d"));
           tweenToNext();
         },
       };
       console.log("options", options);
-      gsap.to(currentVals, options);
+      gsap.to(currentVals, options );
     }
     console.log("graphclasses", graph.classList);
     const delay = graph.classList.contains("hhh_graph1")

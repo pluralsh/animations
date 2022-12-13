@@ -50,8 +50,8 @@ type NodeOptions = {
   xPadding: number;
 };
 
-export const nodesToVals = (nl: GraphNodeList) => {
-  return nl.map((n) => n[1]);
+export const nodesToVals = (nodes: GraphNodeList) => {
+  return nodes.map((n) => n[1]);
 };
 export const valsToNodes = (
   vals: number[],
@@ -59,6 +59,11 @@ export const valsToNodes = (
 ): GraphNodeList => {
   const { xPadding, spacing } = opts;
   return vals.map((v, i) => [xPadding + spacing * i, v]);
+};
+export const valsToGsapOptions = (nodes: number[]): Record<number, number> => {
+  return nodes.reduce((prev, cur, i) => {
+    return { ...prev, [i]: cur };
+  }, {});
 };
 
 const generateNode = (
