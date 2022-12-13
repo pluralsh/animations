@@ -1,18 +1,18 @@
 export const data = [
   {
     color: "#4A51F2",
-    ceiling: 100,
+    ceiling: 150,
     floor: 20,
   },
   {
     color: "#3CECAF",
-    ceiling: 70,
-    floor: 10,
+    ceiling: 100,
+    floor: 7,
   },
   {
     color: "#5CC3FF",
-    ceiling: 40,
-    floor: 5,
+    ceiling: 50,
+    floor: 3,
   },
 ];
 
@@ -23,7 +23,7 @@ function easeOutCubicReverse(x: number): number {
   return 1 - Math.pow(x, 3);
 }
 
-function powerDist(x: number, power: number = 2): number {
+function powerDist(x: number, power: number = 3): number {
   if (x < 0.5) {
     return 1 - Math.pow(1 - x * 2, power);
   } else {
@@ -36,7 +36,7 @@ function powerDist(x: number, power: number = 2): number {
 // }
 
 function graphScalingFunc(x: number): number {
-  return powerDist(x, 2);
+  return powerDist(x);
 }
 
 export type GraphNode = [number, number];
@@ -48,6 +48,17 @@ type NodeOptions = {
   ceiling: number;
   spacing: number;
   xPadding: number;
+};
+
+export const nodesToVals = (nl: GraphNodeList) => {
+  return nl.map((n) => n[1]);
+};
+export const valsToNodes = (
+  vals: number[],
+  opts: NodeOptions
+): GraphNodeList => {
+  const { xPadding, spacing } = opts;
+  return vals.map((v, i) => [xPadding + spacing * i, v]);
 };
 
 const generateNode = (
@@ -66,7 +77,10 @@ export function generateLineNodes(opts: NodeOptions): GraphNodeList {
   return nodes;
 }
 
-export function updateLineNodes(nodes: GraphNodeList, opts: NodeOptions): GraphNodeList {
+export function updateLineNodes(
+  nodes: GraphNodeList,
+  opts: NodeOptions
+): GraphNodeList {
   return nodes.map((node, i) => {
     if (i === nodes.length - 1) {
       const node = generateNode(i, opts);
@@ -85,6 +99,6 @@ export function constructPath(vals: GraphNodeList) {
     const y = val[1];
     const scaledY = y * multiplier;
 
-    return `${str} ${i === 0 ? "M" : i === 1 ? "L" : ""}${x},${scaledY}`;
+    return `${str}${i === 0 ? "M" : i === 1 ? "L" : ""}${x},${scaledY} `;
   }, "");
 }

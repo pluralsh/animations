@@ -31,19 +31,21 @@ const nodes = generateLineNodes({
 const pathString = constructPath(nodes);
 ---
 
-<div class:list={["hhh_graph", className]}>
+<div
+  class:list={["hhh_graph", className]}
+  data-graph
+  data-color={color}
+  data-ceiling={ceiling}
+  data-floor={floor}
+  data-node-count={nodeCount}
+  data-x-padding={xPadding}
+  data-spacing={spacing}
+  data-initial-nodes={JSON.stringify(nodes)}
+>
   <svg
     viewBox={`0 0 ${size + xPadding * 2} ${size}`}
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink"
-    data-graph=""
-    data-color={color}
-    data-ceiling={ceiling}
-    data-floor={floor}
-    data-node-count={nodeCount}
-    data-x-padding={xPadding}
-    data-spacing={spacing}
-    data-initial-nodes={JSON.stringify(nodes)}
   >
     <defs>
       <filter id={glowId} height="300%" width="300%" x="-75%" y="-75%">
@@ -63,7 +65,8 @@ const pathString = constructPath(nodes);
           result="softGlow_colored"></feComposite>
 
         <!--	Layer the effects together -->
-        <feBlend in="softGlow_colored" in2="SourceGraphic" mode="add"></feBlend>
+        <feBlend in="softGlow_colored" in2="SourceGraphic" mode="screen"
+        ></feBlend>
       </filter>
     </defs>
     <GraphGradient id={gradientId} color={color} />
@@ -87,9 +90,12 @@ const pathString = constructPath(nodes);
     constructPath,
     updateLineNodes,
     GraphNodeList,
+    nodesToVals,
+    valsToNodes,
   } from "../client/graph";
-  const SPEED = 2; // steps per sec
-  const STEP_DELAY = (1 / SPEED) * 1000; // msec
+  import gsap from "gsap";
+  const SPEED = 0.5; // steps per sec
+  const STEP_DELAY = 1 / SPEED; // sec
 
   const graphs = document.querySelectorAll<HTMLElement>("*[data-graph]");
   graphs.forEach((graph) => {
@@ -113,15 +119,40 @@ const pathString = constructPath(nodes);
     let nextNodes = updateLineNodes(initialNodes, opts);
     let nextPath = constructPath(nextNodes);
 
-    console.log("nextPath", nextPath);
-    function updateFunc() {
-      console.log("nextNodes", nextNodes);
-      graphPath.setAttribute("d", nextPath);
-      nextNodes = updateLineNodes(nextNodes, opts);
-      nextPath = constructPath(nextNodes);
-      setTimeout(updateFunc, STEP_DELAY);
+    let currentNodes = initialNodes;
+
+    function tweenToNext(delay = 0) {
+      let currentVals = nodesToVals(currentNodes);
+      let toVals = nodesToVals(updateLineNodes(currentNodes, opts));
+      const options = {
+        ...toVals,
+        duration: STEP_DELAY,
+        delay: delay,
+        ease: "sine.inOut",
+        onStart: () => {
+          console.log("start", graphPath.getAttribute("d"));
+        },
+        onUpdate: (x) => {
+          //   console.log("nextVal[1]", currentVals[1]);
+          currentNodes = valsToNodes(currentVals, opts);
+          const nextPath = constructPath(currentNodes);
+          graphPath.setAttribute("d", nextPath);
+        },
+        onComplete: () => {
+          console.log("done", graphPath.getAttribute("d"));
+          tweenToNext();
+        },
+      };
+      console.log("options", options);
+      gsap.to(currentVals, options);
     }
-    setTimeout(updateFunc, STEP_DELAY);
+    console.log("graphclasses", graph.classList);
+    const delay = graph.classList.contains("hhh_graph1")
+      ? 0
+      : graph.classList.contains("hhh_graph2")
+      ? STEP_DELAY * 0.333
+      : STEP_DELAY * 0.666;
+    tweenToNext(delay);
   });
 </script>
 <style
