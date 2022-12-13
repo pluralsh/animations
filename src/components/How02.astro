@@ -12,12 +12,13 @@ import iconBitbucket from "../assets/icons/icon-bitbucket.png";
 import iconGitlab from "../assets/icons/icon-gitlab.png";
 
 export const width = 404;
-export const height = 222;
+export const height = 187;
 export const rootId = "hhh_how1";
 
 const { padding = 0 } = Astro.props;
 
 const paddedWidth = width + padding * 2;
+const paddedHeight = height + padding * 2;
 
 const gapX = 20;
 
@@ -44,16 +45,19 @@ const squareGap = (bigSquareSize - flatSquareWidth * 3) / 2;
     heroHeight: `${height}px`,
     flatSquareWidth: `${flatSquareWidth}px`,
     paddedWidth: `${paddedWidth}px`,
+    paddedHeight: `${paddedHeight}px`,
     squareGap: `${squareGap}px`,
   }}
 >
+  :global(*) {
+    transform-origin: 50% 50%;
+    user-select: none;
+  }
   .hhh_heroRoot {
     --moderateShadow: drop-shadow(0px 3px 6px rgba(14, 16, 21, 0.2))
       drop-shadow(0px 10px 20px rgba(14, 16, 21, 0.3));
     :global(*) {
       transform-style: preserve-3d;
-      transform-origin: 50% 50%;
-      user-select: none;
     }
     transform-origin: 0 0;
     width: var(--paddedWidth);
@@ -61,7 +65,7 @@ const squareGap = (bigSquareSize - flatSquareWidth * 3) / 2;
     position: relative;
     .hhh_main3dTransform {
       position: absolute;
-      left: calc(58px + var(--padding));
+      left: calc(91px + var(--padding));
       top: calc(-33px + var(--padding));
       transform: rotateX(57deg) rotateY(0) rotateZ(-45deg);
       transform-origin: 50% 50%;
