@@ -3,7 +3,12 @@ interface Props {
   class?: string;
   color: 0 | 1 | 2;
 }
-import { constructPath, data, generateLineNodes } from "../client/graph";
+import {
+  constructPath,
+  data,
+  generateLineNodes,
+  updateLineNodes,
+} from "../client/graph";
 
 import GraphGradient from "./GraphGradient.astro";
 import { v1 as uuid } from "uuid";
@@ -19,13 +24,13 @@ const xPadding = 20;
 
 const gridCount = 6;
 const nodeCount = gridCount + 1;
-const gridGap = size / gridCount;
+const spacing = size / gridCount;
 
 const nodes = generateLineNodes({
   nodeCount,
   floor,
   ceiling,
-  spacing: gridGap,
+  spacing: spacing,
   xPadding: xPadding,
 });
 const pathString = constructPath(nodes);
@@ -33,14 +38,17 @@ const pathString = constructPath(nodes);
 
 <div class:list={["hhh_graph", className]}>
   <svg
-    viewBox={`0 0 ${size + (xPadding * 2)} ${size}`}
+    viewBox={`0 0 ${size + xPadding * 2} ${size}`}
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink"
     data-graph=""
-    data-color={color}‰
+    data-color={color}
     data-ceiling={ceiling}
     data-floor={floor}
     data-node-count={nodeCount}
+    data-x-padding={xPadding}
+    data-spacing={spacing}
+    data-initial-nodes={JSON.stringify(nodes)}
   >
     <defs>
       <filter id={glowId} height="300%" width="300%" x="-75%" y="-75%">
@@ -67,6 +75,7 @@ const pathString = constructPath(nodes);
     {
       (
         <path
+          data-graph-path
           filter={`url(#${glowId})`}
           fill={`url(#${gradientId})`}
           stroke={color}
@@ -78,10 +87,53 @@ const pathString = constructPath(nodes);
   </svg>
 </div>
 
+<script>
+  import {
+    generateLineNodes,
+    constructPath,
+    updateLineNodes,
+  } from "../client/graph";
+  const graphs = document.querySelectorAll<HTMLElement>("*[data-graph]");
+  graphs.forEach((graph) => {
+    const graphPath = graph.querySelector("[data-graph-path]");
+    const dataset = graph.dataset;
+    const nodeCount = Number(dataset.nodeCount);
+    const floor = Number(dataset.floor);
+    const ceiling = Number(dataset.ceiling);
+    const spacing = Number(dataset.spacing);
+    const xPadding = Number(dataset.xPadding);
+    const initialNodes = JSON.parse(dataset.initialNodes) as NodeList;
+    const opts = {
+      nodeCount,
+      floor,
+      ceiling,
+      spacing,
+      xPadding,
+    };
+    console.log("dataset", dataset);
+    const pathString = constructPath(initialNodes);
+    console.log("d before", graphPath.getAttribute("d"));
+    graphPath.setAttribute("d", pathString);
+    console.log("d after", graphPath.getAttribute("d"));
+
+    console.log({ initialNodes, pathString });
+    let nextNodes = updateLineNodes(initialNodes, opts);
+    let nextPath = constructPath(nextNodes);
+    console.log("nextPath", nextPath);
+    function updateFunc() {
+      console.log("nextNodes", nextNodes);
+      graphPath.setAttribute("d", nextPath);
+      nextNodes = updateLineNodes(nextNodes, opts);
+      nextPath = constructPath(nextNodes);
+      setTimeout(updateFunc, 500);
+    }
+    setTimeout(updateFunc, 500);
+  });
+</script>
 <style
   lang="scss"
   define:vars={{
-    gridGap: `${gridGap}px`,
+    gridGap: `${spacing}px`,
     shadowColor: `${color}`,
     svgOffset: `${xPadding}px`,
   }}
@@ -110,19 +162,3 @@ const pathString = constructPath(nodes);
     top: calc(var(--gridGap) * 5);
   }
 </style>
-<script>
-  import { generateLineNodes, constructPath } from "../client/graph";
-  const graphs = document.querySelectorAll<HTMLElement>("*[data-graph]");
-  graphs.forEach((graph) => {
-    const dataset = graph.dataset;
-    const { color, ceiling, floor, nodeCount, spacing } = graph.dataset;
-    const line = generateLineNodes({
-      nodeCount: Number(nodeCount),
-      floor: Number(floor),
-      ceiling: Number(ceiling),
-      spacing: Number(spacing),
-    });
-    const pathString = constructPath(line);
-    console.log({ line, pathString });
-  });
-</script>
