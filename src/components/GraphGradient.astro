@@ -1,0 +1,32 @@
+---
+const {
+  id = "graphGradient1",
+  x1 = "0%",
+  x2 = "0%",
+  y1 = "0%",
+  y2 = "100%",
+  class: className,
+  color = "#ffffff",
+} = Astro.props;
+
+/*
+cx: This attribute defines the x coordinate of the end circle of the radial gradient. Value type: <length> ; Default value: 50%; Animatable: yes
+cy: This attribute defines the y coordinate of the end circle of the radial gradient. Value type: <length> ; Default value: 50%; Animatable: yes
+fr: This attribute defines the radius of the start circle of the radial gradient. The gradient will be drawn such that the 0% <stop> is mapped to the perimeter of the start circle. Value type: <length> ; Default value: 0%; Animatable: yes
+fx: This attribute defines the x coordinate of the start circle of the radial gradient. Value type: <length> ; Default value: Same as cx; Animatable: yes
+fy: This attribute defines the y coordinate of the start circle of the radial gradient. Value type: <length> ; Default value: Same as cy; Animatable: yes
+*/
+---
+
+<linearGradient
+  id={id}
+  class:list={[className, "hhh_graphGradient"]}
+  x1={x1}
+  x2={x2}
+  y1={y1}
+  y2={y2}
+  gradientUnits="objectBoundingBox"
+>
+  <stop offset="0%" stop-color={color} stop-opacity="0.05"></stop>
+  <stop offset="100%" stop-color={color} stop-opacity="0.35"></stop>
+</linearGradient>

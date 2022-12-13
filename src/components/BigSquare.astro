@@ -1,10 +1,18 @@
 ---
+interface Props {
+  class?: string;
+  showGrid?: boolean;
+}
 import StrokeGradient from "./StrokeGradient.astro";
-import {v1 as uuid} from 'uuid';
+import { v1 as uuid } from "uuid";
 
-const { class: className } = Astro.props;
+const { class: className, showGrid = false } = Astro.props;
 export const size = 288;
 const gradientId = `gradientBigSquare_${uuid()}`;
+
+const gridCount = 6;
+const lines = [...Array(gridCount - 1)];
+const gridGap = size / gridCount;
 ---
 
 <svg
@@ -15,6 +23,26 @@ const gradientId = `gradientBigSquare_${uuid()}`;
 >
   <StrokeGradient id={gradientId} />
   <rect fill="#1c2029" height={`${size}`} rx="7.37577" width={`${size}`}></rect>
+  {
+    showGrid && (
+      <g>
+        {lines.map((_, i) => (
+          <path
+            stroke="#2A2E37"
+            stroke-width="1"
+            d={`M1,${gridGap * (i + 1)} h${size - 2}`}
+          />
+        ))}
+        {lines.map((_, i) => (
+          <path
+            stroke="#2A2E37"
+            stroke-width="1"
+            d={`M${gridGap * (i + 1)},1 v${size - 2}`}
+          />
+        ))}
+      </g>
+    )
+  }
   <path
     fill={`url(#${gradientId})`}
     d="m280.62424 1c3.51559 0 6.37576 2.86015 6.37576 6.37577v273.24847c0 3.51561-2.86017 6.37576-6.37576 6.37576h-273.24848c-3.51561 0-6.37576-2.86015-6.37576-6.37576v-273.24847c0-3.51562 2.86015-6.37577 6.37576-6.37577zm0-1h-273.24848c-4.07353 0-7.37576 3.30223-7.37576 7.37577v273.24847c0 4.07353 3.30223 7.37576 7.37576 7.37576h273.24848c4.07355 0 7.37576-3.30223 7.37576-7.37576v-273.24847c0-4.07354-3.30222-7.37577-7.37576-7.37577z"

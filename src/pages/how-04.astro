@@ -1,0 +1,23 @@
+---
+import IframeLayout from "../layouts/IframeLayout.astro";
+import How04, { height, width, rootId } from "../components/How04.astro";
+
+
+
+const padding = 30;
+---
+
+<IframeLayout
+  title="04 - Maintain & Scale with Plural Console"
+  padding={padding}
+  baseWidth={width}
+  baseHeight={height}
+  rootId={rootId}
+>
+  <script src="../client/how04.ts"></script>
+  <How04
+    padding={padding}
+    connectSide="Bottom"
+    icons="/"
+  />
+</IframeLayout>

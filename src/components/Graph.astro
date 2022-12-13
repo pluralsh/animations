@@ -1,0 +1,95 @@
+---
+interface Props {
+  class?: string;
+  color: 0 | 1 | 2;
+}
+import { constructPath, data, generateLineNodes } from "../client/graph";
+
+import GraphGradient from "./GraphGradient.astro";
+import { v1 as uuid } from "uuid";
+
+const { class: className, color: colorIdx = 0 } = Astro.props;
+const { color, ceiling, floor } = data[colorIdx];
+
+export const size = 288;
+const gradientId = `gradientGraph_${uuid()}`;
+
+const gridCount = 6;
+const nodeCount = gridCount + 1;
+const gridGap = size / gridCount;
+
+const nodes = generateLineNodes({
+  nodeCount,
+  floor,
+  ceiling,
+  spacing: gridGap,
+});
+const pathString = constructPath(nodes);
+---
+
+<div class:list={["hhh_graph", className]}>
+  <svg
+    viewBox={`0 0 ${size} ${size}`}
+    xmlns="http://www.w3.org/2000/svg"
+    xmlns:xlink="http://www.w3.org/1999/xlink"
+    data-graph=""
+    data-color={color}
+    data-ceiling={ceiling}
+    data-floor={floor}
+    data-node-count={nodeCount}
+  >
+    <GraphGradient id={gradientId} color={color} />
+    {
+      (
+        <path
+          fill={`url(#${gradientId})`}
+          stroke={color}
+          stroke-width="1"
+          d={pathString}
+        />
+      )
+    }
+  </svg>
+</div>
+
+<style lang="scss" define:vars={{ gridGap: `${gridGap}px` }}>
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .hhh_graph {
+    position: absolute;
+    top: 0;
+    left: 1px;
+    width: 286px;
+    overflow: visible;
+    transform-origin: 0% 0%;
+    transform: rotateX(90deg);
+  }
+  .hhh_graph1 {
+    top: calc(var(--gridGap) * 1);
+  }
+  .hhh_graph2 {
+    top: calc(var(--gridGap) * 3);
+  }
+  .hhh_graph3 {
+    top: calc(var(--gridGap) * 5);
+  }
+</style>
+<script>
+  import { generateLineNodes, constructPath } from "../client/graph";
+  const graphs = document.querySelectorAll<HTMLElement>("*[data-graph]");
+  graphs.forEach((graph) => {
+    const dataset = graph.dataset;
+    const { color, ceiling, floor, nodeCount, spacing } = graph.dataset;
+    const line = generateLineNodes({
+      nodeCount: Number(nodeCount),
+      floor: Number(floor),
+      ceiling: Number(ceiling),
+      spacing: Number(spacing)
+    });
+    const pathString = constructPath(line);
+    console.log({ line, pathString });
+  });
+</script>

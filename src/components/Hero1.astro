@@ -20,7 +20,6 @@ const flatSquareWidth = gapX * 4;
 const flatSquareOffset = (bigSquareSize - flatSquareWidth) / 2;
 const flatSquareGap = flatSquareOffset - flatSquareWidth;
 
-
 import iconMicrosoft from "../assets/icons/icon-microsoft.png";
 import iconAws from "../assets/icons/icon-aws.png";
 import iconGcp from "../assets/icons/icon-gcp.png";
@@ -78,18 +77,20 @@ import dropShadow from "../assets/drop-shadow.png";
     paddedHeight: `${paddedHeight}px`,
   }}
 >
+  :global(*) {
+    transform-origin: 50% 50%;
+    user-select: none;
+  }
   .hhh_heroRoot {
+    :global(*) {
+      transform-style: preserve-3d;
+    }
     display: none;
     &.hhh_start {
       display: block;
     }
     --moderateShadow: drop-shadow(0px 3px 6px rgba(14, 16, 21, 0.2))
       drop-shadow(0px 10px 20px rgba(14, 16, 21, 0.3));
-    :global(*) {
-      transform-style: preserve-3d;
-      transform-origin: 50% 50%;
-      user-select: none;
-    }
     transform-origin: 0 0;
     width: var(--paddedWidth);
     height: var(--paddedHeight);

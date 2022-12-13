@@ -1,0 +1,57 @@
+---
+import BigSquare, { size as bigSquareSize } from "./BigSquare.astro";
+import Graph from "./Graph.astro";
+
+export const width = 404;
+export const height = 222;
+export const rootId = "hhh_how1";
+
+const { padding = 0 } = Astro.props;
+const paddedWidth = width + padding * 2;
+const paddedHeight = height + padding * 2;
+---
+
+<div class="hhh_heroRoot" id={rootId}>
+  <div id="hhh_bigSquareArea" class="hhh_all3dObjects hhh_main3dTransform">
+    <BigSquare showGrid={true} />
+    <Graph class="hhh_graph1" color={0} />
+    <Graph class="hhh_graph2" color={1} />
+    <Graph class="hhh_graph3" color={2} />
+  </div>
+
+  <style
+    lang="scss"
+    define:vars={{
+      bigSquareSize: `${bigSquareSize}px`,
+      padding: `${padding}px`,
+      paddedWidth: `${paddedWidth}px`,
+      paddedHeight: `${paddedHeight}px`,
+    }}
+  >
+    :global(*) {
+      transform-origin: 50% 50%;
+      user-select: none;
+    }
+    .hhh_heroRoot {
+      :global(*) {
+        transform-style: preserve-3d;
+      }
+      --moderateShadow: drop-shadow(0px 3px 6px rgba(14, 16, 21, 0.2))
+        drop-shadow(0px 10px 20px rgba(14, 16, 21, 0.3));
+
+      transform-origin: 0 0;
+      width: var(--paddedWidth);
+      height: var(--paddedHeight);
+      position: relative;
+      .hhh_main3dTransform {
+        position: absolute;
+        left: calc(58px + var(--padding));
+        top: calc(-33px + var(--padding));
+        transform: rotateX(57deg) rotateY(0) rotateZ(-45deg);
+        transform-origin: 50% 50%;
+        width: var(--bigSquareSize);
+        height: var(--bigSquareSize);
+      }
+    }
+  </style>
+</div>
