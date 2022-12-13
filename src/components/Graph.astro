@@ -3,12 +3,7 @@ interface Props {
   class?: string;
   color: 0 | 1 | 2;
 }
-import {
-  constructPath,
-  data,
-  generateLineNodes,
-  updateLineNodes,
-} from "../client/graph";
+import { constructPath, data, generateLineNodes } from "../client/graph";
 
 import GraphGradient from "./GraphGradient.astro";
 import { v1 as uuid } from "uuid";
@@ -89,10 +84,13 @@ const pathString = constructPath(nodes);
 
 <script>
   import {
-    generateLineNodes,
     constructPath,
     updateLineNodes,
+    GraphNodeList,
   } from "../client/graph";
+  const SPEED = 2; // steps per sec
+  const STEP_DELAY = (1 / SPEED) * 1000; // msec
+
   const graphs = document.querySelectorAll<HTMLElement>("*[data-graph]");
   graphs.forEach((graph) => {
     const graphPath = graph.querySelector("[data-graph-path]");
@@ -102,7 +100,7 @@ const pathString = constructPath(nodes);
     const ceiling = Number(dataset.ceiling);
     const spacing = Number(dataset.spacing);
     const xPadding = Number(dataset.xPadding);
-    const initialNodes = JSON.parse(dataset.initialNodes) as NodeList;
+    const initialNodes = JSON.parse(dataset.initialNodes) as GraphNodeList;
     const opts = {
       nodeCount,
       floor,
@@ -110,24 +108,20 @@ const pathString = constructPath(nodes);
       spacing,
       xPadding,
     };
-    console.log("dataset", dataset);
     const pathString = constructPath(initialNodes);
-    console.log("d before", graphPath.getAttribute("d"));
     graphPath.setAttribute("d", pathString);
-    console.log("d after", graphPath.getAttribute("d"));
-
-    console.log({ initialNodes, pathString });
     let nextNodes = updateLineNodes(initialNodes, opts);
     let nextPath = constructPath(nextNodes);
+
     console.log("nextPath", nextPath);
     function updateFunc() {
       console.log("nextNodes", nextNodes);
       graphPath.setAttribute("d", nextPath);
       nextNodes = updateLineNodes(nextNodes, opts);
       nextPath = constructPath(nextNodes);
-      setTimeout(updateFunc, 500);
+      setTimeout(updateFunc, STEP_DELAY);
     }
-    setTimeout(updateFunc, 500);
+    setTimeout(updateFunc, STEP_DELAY);
   });
 </script>
 <style
