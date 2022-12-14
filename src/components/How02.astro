@@ -1,5 +1,5 @@
 ---
-import { base } from "../siteConfig";
+import siteConfig from "../siteConfig";
 import { size as bigSquareSize } from "./BigSquare.astro";
 import How02Row from "./How02_Row.astro";
 
@@ -15,6 +15,8 @@ import RectFlat from "./RectFlat.astro";
 export const width = 404;
 export const height = 328;
 export const rootId = "hhh_how1";
+
+const base = siteConfig.base;
 
 const { padding = 0, version } = Astro.props;
 
@@ -37,17 +39,20 @@ const squareGap = (bigSquareSize - flatSquareWidth * 3) / 2;
       icons={[iconGitlab, iconGithub, iconBitbucket]}
     />
   </div>
-  {version !== 'small' && <div class="hhh_rectContainer">
-    <RectFlat
-      class="hhh_rect1"
-      image={`${base}/design-system-icons/cloud.svg`}
-    />
-    <RectFlat
-      class="hhh_rect2"
-      image={`${base}/design-system-icons/git-pull.svg`}
-    />
-  </div>}
-  
+  {
+    version !== "small" && (
+      <div class="hhh_rectContainer">
+        <RectFlat
+          class="hhh_rect1"
+          image={`${base}/design-system-icons/cloud.svg`}
+        />
+        <RectFlat
+          class="hhh_rect2"
+          image={`${base}/design-system-icons/git-pull.svg`}
+        />
+      </div>
+    )
+  }
 </div>
 
 <style

@@ -1,2 +1,1 @@
-const base = "/animations"
-export { base }
+export default { base: "/animations" };
