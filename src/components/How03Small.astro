@@ -1,0 +1,100 @@
+---
+import siteConfig from "../siteConfig";
+import { size as bigSquareSize } from "./BigSquare.astro";
+
+import iconAirflow from "../assets/icons/icon-airflow.png";
+
+import RectFlat from "./RectFlat.astro";
+import SquareDeep from "./SquareDeep.astro";
+
+const pluralBuild = siteConfig.base + "/images/how-03-plural-build.svg";
+const pluralDeploy = siteConfig.base + "/images/how-03-plural-deploy.svg";
+const appName = siteConfig.base + "/images/how-03-app-name.svg";
+
+export const width = 404;
+export const height = 140;
+export const rootId = "hhh_how3";
+
+const base = siteConfig.base;
+
+const { padding = 0, version } = Astro.props;
+
+const paddedWidth = width + padding * 2;
+const paddedHeight = height + padding * 2;
+---
+
+<div class="hhh_heroRoot" id={rootId}>
+
+  <div class="hhh_flatContent">
+    <RectFlat
+      class="hhh_rect hhh_rectBuild"
+      width={248}
+      height={50}
+      image={pluralBuild}
+    />
+    <RectFlat
+      class="hhh_rect hhh_rectDeploy"
+      width={248}
+      height={50}
+      image={pluralDeploy}
+    />
+  </div>
+</div>
+
+<style
+  lang="scss"
+  define:vars={{
+    bigSquareSize: `${bigSquareSize}px`,
+    padding: `${padding}px`,
+    heroHeight: `${height}px`,
+    paddedWidth: `${paddedWidth}px`,
+    paddedHeight: `${paddedHeight}px`,
+  }}
+>
+  :global(*) {
+    transform-origin: 50% 50%;
+    user-select: none;
+  }
+  .hhh_heroRoot {
+    --moderateShadow: drop-shadow(0px 3px 6px rgba(14, 16, 21, 0.2))
+      drop-shadow(0px 10px 20px rgba(14, 16, 21, 0.3));
+    :global(*) {
+      transform-style: preserve-3d;
+    }
+    transform-origin: 0 0;
+    width: var(--paddedWidth);
+    height: var(--paddedHeight);
+    position: relative;
+    .hhh_rect {
+      position: absolute;
+    }
+  }
+  .hhh_main3dTransform {
+    position: absolute;
+    left: calc(87px + var(--padding));
+    top: calc(7px + var(--padding));
+    transform: rotateX(57deg) rotateY(0) rotateZ(-45deg);
+    transform-origin: 50% 50%;
+    width: var(--bigSquareSize);
+    height: var(--bigSquareSize);
+  }
+  .hhh_flatContent {
+    position: absolute;
+    top: var(--padding);
+    left: var(--padding);
+    right: var(--padding);
+    bottom: var(--padding);
+  }
+  .hhh_rectBuild {
+    left: 156px;
+    top: 0;
+  }
+  .hhh_rectDeploy {
+    left: 0;
+    top: 90px;
+  }
+  .hhh_rectLock {
+    left: 58px;
+    top: 329px;
+  }
+</style>

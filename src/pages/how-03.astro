@@ -1,0 +1,17 @@
+---
+import IframeLayout from "../layouts/IframeLayout.astro";
+import How03, { height, width, rootId } from "../components/How03.astro";
+
+const padding = 30;
+---
+
+<IframeLayout
+  title="03 - Build & Deploy"
+  padding={padding}
+  baseWidth={width}
+  baseHeight={height}
+  rootId={rootId}
+>
+  <script src="../client/how01.ts"></script>
+  <How03 padding={padding} />
+</IframeLayout>

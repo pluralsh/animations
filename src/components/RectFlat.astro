@@ -6,16 +6,18 @@ import dropShadow from "../assets/drop-shadow.png";
 
 const {
   class: className,
-  width = 50,
-  height = 50,
+  width = 48,
+  height = 48,
   cornerRadius = 8,
   strokeWidth = 0.75,
   image,
+  icon,
   mode = "",
   ...props
 } = Astro.props;
 
-const imgSrc: string = image.src ?? image;
+const imgSrc: string = image?.src ?? image;
+const iconSrc: string = icon?.src ?? icon;
 
 console.log("IMG", image);
 
@@ -32,15 +34,7 @@ const squareOffset = (bigSquareSize - width) / 2;
 const squareGap = squareOffset - width;
 ---
 
-<div
-  class:list={[
-    className,
-    "hhh_squareRoot",
-    { hhh_connectTop: mode === "provider" },
-  ]}
-  {...props}
-  data-mode={mode}
->
+<div class:list={[className, "hhh_rectRoot"]} {...props} data-mode={mode}>
   <div class="hhh_shadow">
     <img src={(dropShadow as any).src} loading="eager" />
   </div>
@@ -66,9 +60,16 @@ const squareGap = squareOffset - width;
         fill="#1c2029"></rect>
     </svg>
     {
-      image && (
+      imgSrc && (
+        <div class="hhh_imgWrap">
+          <img class="hhh_img" src={imgSrc} loading="eager" />
+        </div>
+      )
+    }
+    {
+      iconSrc && (
         <div class="hhh_iconImgWrap">
-          <img class="hhh_iconImg" src={imgSrc} loading="eager" />
+          <img class="hhh_iconImg" src={iconSrc} loading="eager" />
         </div>
       )
     }
@@ -78,6 +79,7 @@ const squareGap = squareOffset - width;
 <style
   lang="scss"
   define:vars={{
+    stuffVar: "100px",
     squareWidth: `${width}px`,
     squareHeight: `${height}px`,
   }}
@@ -90,12 +92,12 @@ const squareGap = squareOffset - width;
     top: 0;
     left: 0;
   }
-  .hhh_squareRoot,
+  .hhh_rectRoot,
   .hhh_squareShape {
     width: var(--squareWidth);
     height: var(--squareHeight);
   }
-  .hhh_squareRoot {
+  .hhh_rectRoot {
     position: relative;
     > * {
       pointer-events: none;
@@ -139,6 +141,21 @@ const squareGap = squareOffset - width;
     justify-content: center;
   }
   .hhh_iconImg {
+    display: block;
+    width: 100%;
+  }
+
+  .hhh_imgWrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hhh_img {
     display: block;
     width: 100%;
   }
