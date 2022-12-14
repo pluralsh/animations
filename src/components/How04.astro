@@ -1,10 +1,14 @@
 ---
+import siteConfig from "../siteConfig";
 import BigSquare, { size as bigSquareSize } from "./BigSquare.astro";
 import Graph from "./Graph.astro";
 
-export const width = 404;
+export const width = 430;
 export const height = 270;
 export const rootId = "hhh_how4";
+
+const k8sCluster = `${siteConfig.base}/images/how-04-cluster.svg`;
+const auditLogs = `${siteConfig.base}/images/how-04-audit-logs.svg`;
 
 const { padding = 0 } = Astro.props;
 const paddedWidth = width + padding * 2;
@@ -17,6 +21,10 @@ const paddedHeight = height + padding * 2;
     <Graph class="hhh_graph1" color={0} />
     <Graph class="hhh_graph2" color={1} />
     <Graph class="hhh_graph3" color={2} />
+  </div>
+  <div class="hhh_flatContent">
+    <img class="hhh_wDropShadow hhh_auditLogs" src={auditLogs} />
+    <img class="hhh_wDropShadow hhh_k8sImage" src={k8sCluster} />
   </div>
 
   <style
@@ -43,15 +51,41 @@ const paddedHeight = height + padding * 2;
       width: var(--paddedWidth);
       height: var(--paddedHeight);
       position: relative;
-      .hhh_main3dTransform {
-        position: absolute;
-        left: calc(58px + var(--padding));
-        top: calc(15px + var(--padding));
-        transform: rotateX(57deg) rotateY(0) rotateZ(-45deg);
-        transform-origin: 50% 50%;
-        width: var(--bigSquareSize);
-        height: var(--bigSquareSize);
+
+      .hhh_wDropShadow {
+        filter: drop-shadow(0px 2.13312px 4.26623px rgba(14, 16, 21, 0.2))
+          drop-shadow(0px 7.11039px 14.2208px rgba(14, 16, 21, 0.3))
+          drop-shadow(0px 2.13312px 4.26623px rgba(14, 16, 21, 0.2))
+          drop-shadow(0px 7.11039px 14.2208px rgba(14, 16, 21, 0.3));
       }
+      .hhh_auditLogs {
+        position: absolute;
+        right: 0;
+        top: 43px;
+        width: 160px;
+      }
+      .hhh_k8sImage {
+        position: absolute;
+        left: 0px;
+        top: 188px;
+        width: 219px;
+      }
+    }
+    .hhh_main3dTransform {
+      position: absolute;
+      left: calc(58px + var(--padding));
+      top: calc(20px + var(--padding));
+      transform: rotateX(57deg) rotateY(0) rotateZ(-45deg) scale(0.95);
+      transform-origin: 50% 50%;
+      width: var(--bigSquareSize);
+      height: var(--bigSquareSize);
+    }
+    .hhh_flatContent {
+      position: absolute;
+      top: var(--padding);
+      left: var(--padding);
+      right: var(--padding);
+      bottom: var(--padding);
     }
   </style>
 </div>
