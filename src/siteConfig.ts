@@ -1,1 +1,2 @@
-export default { base: "/animations",}
+const base = "/animations"
+export { base }

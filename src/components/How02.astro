@@ -1,7 +1,7 @@
 ---
+import { base } from "../siteConfig";
 import { size as bigSquareSize } from "./BigSquare.astro";
 import How02Row from "./How02_Row.astro";
-import SquareFlat from "./SquareFlat.astro";
 
 import iconMicrosoft from "../assets/icons/icon-microsoft.png";
 import iconAws from "../assets/icons/icon-aws.png";
@@ -10,17 +10,16 @@ import iconGcp from "../assets/icons/icon-gcp.png";
 import iconGithub from "../assets/icons/icon-github.png";
 import iconBitbucket from "../assets/icons/icon-bitbucket.png";
 import iconGitlab from "../assets/icons/icon-gitlab.png";
+import RectFlat from "./RectFlat.astro";
 
 export const width = 404;
-export const height = 187;
+export const height = 328;
 export const rootId = "hhh_how1";
 
-const { padding = 0 } = Astro.props;
+const { padding = 0, version } = Astro.props;
 
 const paddedWidth = width + padding * 2;
 const paddedHeight = height + padding * 2;
-
-const gapX = 20;
 
 const flatSquareWidth = 80;
 const squareGap = (bigSquareSize - flatSquareWidth * 3) / 2;
@@ -29,12 +28,26 @@ const squareGap = (bigSquareSize - flatSquareWidth * 3) / 2;
 <div class="hhh_heroRoot" id={rootId}>
   <div id="hhh_bigSquareArea" class="hhh_all3dObjects hhh_main3dTransform">
     <How02Row
-      class="top"
+      class="hhh_top"
       connectSide={"Bottom"}
       icons={[iconMicrosoft, iconAws, iconGcp]}
     />
-    <How02Row class="bottom" icons={[iconGitlab, iconGithub, iconBitbucket]} />
+    <How02Row
+      class="hhh_bottom"
+      icons={[iconGitlab, iconGithub, iconBitbucket]}
+    />
   </div>
+  {version !== 'small' && <div class="hhh_rectContainer">
+    <RectFlat
+      class="hhh_rect1"
+      image={`${base}/design-system-icons/cloud.svg`}
+    />
+    <RectFlat
+      class="hhh_rect2"
+      image={`${base}/design-system-icons/git-pull.svg`}
+    />
+  </div>}
+  
 </div>
 
 <style
@@ -63,6 +76,9 @@ const squareGap = (bigSquareSize - flatSquareWidth * 3) / 2;
     width: var(--paddedWidth);
     height: var(--paddedHeight);
     position: relative;
+    .hhh_container {
+      position: relative;
+    }
     .hhh_main3dTransform {
       position: absolute;
       left: calc(91px + var(--padding));
@@ -82,8 +98,18 @@ const squareGap = (bigSquareSize - flatSquareWidth * 3) / 2;
         left: 0;
       }
     }
-    .bottom {
+    .hhh_bottom {
       top: calc(var(--flatSquareWidth) + (var(--squareGap) * 1.5));
+    }
+
+    .hhh_rectContainer {
+      position: absolute;
+      top: calc(var(--padding) + 145px + 66px);
+      left: calc(var(--padding) + 244px + 0px);
+    }
+    .hhh_rect1,
+    .hhh_rect2 {
+      margin-bottom: 16px;
     }
   }
 </style>

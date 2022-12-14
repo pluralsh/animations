@@ -1,0 +1,145 @@
+---
+import { size as bigSquareSize } from "./BigSquare.astro";
+import StrokeGradient from "./StrokeGradient.astro";
+import { v1 as uuid } from "uuid";
+import dropShadow from "../assets/drop-shadow.png";
+
+const {
+  class: className,
+  width = 50,
+  height = 50,
+  cornerRadius = 8,
+  strokeWidth = 0.75,
+  image,
+  mode = "",
+  ...props
+} = Astro.props;
+
+const imgSrc: string = image.src ?? image;
+
+console.log("IMG", image);
+
+const svgProps = {
+  viewBox: `0 0 ${width} ${height}`,
+  width: width,
+  height: height,
+  overflow: "visible",
+  xmlns: "http://www.w3.org/2000/svg",
+};
+const gradientId = `gradientRectFlat_${uuid()}`;
+
+const squareOffset = (bigSquareSize - width) / 2;
+const squareGap = squareOffset - width;
+---
+
+<div
+  class:list={[
+    className,
+    "hhh_squareRoot",
+    { hhh_connectTop: mode === "provider" },
+  ]}
+  {...props}
+  data-mode={mode}
+>
+  <div class="hhh_shadow">
+    <img src={(dropShadow as any).src} loading="eager" />
+  </div>
+  <div class="hhh_squareShape">
+    <svg {...svgProps}>
+      <StrokeGradient id={gradientId} />
+      <rect
+        class="hhh_gradientStroke"
+        width={width}
+        height={height}
+        rx={cornerRadius}
+        ry={cornerRadius}
+        fill={`url(#${gradientId})`}
+      >
+      </rect>
+      <rect
+        width={width - strokeWidth * 2}
+        height={height - strokeWidth * 2}
+        rx={cornerRadius - strokeWidth}
+        ry={cornerRadius - strokeWidth}
+        x={strokeWidth}
+        y={strokeWidth}
+        fill="#1c2029"></rect>
+    </svg>
+    {
+      image && (
+        <div class="hhh_iconImgWrap">
+          <img class="hhh_iconImg" src={imgSrc} loading="eager" />
+        </div>
+      )
+    }
+  </div>
+</div>
+
+<style
+  lang="scss"
+  define:vars={{
+    squareWidth: `${width}px`,
+    squareHeight: `${height}px`,
+  }}
+>
+  @use "sass:color";
+  @use "sass:math";
+
+  svg {
+    position: absolute;
+    top: 0;
+    left: 0;
+  }
+  .hhh_squareRoot,
+  .hhh_squareShape {
+    width: var(--squareWidth);
+    height: var(--squareHeight);
+  }
+  .hhh_squareRoot {
+    position: relative;
+    > * {
+      pointer-events: none;
+    }
+  }
+  .hhh_gradientStroke,
+  .hhh_solidStroke {
+    transition: opacity 0.2s linear;
+  }
+  .hhh_squareShape {
+    position: relative;
+    transform-origin: 50% 50%;
+    z-index: 1;
+    --zTransform: translateZ(0);
+  }
+  .hhh_shadow {
+    /* --zTransform: translateZ(-15px); */
+    --overshoot: -50%;
+    pointer-events: none;
+    position: absolute;
+    top: var(--overshoot);
+    right: var(--overshoot);
+    bottom: var(--overshoot);
+    left: var(--overshoot);
+    transform: translate(-5px, 7px);
+    img {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
+  }
+  .hhh_iconImgWrap {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    padding: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  .hhh_iconImg {
+    display: block;
+    width: 100%;
+  }
+</style>

@@ -414,7 +414,6 @@ const squareGap = squareOffset - width;
         display: none;
       }
     }
-
     &.hhh_middleSide.hhh_shiftRight,
     &.hhh_middleSide.hhh_shiftLeft,
     &.hhh_rightSide:not(.hhh_shiftLeft),
@@ -437,7 +436,8 @@ const squareGap = squareOffset - width;
         transform: var(--zTransform) translateX(calc(-1 * var(--squareOffset)));
       }
     }
-    &:hover {
+    &:hover,
+    &.hhh_middleSide:not(.hhh_shiftRight):not(.hhh_shiftLeft) {
       .hhh_iconImg {
         filter: grayscale(0%);
         opacity: 1;
