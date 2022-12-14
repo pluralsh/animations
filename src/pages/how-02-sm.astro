@@ -1,0 +1,18 @@
+---
+import IframeLayout from "../layouts/IframeLayout.astro";
+import How02, { width, rootId } from "../components/How02.astro";
+
+const height = 186;
+const padding = 30;
+---
+
+<IframeLayout
+  title="02 - Bring your cloud & add your Git credentials"
+  padding={padding}
+  baseWidth={width}
+  baseHeight={height}
+  rootId={rootId}
+>
+  <script src="../client/how01.ts"></script>
+  <How02 padding={padding} connectSide="Bottom" icons="/" version="small" />
+</IframeLayout>

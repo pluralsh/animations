@@ -19,28 +19,33 @@ const xPadding = 20;
 
 const gridCount = 6;
 const nodeCount = gridCount + 1;
-const gridGap = size / gridCount;
+const spacing = size / gridCount;
 
 const nodes = generateLineNodes({
   nodeCount,
   floor,
   ceiling,
-  spacing: gridGap,
+  spacing: spacing,
   xPadding: xPadding,
 });
 const pathString = constructPath(nodes);
 ---
 
-<div class:list={["hhh_graph", className]}>
+<div
+  class:list={["hhh_graph", className]}
+  data-graph
+  data-color={color}
+  data-ceiling={ceiling}
+  data-floor={floor}
+  data-node-count={nodeCount}
+  data-x-padding={xPadding}
+  data-spacing={spacing}
+  data-initial-nodes={JSON.stringify(nodes)}
+>
   <svg
-    viewBox={`0 0 ${size + (xPadding * 2)} ${size}`}
+    viewBox={`0 0 ${size + xPadding * 2} ${size}`}
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink"
-    data-graph=""
-    data-color={color}‰
-    data-ceiling={ceiling}
-    data-floor={floor}
-    data-node-count={nodeCount}
   >
     <defs>
       <filter id={glowId} height="300%" width="300%" x="-75%" y="-75%">
@@ -60,13 +65,15 @@ const pathString = constructPath(nodes);
           result="softGlow_colored"></feComposite>
 
         <!--	Layer the effects together -->
-        <feBlend in="softGlow_colored" in2="SourceGraphic" mode="add"></feBlend>
+        <feBlend in="softGlow_colored" in2="SourceGraphic" mode="screen"
+        ></feBlend>
       </filter>
     </defs>
     <GraphGradient id={gradientId} color={color} />
     {
       (
         <path
+          data-graph-path
           filter={`url(#${glowId})`}
           fill={`url(#${gradientId})`}
           stroke={color}
@@ -78,10 +85,76 @@ const pathString = constructPath(nodes);
   </svg>
 </div>
 
+<script>
+  import {
+    constructPath,
+    updateLineNodes,
+    GraphNodeList,
+    nodesToVals,
+    valsToNodes,
+    valsToGsapOptions,
+  } from "../client/graph";
+  import gsap from "gsap";
+  const SPEED = 0.5; // steps per sec
+  const STEP_DELAY = 1 / SPEED; // sec
+
+  const graphs = document.querySelectorAll<HTMLElement>("*[data-graph]");
+  graphs.forEach((graph) => {
+    const graphPath = graph.querySelector("[data-graph-path]");
+    const dataset = graph.dataset;
+    const nodeCount = Number(dataset.nodeCount);
+    const floor = Number(dataset.floor);
+    const ceiling = Number(dataset.ceiling);
+    const spacing = Number(dataset.spacing);
+    const xPadding = Number(dataset.xPadding);
+    const initialNodes = JSON.parse(dataset.initialNodes) as GraphNodeList;
+    const opts = {
+      nodeCount,
+      floor,
+      ceiling,
+      spacing,
+      xPadding,
+    };
+    const pathString = constructPath(initialNodes);
+    graphPath.setAttribute("d", pathString);
+    let nextNodes = updateLineNodes(initialNodes, opts);
+    let nextPath = constructPath(nextNodes);
+
+    let currentNodes = initialNodes;
+
+    function tweenToNext(delay = 0) {
+      let currentVals = nodesToVals(currentNodes);
+      let toVals = nodesToVals(updateLineNodes(currentNodes, opts));
+      const options = {
+        ...valsToGsapOptions(toVals),
+        duration: STEP_DELAY,
+        delay: delay,
+        ease: "sine.inOut",
+        onUpdate: (x) => {
+          currentNodes = valsToNodes(currentVals, opts);
+          const nextPath = constructPath(currentNodes);
+          graphPath.setAttribute("d", nextPath);
+        },
+        onComplete: () => {
+          tweenToNext();
+        },
+      };
+      console.log("options", options);
+      gsap.to(currentVals, options);
+    }
+    console.log("graphclasses", graph.classList);
+    const delay = graph.classList.contains("hhh_graph1")
+      ? 0
+      : graph.classList.contains("hhh_graph2")
+      ? STEP_DELAY * 0.333
+      : STEP_DELAY * 0.666;
+    tweenToNext(delay);
+  });
+</script>
 <style
   lang="scss"
   define:vars={{
-    gridGap: `${gridGap}px`,
+    gridGap: `${spacing}px`,
     shadowColor: `${color}`,
     svgOffset: `${xPadding}px`,
   }}
@@ -110,19 +183,3 @@ const pathString = constructPath(nodes);
     top: calc(var(--gridGap) * 5);
   }
 </style>
-<script>
-  import { generateLineNodes, constructPath } from "../client/graph";
-  const graphs = document.querySelectorAll<HTMLElement>("*[data-graph]");
-  graphs.forEach((graph) => {
-    const dataset = graph.dataset;
-    const { color, ceiling, floor, nodeCount, spacing } = graph.dataset;
-    const line = generateLineNodes({
-      nodeCount: Number(nodeCount),
-      floor: Number(floor),
-      ceiling: Number(ceiling),
-      spacing: Number(spacing),
-    });
-    const pathString = constructPath(line);
-    console.log({ line, pathString });
-  });
-</script>

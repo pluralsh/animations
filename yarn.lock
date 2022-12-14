@@ -36,7 +36,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@astrojs/image@npm:^0.12.0":
+"@astrojs/image@npm:0.12.1":
   version: 0.12.1
   resolution: "@astrojs/image@npm:0.12.1"
   dependencies:
@@ -473,14 +473,14 @@ __metadata:
   version: 0.0.0-use.local
   resolution: "@example/basics@workspace:."
   dependencies:
-    "@astrojs/image": ^0.12.0
-    astro: ^1.6.0
-    astro-compress: ^1.1.15
-    autoprefixer: ^10.4.13
-    cssnano: ^5.1.14
-    gsap: ^3.11.3
-    sass: ^1.56.0
-    uuid: ^9.0.0
+    "@astrojs/image": 0.12.1
+    astro: 1.6.15
+    astro-compress: 1.1.21
+    autoprefixer: 10.4.13
+    cssnano: 5.1.14
+    gsap: 3.11.3
+    sass: 1.56.2
+    uuid: 9.0.0
   languageName: unknown
   linkType: soft
 
@@ -1057,7 +1057,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro-compress@npm:^1.1.15":
+"astro-compress@npm:1.1.21":
   version: 1.1.21
   resolution: "astro-compress@npm:1.1.21"
   dependencies:
@@ -1066,7 +1066,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro@npm:^1.6.0":
+"astro@npm:1.6.15":
   version: 1.6.15
   resolution: "astro@npm:1.6.15"
   dependencies:
@@ -1136,7 +1136,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"autoprefixer@npm:^10.4.13":
+"autoprefixer@npm:10.4.13":
   version: 10.4.13
   resolution: "autoprefixer@npm:10.4.13"
   dependencies:
@@ -1806,7 +1806,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"cssnano@npm:^5.1.14":
+"cssnano@npm:5.1.14":
   version: 5.1.14
   resolution: "cssnano@npm:5.1.14"
   dependencies:
@@ -2763,7 +2763,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"gsap@npm:^3.11.3":
+"gsap@npm:3.11.3":
   version: 3.11.3
   resolution: "gsap@npm:3.11.3"
   checksum: b97d33ca1fa28dc3b4ce957fa49226f6dcdea39eddd4ffaf4af2b9fe681ff974731bdb8717e50110842267187064659e2f7874c6d1936de4162f8c7721c09676
@@ -5548,7 +5548,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"sass@npm:^1.56.0":
+"sass@npm:1.56.2":
   version: 1.56.2
   resolution: "sass@npm:1.56.2"
   dependencies:
@@ -6366,7 +6366,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"uuid@npm:^9.0.0":
+"uuid@npm:9.0.0":
   version: 9.0.0
   resolution: "uuid@npm:9.0.0"
   bin:

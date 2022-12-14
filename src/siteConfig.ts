@@ -1,1 +1,1 @@
-export default { base: "/animations",}
+export default { base: "/animations" };
