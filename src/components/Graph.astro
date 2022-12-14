@@ -139,10 +139,8 @@ const pathString = constructPath(nodes);
           tweenToNext();
         },
       };
-      console.log("options", options);
       gsap.to(currentVals, options);
     }
-    console.log("graphclasses", graph.classList);
     const delay = graph.classList.contains("hhh_graph1")
       ? 0
       : graph.classList.contains("hhh_graph2")

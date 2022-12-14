@@ -9,8 +9,8 @@ export interface Props {
 
 const { title, baseWidth, baseHeight, padding, rootId } = Astro.props;
 
-console.log(`${Astro?.url?.pathname} width:`, baseWidth + 2 * padding);
-console.log(`${Astro?.url?.pathname} height:`, baseHeight + 2 * padding);
+console.info(`${Astro?.url?.pathname} width:`, baseWidth + 2 * padding);
+console.info(`${Astro?.url?.pathname} height:`, baseHeight + 2 * padding);
 ---
 
 <!DOCTYPE html>
