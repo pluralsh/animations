@@ -7,8 +7,8 @@ export const width = 430;
 export const height = 270;
 export const rootId = "hhh_how4";
 
-const k8sCluster = `${siteConfig.base}/images/how-04-cluster.svg`;
-const auditLogs = `${siteConfig.base}/images/how-04-audit-logs.svg`;
+const k8sCluster = `${siteConfig.base}/images/how-04-k8s-cluster.png`;
+const auditLogs = `${siteConfig.base}/images/how-04-audit-logs.png`;
 
 const { padding = 0 } = Astro.props;
 const paddedWidth = width + padding * 2;
@@ -22,9 +22,9 @@ const paddedHeight = height + padding * 2;
     <Graph class="hhh_graph2" color={1} />
     <Graph class="hhh_graph3" color={2} />
   </div>
-  <div class="hhh_flatContent">
-    <img class="hhh_wDropShadow hhh_auditLogs" src={auditLogs} />
-    <img class="hhh_wDropShadow hhh_k8sImage" src={k8sCluster} />
+  <div class="hhh_flatContent hhh_wDropShadow">
+    <img class="hhh_auditLogs" src={auditLogs} />
+    <img class="hhh_k8sImage" src={k8sCluster} />
   </div>
 
   <style
