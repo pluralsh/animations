@@ -1,0 +1,77 @@
+---
+import siteConfig from "../siteConfig";
+---
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width" />
+    <meta name="generator" content={Astro.generator} />
+    <title>Test</title>
+    <script>
+      // Sets the class of the HTML element using vanilla JavaScript
+      document.documentElement.className +=
+        window.self == window.top ? " not-framed" : " framed";
+    </script>
+  </head>
+  <body id="main" style={{ width: "100%" }}>
+    <iframe
+      data-animation-frame
+      src="/animations/how-01"
+      data-test-attr="content"
+      style="border: none;"></iframe>
+    <iframe
+      data-animation-frame
+      src="/animations/how-02"
+      data-test-attr="content"
+      style="border: none;"></iframe>
+    <iframe
+      data-animation-frame
+      src="/animations/how-02-sm"
+      data-test-attr="content"
+      style="border: none;"></iframe>
+    <iframe
+      data-animation-frame
+      src="/animations/how-03"
+      data-test-attr="content"
+      style="border: none;"></iframe>
+    <iframe
+      data-animation-frame
+      src="/animations/how-03-sm"
+      data-test-attr="content"
+      style="border: none;"></iframe>
+    <iframe
+      data-animation-frame
+      src="/animations/how-04"
+      data-test-attr="content"
+      style="border: none;"></iframe>
+    <iframe
+      data-animation-frame
+      src="/animations/how-01"
+      data-test-attr="content"
+      style="border: none;"></iframe>
+    <iframe
+      data-animation-frame
+      src="/animations/how-01"
+      data-test-attr="content"
+      style="border: none;"></iframe>
+    <style is:global>
+      body {
+        min-height: 500vh;
+      }
+      iframe {
+        display: block;
+        width: 100%;
+        max-width: 500px;
+        height: 200px;
+        /* width: 100%;
+        height: 50vw; */
+      }
+    </style>
+    <script
+      is:inline
+      src={`${siteConfig.base}/scripts/scroll-pause.js`}
+    ></script>
+  </body>
+</html>

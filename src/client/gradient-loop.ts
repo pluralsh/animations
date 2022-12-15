@@ -31,3 +31,12 @@ gradientLoop
     duration: gradientDuration,
     ease: "none",
   });
+
+window?.addEventListener('message', (msg) => {
+  if (msg?.data === 'play') {
+    gradientLoop.play();
+
+  } else if (msg?.data === 'pause') {
+    gradientLoop.pause();
+  }
+})

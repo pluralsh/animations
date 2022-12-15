@@ -475,11 +475,12 @@ __metadata:
   dependencies:
     "@astrojs/image": 0.12.1
     astro: 1.6.15
-    astro-compress: 1.1.21
+    astro-compress: 1.1.22
     autoprefixer: 10.4.13
     cssnano: 5.1.14
     gsap: 3.11.3
     sass: 1.56.2
+    typescript: 4.9.4
     uuid: 9.0.0
   languageName: unknown
   linkType: soft
@@ -560,9 +561,9 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@nikolarhristov/pipeline@npm:0.1.6":
-  version: 0.1.6
-  resolution: "@nikolarhristov/pipeline@npm:0.1.6"
+"@nikolarhristov/pipeline@npm:0.1.7":
+  version: 0.1.7
+  resolution: "@nikolarhristov/pipeline@npm:0.1.7"
   dependencies:
     "@types/csso": 5.0.0
     "@types/html-minifier-terser": 7.0.0
@@ -575,7 +576,7 @@ __metadata:
     sharp: 0.31.2
     svgo: 3.0.2
     terser: 5.16.1
-  checksum: 8206288547b70823b3e0487d27ae48350e42c90e5ead3ea3089c402c0466ef43c196e0721d1e827b53ec3daab97a2ad4130cbd8583ae59529c43b9812c544850
+  checksum: 3636b81a180967bf10ce422853950e0613b91eea4bdc68ac9edfe77dd137a727aec12a9feb4355759214272530f3ae5ebca2affdd44171e34383a35dce589498
   languageName: node
   linkType: hard
 
@@ -1057,12 +1058,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"astro-compress@npm:1.1.21":
-  version: 1.1.21
-  resolution: "astro-compress@npm:1.1.21"
+"astro-compress@npm:1.1.22":
+  version: 1.1.22
+  resolution: "astro-compress@npm:1.1.22"
   dependencies:
-    "@nikolarhristov/pipeline": 0.1.6
-  checksum: 471e83a5a6f99d314ab913863cda0ef9fa1820a12a35a95fe300d8ee693968769924d662c429324be92b6d9b782c5163fc6b27ccdff270f2aada763093584104
+    "@nikolarhristov/pipeline": 0.1.7
+  checksum: b9b05a86d77ec66d2755e592eb2dfb7343e208cf31eaab474839523d1e3d2acb892d3dca6d085ec973fee5349931b639a4bbefd00a85116dee07cfc948e41759
   languageName: node
   linkType: hard
 
@@ -6176,7 +6177,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@npm:*":
+"typescript@npm:*, typescript@npm:4.9.4":
   version: 4.9.4
   resolution: "typescript@npm:4.9.4"
   bin:
@@ -6186,7 +6187,7 @@ __metadata:
   languageName: node
   linkType: hard
 
-"typescript@patch:typescript@*#~builtin<compat/typescript>":
+"typescript@patch:typescript@*#~builtin<compat/typescript>, typescript@patch:typescript@4.9.4#~builtin<compat/typescript>":
   version: 4.9.4
   resolution: "typescript@patch:typescript@npm%3A4.9.4#~builtin<compat/typescript>::version=4.9.4&hash=d73830"
   bin:

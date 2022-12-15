@@ -68,7 +68,6 @@ console.info(`${Astro?.url?.pathname} height:`, baseHeight + 2 * padding);
           const hero = document.querySelector(`#${rootId}`);
           (hero as HTMLElement).style.transform = `scale(${resize})`;
         }
-
         window.addEventListener("resize", function (e) {
           setSize();
         });

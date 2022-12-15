@@ -137,9 +137,23 @@ const pathString = constructPath(nodes);
         },
         onComplete: () => {
           tweenToNext();
+          if (listener) {
+            window.removeEventListener("message", listener);
+          }
         },
       };
-      gsap.to(currentVals, options);
+      const tween = gsap.to(currentVals, options);
+      const listener = (msg) => {
+        if (msg?.data === "play") {
+          tween.play();
+          console.log("graph play");
+        } else if (msg?.data === "pause") {
+          console.log("graph pause");
+          tween.pause();
+          
+        }
+      };
+      window?.addEventListener("message", listener);
     }
     const delay = graph.classList.contains("hhh_graph1")
       ? 0

@@ -41,21 +41,12 @@ const squareGap = squareOffset - width;
       <StrokeGradient id={gradientId} />
       <rect
         class="hhh_gradientStroke"
-        width={width}
-        height={height}
-        rx={cornerRadius}
-        ry={cornerRadius}
-        fill={`url(#${gradientId})`}
-      >
-      </rect>
-      <rect
-        width={width - strokeWidth * 2}
-        height={height - strokeWidth * 2}
-        rx={cornerRadius - strokeWidth}
-        ry={cornerRadius - strokeWidth}
-        x={strokeWidth}
-        y={strokeWidth}
-        fill="#1c2029"></rect>
+        width={width - strokeWidth}
+        height={height - strokeWidth}
+        rx={cornerRadius - strokeWidth * 0.5}
+        ry={cornerRadius - strokeWidth * 0.5}
+        fill="#1c2029"
+        stroke={`url(#${gradientId})`}></rect>
     </svg>
     {
       imgSrc && (
