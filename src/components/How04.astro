@@ -18,9 +18,32 @@ const paddedHeight = height + padding * 2;
 <div class="hhh_heroRoot" id={rootId}>
   <div id="hhh_bigSquareArea" class="hhh_all3dObjects hhh_main3dTransform">
     <BigSquare showGrid={true} />
-    <Graph class="hhh_graph1" color={0} />
-    <Graph class="hhh_graph2" color={1} />
-    <Graph class="hhh_graph3" color={2} />
+    <Graph class="hhh_graph1" graphId={"graph1"} color={0} />
+    <Graph class="hhh_graph2" graphId={"graph2"} color={1} />
+    <Graph class="hhh_graph3" graphId={"graph3"} color={2} />
+  </div>
+  <div
+    id="hhh_bigSquareArea"
+    class="hhh_all3dObjects hhh_main3dTransform hhh_glow"
+  >
+    <Graph
+      class="hhh_graphGlow hhh_graph1"
+      graphId={"graph1"}
+      color={0}
+      showFill={false}
+    />
+    <Graph
+      class="hhh_graphGlow hhh_graph2"
+      graphId={"graph2"}
+      color={1}
+      showFill={false}
+    />
+    <Graph
+      class="hhh_graphGlow hhh_graph3"
+      graphId={"graph3"}
+      color={2}
+      showFill={false}
+    />
   </div>
   <div class="hhh_flatContent hhh_wDropShadow">
     <img class="hhh_auditLogs" src={auditLogs} />
@@ -86,6 +109,11 @@ const paddedHeight = height + padding * 2;
       left: var(--padding);
       right: var(--padding);
       bottom: var(--padding);
+      transform: translateZ(500px);
+    }
+    .hhh_graphGlow {
+      opacity: 1;
+      filter: saturate(1.1) brightness(1.5) blur(4px) ;
     }
   </style>
 </div>

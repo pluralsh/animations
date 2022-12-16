@@ -2,18 +2,26 @@
 interface Props {
   class?: string;
   color: 0 | 1 | 2;
+  graphId: string;
+  showStroke?: boolean;
+  showFill?: boolean;
 }
 import { constructPath, data, generateLineNodes } from "../client/graph";
 
 import GraphGradient from "./GraphGradient.astro";
 import { v1 as uuid } from "uuid";
 
-const { class: className, color: colorIdx = 0 } = Astro.props;
+const {
+  class: className,
+  color: colorIdx = 0,
+  graphId,
+  showStroke = "true",
+  showFill = "true",
+} = Astro.props;
 const { color, ceiling, floor } = data[colorIdx];
 
 export const size = 288;
 const gradientId = `gradientGraph_${uuid()}`;
-const glowId = `gradientGraphGlow_${uuid()}`;
 
 const xPadding = 20;
 
@@ -41,44 +49,21 @@ const pathString = constructPath(nodes);
   data-x-padding={xPadding}
   data-spacing={spacing}
   data-initial-nodes={JSON.stringify(nodes)}
+  data-graph-id={graphId}
 >
   <svg
     viewBox={`0 0 ${size + xPadding * 2} ${size}`}
     xmlns="http://www.w3.org/2000/svg"
     xmlns:xlink="http://www.w3.org/1999/xlink"
   >
-    <defs>
-      <filter id={glowId} height="300%" width="300%" x="-75%" y="-75%">
-        <!-- Use a gaussian blur to create the soft blurriness of the glow -->
-        <feGaussianBlur in="SourceAlpha" stdDeviation="3" result="blurred"
-        ></feGaussianBlur>
-
-        <!-- Change the colour -->
-        <feFlood flood-color={color} result="glowColor" flood-opacity="0.5"
-        ></feFlood>
-
-        <!-- Color in the glows -->
-        <feComposite
-          in="glowColor"
-          in2="blurred"
-          operator="in"
-          result="softGlow_colored"></feComposite>
-
-        <!--	Layer the effects together -->
-        <feBlend in="softGlow_colored" in2="SourceGraphic" mode="screen"
-        ></feBlend>
-      </filter>
-    </defs>
     <GraphGradient id={gradientId} color={color} />
     {
       (
         <path
           data-graph-path
-          filter={`url(#${glowId})`}
-          fill={`url(#${gradientId})`}
-          stroke={color}
+          fill={showFill ? `url(#${gradientId})` : `transparent`}
+          stroke={showStroke ? color : undefined}
           stroke-width="1"
-          d={pathString}
         />
       )
     }
@@ -98,10 +83,24 @@ const pathString = constructPath(nodes);
   const SPEED = 0.5; // steps per sec
   const STEP_DELAY = 1 / SPEED; // sec
 
-  const graphs = document.querySelectorAll<HTMLElement>("*[data-graph]");
+  const graphs = document.querySelectorAll<HTMLElement>("[data-graph-id]");
+  const uniqueIds = new Set<string>();
   graphs.forEach((graph) => {
-    const graphPath = graph.querySelector("[data-graph-path]");
-    const dataset = graph.dataset;
+    if (graph.dataset.graphId) {
+      uniqueIds.add(graph.dataset.graphId);
+    }
+  });
+  console.log("uniqueIds", uniqueIds);
+  uniqueIds.forEach((graphId) => {
+    const dataset = document.querySelector<HTMLElement>(
+      `[data-graph-id=${graphId}]`
+    ).dataset;
+
+    const graphPaths = document.querySelectorAll<HTMLElement>(
+      `[data-graph-id=${graphId}] [data-graph-path]`
+    );
+    console.log("graphPaths", graphPaths);
+
     const nodeCount = Number(dataset.nodeCount);
     const floor = Number(dataset.floor);
     const ceiling = Number(dataset.ceiling);
@@ -116,7 +115,9 @@ const pathString = constructPath(nodes);
       xPadding,
     };
     const pathString = constructPath(initialNodes);
-    graphPath.setAttribute("d", pathString);
+    graphPaths.forEach((graphPath) => {
+      graphPath.setAttribute("d", pathString);
+    });
     let nextNodes = updateLineNodes(initialNodes, opts);
     let nextPath = constructPath(nextNodes);
 
@@ -133,7 +134,9 @@ const pathString = constructPath(nodes);
         onUpdate: (x) => {
           currentNodes = valsToNodes(currentVals, opts);
           const nextPath = constructPath(currentNodes);
-          graphPath.setAttribute("d", nextPath);
+          graphPaths.forEach((graphPath) => {
+            graphPath.setAttribute("d", nextPath);
+          });
         },
         onComplete: () => {
           tweenToNext();
@@ -150,16 +153,16 @@ const pathString = constructPath(nodes);
         } else if (msg?.data === "pause") {
           console.log("graph pause");
           tween.pause();
-          
         }
       };
       window?.addEventListener("message", listener);
     }
-    const delay = graph.classList.contains("hhh_graph1")
-      ? 0
-      : graph.classList.contains("hhh_graph2")
-      ? STEP_DELAY * 0.333
-      : STEP_DELAY * 0.666;
+    const delay =
+      graphId === "graph1"
+        ? 0
+        : graphId === "graph2"
+        ? STEP_DELAY * 0.333
+        : STEP_DELAY * 0.666;
     tweenToNext(delay);
   });
 </script>
@@ -177,13 +180,14 @@ const pathString = constructPath(nodes);
     left: 0;
   }
   .hhh_graph {
+    --offset: 0;
     position: absolute;
     top: 0;
     left: calc(1px - var(--svgOffset));
     width: calc(286px + (var(--svgOffset) * 2));
     overflow: visible;
     transform-origin: 0% 0%;
-    transform: rotateX(90deg);
+    transform: rotateX(90deg) translateY(-0.5px);
   }
   .hhh_graph1 {
     top: calc(var(--gridGap) * 1);
